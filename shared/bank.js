@@ -47,7 +47,7 @@ const AD = {
     one(t, q) {
       return ({
         id: `${q.t}|${q.y}|${q.label}`, topic: t.code, year: +q.y, kind: q.t === 'mc' ? 'mc' : 's2', label: q.label, short: shortOf(q.label),
-        marks: q.marks || 1, qimg: q.img, txt: q.txt, key: q.ans, why: q.why, mi: q.mi,
+        marks: q.marks || 1, qimg: q.img, txt: q.txt, key: q.ans, why: q.why, mi: q.mi, pk: q.pk, pi: q.pi,
         subs: (this.st.items[`${t.code}|${q.t}|${q.y}|${q.label}`] || []).map(i => this.defs[i]).filter(Boolean),
         oe: q.oe ? {title: q.oe.title, groups: groupsOf(q.oe, [['Core National 5 points', 'n5'], ['Equations and worked formulae', 'eqns'], ['Diagrams worth sketching', 'diagrams']])} : null
       });
@@ -79,7 +79,7 @@ const AD = {
       const subOf = t.subOf;
       return ({
         id: `${t.slug}|${q.year}|${q.label}`, topic: t.code, year: +q.year, kind: q.kind === 'Multiple choice' ? 'mc' : 's2', label: q.label, short: shortOf(q.label),
-        marks: q.marks || 1, qimg: q.q, txt: q.txt, key: q.ans, why: q.exp, mi: q.ms, subs: subOf[`${q.year}|${q.label}`] || [],
+        marks: q.marks || 1, qimg: q.q, txt: q.txt, key: q.ans, why: q.exp, mi: q.ms, pk: q.pk, pi: q.pi, subs: subOf[`${q.year}|${q.label}`] || [],
         oe: q.oe ? {title: q.oe.title, groups: (q.oe.groups || []).filter(([h]) => !/advanced higher|\bAH\b|going further|beyond higher/i.test(h))} : null,
         cur: (q.cur || []).map(c => ({title: 'Current data booklet answer · ' + c.q, lines: c.lines}))
       });
@@ -118,7 +118,7 @@ const AD = {
         const a = r.ans || {};
         return {
           id: r.id, topic: t.code, year: +r.year, kind: a.kind === 'mc' ? 'mc' : 's2', label: 'Question ' + r.q, short: 'Q' + r.q, paper: r.paper,
-          marks: +r.marks || 1, qimg: r.qimg, txt: r.txt, key: a.key, why: a.why, mi: a.img, subs: r.sub ? [r.sub] : [],
+          marks: +r.marks || 1, qimg: r.qimg, txt: r.txt, key: a.key, why: a.why, mi: a.img, pk: r.pk, pi: r.pi, subs: r.sub ? [r.sub] : [],
           oe: a.oe ? {title: a.oe.title, groups: groupsOf(a.oe, [['Key chemistry', 'points'], ['Equations and worked examples', 'equations'], ['Diagrams that would help', 'diagrams']])} : null,
           notes: (a.notes || []).map(n => 'Data booklet update: ' + n)
         };
@@ -166,6 +166,20 @@ async function load(code) {
   return CACHE[code] = items;
 }
 const loadMany = codes => Promise.all(codes.map(load)).then(a => a.flat());
+/* original scans and marking instructions live in small packs (8 questions each), fetched only when needed */
+const PACKS = {};
+function heavy(q) {
+  if (!q || !q.pk || q.hv) return Promise.resolve(q);
+  const p = PACKS[q.pk] || (PACKS[q.pk] = J(q.pk).catch(e => { delete PACKS[q.pk]; throw e; }));
+  return p.then(d => { const r = d[q.pi] || []; q.qimg = q.qimg || r[0] || ''; q.mi = q.mi || r[1] || ''; q.hv = true; return q; });
+}
+const heavyAll = list => Promise.all(list.map(q => heavy(q).catch(() => q)));
+const needsHeavy = q => !!(q && q.pk && !q.hv);
+const LOADING = '<p class="muted">Loading…</p>';
+function miHTML(q, alt) {
+  if (q.mi) return `<div class="sheet"><img src="${q.mi}" alt="${alt || 'QS marking instructions for ' + esc(q.label)}"></div>`;
+  return needsHeavy(q) ? LOADING : '<p class="muted">Marking instructions are not available for this question.</p>';
+}
 
 /* ---------------- tiny UI helpers ---------------- */
 function toast(m) { const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
@@ -518,6 +532,7 @@ function drawQ() {
   } else {
     $('#qAct').innerHTML = `<p class="muted small" style="margin:10px 0 6px">Write your answer on paper, then check it against the marking instructions.</p><button class="btn pri" id="showMI" style="width:100%">Show marking instructions</button>`;
     $('#showMI').onclick = revealS2;
+    heavy(cur).catch(() => {}); /* fetch the marking instructions in the background, so they appear at once */
   }
   $('#qPrev').disabled = pos === 0 || !!quiz;
   $('#qNext').textContent = quiz && pos === seq.length - 1 ? 'Finish' : 'Next →';
@@ -551,7 +566,9 @@ function extrasHTML() {
 function revealS2() {
   if (revealed) return; revealed = true; stopTimer(true);
   $('#qAct').innerHTML = '';
-  $('#qAns').innerHTML = `<h2>Marking instructions</h2>${cur.mi ? `<div class="sheet"><img src="${cur.mi}" alt="QS marking instructions for ${esc(cur.label)}"></div>` : '<p class="muted">Marking instructions are not available for this question.</p>'}
+  const q = cur;
+  if (needsHeavy(q)) heavy(q).then(() => { const b = $('#miBox'); if (cur === q && b) b.innerHTML = miHTML(q); }).catch(() => { const b = $('#miBox'); if (b) b.innerHTML = '<p class="muted">Could not load the marking instructions. Check your connection and try again.</p>'; });
+  $('#qAns').innerHTML = `<h2>Marking instructions</h2><div id="miBox">${miHTML(q)}</div>
     ${extrasHTML()}
     <div class="card"><p style="margin:0 0 8px;font-weight:700">How did you do?</p><div class="rate" role="group" aria-label="How did you do?">
     ${[['got', 'Got it'], ['part', 'Partly'], ['not', 'Not yet']].map(([r, l]) => `<button type="button" data-r="${r}" aria-pressed="${ratingOf(cur) === r}">${l}</button>`).join('')}</div></div>`;
@@ -575,6 +592,11 @@ function showText(p, q) {
   $('#' + p + 'Txt').hidden = orig; $('#' + p + 'Sheet').hidden = !orig; $('#' + p + 'Orig').hidden = !has;
   if (has) { $('#' + p + 'Txt').innerHTML = q.txt; $('#' + p + 'Orig').textContent = orig ? 'Show as text' : 'Show original'; }
   $('#' + p + 'Orig').onclick = () => { ST.orig = !ST.orig; save(); showText(p, q); };
+  if (orig) {
+    const img = $('#' + p + 'Img');
+    if (q.qimg) img.src = q.qimg;
+    else if (needsHeavy(q)) { img.removeAttribute('src'); heavy(q).then(() => { if ((p === 'q' ? cur : MK && MK.items[MK.st.pos]) === q) img.src = q.qimg; }).catch(() => toast('Could not load the original. Check your connection.')); }
+  }
 }
 
 /* ---------------- timer ---------------- */
@@ -642,7 +664,8 @@ function drawPV() {
   const mc = cur.kind === 'mc';
   let stage = cur.txt ? `<div class="sheet qtext pvtext" style="--pz:${pvZ}">${cur.txt}</div>` : `<div class="sheet"><img src="${cur.qimg}" alt="${esc(paperOf(cur) + ', ' + cur.label)}"></div>`;
   if (pvRev) stage = mc ? stage + `<div class="card" style="margin-top:12px;color:var(--ink)"><div class="key"><span class="l">${esc(cur.key)}</span><p><b>Answer ${esc(cur.key)}.</b> ${F(cur.why || '')}</p></div></div>`
-    : (cur.mi ? `<div class="sheet"><img src="${cur.mi}" alt="Marking instructions"></div>` : '<p>Marking instructions not available.</p>');
+    : miHTML(cur, 'Marking instructions');
+  if ((pvRev || !cur.txt) && needsHeavy(cur)) { const q = cur; heavy(q).then(() => { if (cur === q && PV) drawPV(); }).catch(() => {}); }
   el.innerHTML = `<header><span class="ttl">${seq.length > 1 ? `${pos + 1} of ${seq.length} · ` : ''}${esc(paperOf(cur))} · ${esc(cur.label)}</span><span>${cur.marks} mark${cur.marks === 1 ? '' : 's'} · ${pvRev && !mc ? 'Marking instructions' : KIND[cur.kind]}</span><span class="timer" id="pvTimer"></span></header>
     <div class="stage"><div style="width:100%;max-width:1400px">${stage}</div></div>
     <footer><button class="btn" id="pvPrev" ${pos === 0 ? 'disabled' : ''}>← Prev</button>
@@ -865,7 +888,8 @@ $('#kqFinish').onclick = () => {
   delete b.dataset.sure; b.textContent = 'Finish and mark';
   bankTime(); clearInterval(MK.tid); MK.run = false; MK.st.stage = 'm'; save(); mockMark();
 };
-function mockMark() {
+async function mockMark() {
+  if (MK.items.some(needsHeavy)) { show('mockm'); $('#kmTitle').textContent = `Mock paper ${MK.k}: marking`; $('#kmMC').innerHTML = '<p class="muted">Loading the marking instructions…</p>'; $('#kmWr').innerHTML = ''; await heavyAll(MK.items); if (!MK) return; }
   const S = MK.st, its = MK.items, mc = its.map((q, i) => [q, i]).filter(([q]) => q.kind === 'mc'), wr = its.map((q, i) => [q, i]).filter(([q]) => q.kind !== 'mc');
   const mcScore = mc.filter(([q, i]) => S.ans[i] === q.key).length;
   show('mockm');
@@ -1082,7 +1106,7 @@ const plain = s => String(s || '').replace(/_(\w+)/g, '$1').replace(/\^([0-9+\-�
 async function makePdf(withAns) {
   const list = await setItems(ST.set);
   if (!list.length) return toast('Add some questions first.');
-  toast('Making your PDF…');
+  toast('Making your PDF…'); await heavyAll(list);
   const title = `${A.title}: ${ST.setName || 'Question set'}`, B = [{type: 'text', text: title, size: 16, bold: true, gap: 4},
     {type: 'text', text: `${list.length} questions · ${list.reduce((s, q) => s + q.marks, 0)} marks. Questions from QS past papers.`, size: 9, gap: 10}];
   for (const [i, q] of list.entries()) {
@@ -1168,7 +1192,7 @@ $('#teachOpt').onchange = e => { setTeacher(e.target.checked); toast(TEACHER ? '
 async function makeSheet(withAns) {
   const list = await setItems(ST.set);
   if (!list.length) return toast('Add some questions first.');
-  toast('Making your worksheet…');
+  toast('Making your worksheet…'); await heavyAll(list.filter(q => !q.txt || (withAns && q.kind !== 'mc')));
   let css = '';
   try { css = (await fetch('../../shared/bank.css').then(r => r.text())).split('\n').filter(l => l.startsWith('.qtext')).join('\n'); } catch (e) {}
   const name = ST.setName || 'Question set', title = `${A.title}: ${name}`, marks = list.reduce((s, q) => s + q.marks, 0);
