@@ -1,0 +1,844 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="stylesheet" href="../../shared/lk.css"><script src="../../shared/meta.js"></script><script src="../../shared/labdata.js"></script><script src="../../shared/lk.js"></script><style>.app{grid-template-columns:minmax(0,1fr)!important;padding-top:8px!important}nav.index,.navsel,.brand{display:none!important}
+.seg-multi{display:flex;gap:6px;flex-wrap:wrap}.seg-multi button{flex:1 1 auto;padding:7px 8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;font:inherit;font-size:.85rem;cursor:pointer}.seg-multi button[aria-pressed=true]{background:var(--accent);color:var(--panel);border-color:var(--accent)}
+.idgrid .ok select,.idgrid .ok{outline:2px solid var(--ok)}.idgrid .bad select{outline:2px solid var(--bad)}</style></head><body>
+<title>N5 Chemistry Virtual Labs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: lab index down the left (a dropdown on phones); each lab = bench + variables, then graph, results, conclusion */
+:root{
+  --bg:#eef2f1;--panel:#ffffff;--ink:#14231f;--muted:#5a6d68;--line:#cfdad7;
+  --accent:#0b7a6b;--acid:#d6ebf0;--glass:#9dbdb7;--chip:#e7e1d6;--metal:#9aa3a8;
+  --ok:#1d7a35;--bad:#b42318;
+  --c1:#0b7a6b;--c2:#c2410c;--c3:#4f46e5;--c4:#a21caf;--c5:#ca8a04;--c6:#0369a1;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;--body:"Atkinson Hyperlegible",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1716;--panel:#17221f;--ink:#e3ecea;--muted:#93a7a2;--line:#2c3c38;--accent:#3fc7b2;--acid:#1b3a40;--glass:#5d7f79;--chip:#bdb5a6;--metal:#7d878c;--ok:#4ade80;--bad:#f87171;--c1:#3fc7b2;--c2:#fb923c;--c3:#818cf8;--c4:#e879f9;--c5:#facc15;--c6:#38bdf8;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1716;--panel:#17221f;--ink:#e3ecea;--muted:#93a7a2;--line:#2c3c38;--accent:#3fc7b2;--acid:#1b3a40;--glass:#5d7f79;--chip:#bdb5a6;--metal:#7d878c;--ok:#4ade80;--bad:#f87171;--c1:#3fc7b2;--c2:#fb923c;--c3:#818cf8;--c4:#e879f9;--c5:#facc15;--c6:#38bdf8;color-scheme:dark}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.app{max-width:1260px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px;align-items:start}
+.brand{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,4vw,2.4rem);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.brand p{margin:0;color:var(--muted)}
+nav.index{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);display:grid;gap:14px}
+nav.index h4{margin:0 0 4px;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+nav.index button{display:block;width:100%;text-align:left;padding:7px 10px;border:0;border-radius:6px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+nav.index button:hover{background:var(--panel)}
+nav.index button[aria-current=true]{background:var(--accent);color:var(--panel);font-weight:700}
+.navsel{display:none}
+.navsel select{width:100%;padding:10px;font:inherit;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+@media(max-width:860px){.app{grid-template-columns:minmax(0,1fr)}nav.index{display:none}.navsel{display:block}}
+.lab{display:grid;gap:16px;min-width:0}
+.unit{margin:0;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:700}
+h2{font-family:var(--display);font-weight:800;font-size:1.7rem;margin:2px 0 4px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:600;font-size:1.1rem;margin:0 0 10px}
+.aim{margin:0;max-width:70ch}
+.eq{font-family:var(--mono);font-size:.88rem;color:var(--muted);margin:4px 0 0}
+.top{display:grid;grid-template-columns:1.25fr 1fr;gap:16px}
+@media(max-width:760px){.top{grid-template-columns:minmax(0,1fr)}}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+svg.rig{width:100%;height:auto;display:block}
+.vars{display:grid;gap:14px}
+.f{display:grid;gap:5px}
+.f label,.lbl{font-weight:700;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.f label output{font-family:var(--mono);color:var(--ink);text-transform:none;letter-spacing:0}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.f select,.check input{font:inherit;padding:7px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1 1 auto;padding:7px 8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;font:inherit;font-size:.85rem;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--panel);border-color:var(--accent)}
+.vars.locked{opacity:.55;pointer-events:none}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.acts{margin-top:16px}
+.btn{padding:9px 14px;border-radius:7px;border:1px solid var(--accent);background:var(--accent);color:var(--panel);font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.sm{padding:5px 10px;font-size:.85rem}
+.btn:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--c5);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;font-family:var(--mono);margin-top:10px}
+.readout div{background:var(--bg);border-radius:6px;padding:8px;text-align:center}
+.readout b{display:block;font-size:1.25rem;font-variant-numeric:tabular-nums}
+.readout span{font-size:.7rem;color:var(--muted);font-family:var(--body);text-transform:uppercase;letter-spacing:.04em}
+.obs{font-size:.92rem;background:var(--bg);border-left:4px solid var(--accent);padding:8px 10px;border-radius:4px;min-height:2.6em;margin:10px 0 0}
+.hint{color:var(--muted);font-size:.86rem;margin:10px 0 0}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;white-space:nowrap}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+td input,td select{font:inherit;width:100%;min-width:150px;padding:3px 5px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink)}
+td.wide input{min-width:300px}
+td.ok select{border:2px solid var(--ok)}td.bad select{border:2px solid var(--bad)}
+tr.empty td{color:var(--muted);white-space:normal}
+.tools{margin-top:10px}
+.msg{font-size:.86rem;color:var(--muted)}
+canvas.graph{width:100%;height:300px;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.85rem;margin-top:8px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.check{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.check input{width:120px}
+.idgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
+.idgrid .ok select{border:2px solid var(--ok)}.idgrid .bad select{border:2px solid var(--bad)}
+textarea{width:100%;box-sizing:border-box;font:inherit;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);min-height:80px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+  <div class="brand"><h1>N5 Chemistry Virtual Labs</h1><p>Change the variables, watch what happens, record your results.</p></div>
+  <div class="navsel"><label class="lbl" for="labpick">Choose a lab</label><select id="labpick"></select></div>
+  <nav class="index" aria-label="Labs"></nav>
+  <main id="labs"></main>
+</div>
+
+<script src="../../shared/kit.js"></script>
+<script>
+/* ---------- shared helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const COLS=['--c1','--c2','--c3','--c4','--c5','--c6'];
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const fx=(x,d)=>Number(x).toFixed(d);
+const r05=x=>Math.round(x*20)/20;
+const gauss=()=>Math.sqrt(-2*Math.log(1-Math.random()))*Math.cos(2*Math.PI*Math.random());
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const UNITS={u1:'Chemical changes and structure',u2:"Nature's chemistry",u3:'Chemistry in society'};
+
+const UIC=[[2.5,'#d62828','red'],[4.5,'#f77f00','orange'],[6.5,'#e2c000','yellow'],[7.5,'#2a9d48','green'],[9.5,'#1f9e93','blue-green'],[11.5,'#2d6fd2','blue'],[99,'#6a2c91','purple']];
+const uiCol=pH=>UIC.find(c=>pH<c[0]);
+
+/* control builders */
+function sl(p,k,label,min,max,step,val,unit,dp){return `<div class="f"><label for="${p}-${k}">${label}<output>${fx(val,dp)}${unit?' '+unit:''}</output></label><input type="range" id="${p}-${k}" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${val}" data-unit="${unit}" data-dp="${dp}"></div>`}
+function sg(k,label,opts,val){return `<div class="f"><span class="lbl">${label}</span><div class="seg" data-k="${k}" role="group" aria-label="${label}">${opts.map(o=>{const [v,t]=Array.isArray(o)?o:[o,o];return `<button type="button" data-v="${esc(v)}" aria-pressed="${v==val}">${t}</button>`}).join('')}</div></div>`}
+function se(p,k,label,opts,val){return `<div class="f"><label for="${p}-${k}">${label}</label><select id="${p}-${k}" data-k="${k}">${opts.map(o=>`<option${o==val?' selected':''}>${o}</option>`).join('')}</select></div>`}
+
+/* svg builders */
+const TX=(x,y,s,o={})=>K.T(x,y,s,Object.assign({s:11},o));
+const beaker=K.beaker,tube=K.tube,bub=K.bub,thermo=K.thermo;
+
+/* graph */
+function nice(r){const e=Math.pow(10,Math.floor(Math.log10(r/5)));const f=r/5/e;return (f<1.5?1:f<3.5?2:f<7.5?5:10)*e}
+function plot(cv,o){
+  const W=cv.clientWidth,H=cv.clientHeight;if(!W)return;const d=devicePixelRatio||1;cv.width=W*d;cv.height=H*d;const g=cv.getContext('2d');g.scale(d,d);
+  const L=58,R=16,T=12,B=44,pw=W-L-R,ph=H-T-B,x0=o.xmin||0,y0=o.ymin||0;
+  const X=x=>L+(x-x0)/(o.xmax-x0)*pw,Y=y=>T+ph-(y-y0)/(o.ymax-y0)*ph;
+  const xs=o.xstep||nice(o.xmax-x0),ys=o.ystep||nice(o.ymax-y0);
+  g.font='12px "IBM Plex Mono",monospace';g.lineWidth=1;g.strokeStyle=css('--line');g.fillStyle=css('--muted');
+  for(let y=y0;y<=o.ymax+1e-9;y+=ys){g.beginPath();g.moveTo(L,Y(y));g.lineTo(W-R,Y(y));g.stroke();g.textAlign='right';g.fillText(+y.toFixed(3),L-6,Y(y)+4)}
+  for(let x=x0;x<=o.xmax+1e-9;x+=xs){g.textAlign='center';g.fillText(+x.toFixed(3),X(x),T+ph+16)}
+  g.strokeStyle=css('--muted');g.beginPath();g.moveTo(L,T);g.lineTo(L,T+ph);g.lineTo(W-R,T+ph);g.stroke();
+  g.textAlign='center';g.fillText(o.xl,L+pw/2,H-6);g.save();g.translate(13,T+ph/2);g.rotate(-Math.PI/2);g.fillText(o.yl,0,0);g.restore();
+  let any=false;
+  o.series.forEach(s=>{if(!s.pts.length)return;if(!s.ref)any=true;const c=css(s.col);g.strokeStyle=c;g.fillStyle=c;g.lineWidth=2;
+    if(s.dash)g.setLineDash([6,4]);
+    if(s.line!==false){g.beginPath();s.pts.forEach((p,i)=>i?g.lineTo(X(p.x),Y(p.y)):g.moveTo(X(p.x),Y(p.y)));g.stroke()}
+    g.setLineDash([]);if(s.dots!==false)s.pts.forEach(p=>{g.beginPath();g.arc(X(p.x),Y(p.y),3.4,0,7);g.fill()})});
+  if(!any){g.fillStyle=css('--muted');g.textAlign='center';g.fillText(o.empty||'Your results will be plotted here.',L+pw/2,T+ph/2)}
+}
+
+/* results table */
+function Table(host,cols,empty){
+  const hasAns=cols.some(c=>c.ans);
+  host.innerHTML=`<div class="tw"><table><thead><tr>${cols.map(c=>`<th>${c.h}</th>`).join('')}</tr></thead><tbody></tbody></table></div><div class="row tools"><button type="button" class="btn ghost sm" data-t="copy">Copy table</button>${hasAns?'<button type="button" class="btn ghost sm" data-t="check">Check my answers</button>':''}<button type="button" class="btn ghost sm" data-t="clear">Clear table</button><span class="msg" aria-live="polite"></span></div>`;
+  const tb=$('tbody',host),msg=$('.msg',host),api={rows:[],onClear:null};
+  const blank=()=>{if(!tb.children.length)tb.innerHTML=`<tr class="empty"><td colspan="${cols.length}">${empty}</td></tr>`};blank();
+  api.add=(vals,answers={})=>{$('.empty',tb)?.remove();const tr=document.createElement('tr');
+    tr.innerHTML=cols.map((c,i)=>{const v=vals[i]??'';
+      if(c.edit==='text')return `<td class="${c.wide?'wide':''}"><input aria-label="${esc(c.h)}" value="${esc(v)}"></td>`;
+      if(c.edit==='select')return `<td><select aria-label="${esc(c.h)}" data-ans="${esc(answers[i]??'')}"><option value="">Choose…</option>${c.opts.map(o=>`<option${o===v?' selected':''}>${o}</option>`).join('')}</select></td>`;
+      return `<td>${v}</td>`}).join('');
+    tb.appendChild(tr);api.rows.push(vals);msg.textContent=''};
+  let armed=null;
+  host.addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;const t=b.dataset.t;
+    if(t==='copy'){const lines=[cols.map(c=>c.h).join('\t')];$$('tr',tb).forEach(tr=>{if(tr.classList.contains('empty'))return;lines.push($$('td',tr).map(td=>{const i=$('input,select',td);return i?i.value:td.textContent}).join('\t'))});
+      const txt=lines.join('\n');const done=()=>msg.textContent='Copied. Paste into a spreadsheet or document.';
+      try{navigator.clipboard.writeText(txt).then(done,()=>msg.textContent='Copy was blocked. Select the table and copy it instead.')}catch(_){msg.textContent='Copy was blocked. Select the table and copy it instead.'}}
+    if(t==='check'){let ok=0,n=0;$$('select[data-ans]',tb).forEach(s=>{if(!s.dataset.ans)return;n++;const td=s.parentElement;td.classList.remove('ok','bad');if(!s.value)return;const good=s.value===s.dataset.ans;td.classList.add(good?'ok':'bad');ok+=good});msg.textContent=n?`${ok} of ${n} correct.`:'Record some results first.'}
+    if(t==='clear'){if(armed!==b){armed=b;b.textContent='Tap again to clear';setTimeout(()=>{armed=null;b.textContent='Clear table'},3000);return}
+      armed=null;b.textContent='Clear table';tb.innerHTML='';api.rows.length=0;blank();msg.textContent='Table cleared.';api.onClear&&api.onClear()}});
+  return api;
+}
+
+/* ---------- lab shell ---------- */
+const LABS=[];
+function shell(L){return `<section class="lab" id="lab-${L.id}" hidden>
+<header><p class="unit">${UNITS[L.unit]}</p><h2>${L.name}</h2><p class="aim"><b>Aim:</b> ${L.aim}</p>${L.eq?`<p class="eq">${L.eq}</p>`:''}</header>
+<div class="top"><div class="box"><svg class="rig" viewBox="0 0 460 260" role="img" aria-label="${L.svgLabel}"></svg><div class="readout"></div><p class="obs" aria-live="polite"></p></div>
+<div class="box"><h3>Variables</h3><div class="vars">${L.controls(L.id)}</div><div class="row acts">${L.actions}</div>${L.hint?`<p class="hint">${L.hint}</p>`:''}${L.side?L.side(L.id):''}</div></div>
+${L.graph?`<div class="box"><h3>${L.graph}</h3><canvas class="graph"></canvas><div class="legend"></div></div>`:''}
+<div class="box"><h3>Results</h3><div class="tbl"></div>${L.extra?L.extra(L.id):''}</div>
+<div class="box"><h3>Conclusion</h3><p class="hint" style="margin:0 0 8px">${L.concl}</p><textarea id="${L.id}-concl" aria-label="Conclusion"></textarea></div></section>`}
+
+function mount(L){
+  const root=$('#lab-'+L.id),st={...L.st};
+  const A={root,st,
+    svg:h=>{$('svg.rig',root).innerHTML=K.back()+h},
+    read:items=>{$('.readout',root).innerHTML=items.map(([v,l])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')},
+    obs:t=>{$('.obs',root).textContent=t},
+    cv:$('canvas.graph',root),
+    legend:items=>{const el=$('.legend',root);if(el)el.innerHTML=items.map(([c,t])=>`<span><span class="dot" style="background:var(${c})"></span>${t}</span>`).join('')},
+    lock:b=>$('.vars',root).classList.toggle('locked',b),
+    redraw:()=>{},changed:()=>{},acts:{}};
+  A.table=Table($('.tbl',root),L.cols,L.empty||'Record a result to start your table.');
+  root.addEventListener('input',e=>{const t=e.target,k=t.dataset.k;if(!k||!t.closest('.vars'))return;
+    if(t.type==='range'){st[k]=+t.value;$('output',t.previousElementSibling).textContent=fx(+t.value,+t.dataset.dp)+(t.dataset.unit?' '+t.dataset.unit:'')}else st[k]=t.value;A.changed(k)});
+  root.addEventListener('click',e=>{const b=e.target.closest('.seg button');if(b&&b.closest('.vars')){const g=b.parentElement;[...g.children].forEach(x=>x.setAttribute('aria-pressed',x===b));const v=b.dataset.v;st[g.dataset.k]=v!==''&&!isNaN(v)?+v:v;A.changed(g.dataset.k);return}
+    const a=e.target.closest('[data-act]');if(a&&A.acts[a.dataset.act])A.acts[a.dataset.act](a)});
+  L.init(A);L.A=A;
+}
+
+/* ===================================================================
+   UNIT 1 — CHEMICAL CHANGES AND STRUCTURE
+   =================================================================== */
+
+LABS.push({id:'rates',unit:'u1',name:'Rates of reaction',
+  aim:'Find how concentration, temperature and particle size affect the rate of reaction between marble chips and hydrochloric acid.',
+  eq:'CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(ℓ) + CO₂(g) · 20 cm³ acid, marble in excess',
+  svgLabel:'Conical flask of acid and marble chips connected to a gas syringe',
+  st:{c:.2,T:20,a:1,iv:10},
+  controls:p=>sl(p,'c','Acid concentration',.05,.4,.05,.2,'mol l⁻¹',2)+sl(p,'T','Temperature',10,60,5,20,'°C',0)+sg('a','Particle size',[[1,'Large chips'],[2,'Small chips'],[5,'Powder']],1)+sg('iv','Reading every',[[10,'10 s'],[20,'20 s'],[30,'30 s']],10),
+  actions:'<button type="button" class="btn" data-act="start">Start</button><button type="button" class="btn ghost" data-act="speed">Speed ×1</button><button type="button" class="btn ghost" data-act="reset">Clear graph</button>',
+  hint:'Readings are recorded automatically. Change one variable at a time so the test is fair.',
+  graph:'Volume of CO₂ against time',
+  cols:[{h:'Run'},{h:'Time / s'},{h:'Volume CO₂ / cm³'},{h:'Mass lost / g'},{h:'Observation',edit:'text',wide:1}],
+  extra:p=>`<h3 style="margin-top:18px">Run summary</h3><div class="tw"><table><thead><tr><th>Run</th><th>Conc. / mol l⁻¹</th><th>Temp / °C</th><th>Particles</th><th>Final volume / cm³</th><th>Time to finish / s</th><th>Average rate 0–30 s / cm³ s⁻¹</th></tr></thead><tbody class="sum"><tr class="empty"><td colspan="7">Each finished run is summarised here.</td></tr></tbody></table></div>`,
+  concl:'Average rate = change in quantity ÷ change in time. Use collision theory to explain each trend.',
+  init(A){const st=A.st;let run=null,runs=[],speed=1,last=0;const SZ={1:'Large chips',2:'Small chips',5:'Powder'};
+    const vmax=c=>c*0.02/2*24000,kOf=s=>0.012*(s.c/0.2)*s.a*Math.pow(2,(s.T-20)/10);
+    const desc=r=>r>3?'Very vigorous fizzing; froth rises up the flask.':r>1?'Rapid fizzing; lots of bubbles on the marble.':r>.3?'Steady fizzing.':r>.05?'Slow bubbling.':'Bubbling has stopped; some marble is left over.';
+    function rig(V,rate){const B=K.BENCH,cx=95,base=B-6,top=base-132;
+      const n=st.a===5?70:st.a===2?16:6,sz=st.a===5?1.6:st.a===2?5:9;
+      const inside=K.chips(n,cx-42,cx+42,base-3,sz,st.a*7+3)+K.bub(Math.min(34,Math.round(rate*9)),cx-44,cx+44,base-30,base-6)+(rate>1.5?K.froth(cx-30,cx+30,base-29,Math.min(26,Math.round(rate*4))):'');
+      A.svg(`<rect x="18" y="${B-74}" width="154" height="74" rx="4" fill="#e9eef0" fill-opacity=".35" stroke="#a9b6bb"/><rect x="20" y="${B-52}" width="150" height="50" fill="${K.WATER}" fill-opacity=".7"/>
+        ${K.flask(cx,base,132,112,'var(--acid)',.2,{inside})}${K.bung(cx,top-8,27)}
+        ${K.dtube(`M${cx} ${top-8} V44 Q${cx} 34 ${cx+10} 34 H196 Q206 34 206 44 V70 H214`)}
+        ${K.stand(422,40,[[70,422]])}${K.syringe(212,70,200,V)}
+        <rect x="18" y="${B-74}" width="154" height="74" rx="4" fill="#fff" fill-opacity=".12" stroke="#a9b6bb" stroke-width="1.5"/>
+        <rect x="126" y="${B-22}" width="40" height="16" rx="3" fill="url(#kLCD)" stroke="#0005"/>${K.T(146,B-10,st.T+' °C',{s:9,f:'#1f2a18'})}
+        ${K.T(312,104,'gas syringe / cm³',{s:10})}${K.TB(95,'water bath')}${K.TB(330,'marble chips + 20 cm³ acid',{s:9.5})}`)}
+    function show(t,V,rate){rig(V,rate);A.read([[fx(t,0),'time / s'],[fx(V,1),'CO₂ / cm³'],[fx(V/24000*44,3),'mass lost / g']])}
+    A.redraw=()=>{const all=[...runs,...(run&&run.go?[run]:[])];const tm=Math.max(60,...all.map(r=>r.pts.at(-1).x));
+      plot(A.cv,{series:all.map(r=>({pts:r.pts,col:r.col})),xl:'time / s',yl:'volume CO₂ / cm³',xmax:Math.ceil(tm/60)*60,ymax:100,empty:'Each run is plotted in its own colour.'});
+      A.legend(all.map((r,i)=>[r.col,`Run ${i+1}: ${fx(r.c,2)} mol l⁻¹, ${r.T} °C, ${SZ[r.a].toLowerCase()}`]))};
+    const row=(t,v,o)=>A.table.add([runs.length+1,t,fx(v,1),fx(v/24000*44,3),o]);
+    function step(now){const dt=(now-last)/1000*speed;last=now;const prev=run.t;run.t+=dt;
+      const V=run.V0*(1-Math.exp(-run.k*run.t)),rate=run.V0*run.k*Math.exp(-run.k*run.t);
+      for(let tt=Math.ceil((prev+1e-9)/run.iv)*run.iv;tt<=run.t;tt+=run.iv){const vr=Math.max(0,Math.round((run.V0*(1-Math.exp(-run.k*tt))+gauss()*.3)*2)/2);
+        run.pts.push({x:tt,y:vr});row(tt,vr,desc(run.V0*run.k*Math.exp(-run.k*tt)));if(!run.done&&run.V0-vr<.5)run.done=tt}
+      show(run.t,V,rate);A.redraw();A.obs(desc(rate));
+      if((run.done&&run.pts.at(-1).x>=run.done+2*run.iv)||run.t>600){finish();return}requestAnimationFrame(step)}
+    function finish(){run.go=false;runs.push(run);A.lock(false);$('[data-act=start]',A.root).disabled=false;
+      A.obs('Reaction complete. Change one variable and run again.');
+      $('.sum',A.root).innerHTML=runs.map((r,i)=>{const a=r.pts.find(p=>p.x>=30)||r.pts.at(-1);return `<tr><td><span class="dot" style="background:var(${r.col})"></span>${i+1}</td><td>${fx(r.c,2)}</td><td>${r.T}</td><td>${SZ[r.a]}</td><td>${fx(r.pts.at(-1).y,1)}</td><td>${r.done||Math.round(r.t)}</td><td>${fx(a.y/a.x,2)}</td></tr>`}).join('');A.redraw()}
+    A.acts.start=b=>{if(run&&run.go)return;run={...st,k:kOf(st),V0:vmax(st.c),t:0,pts:[{x:0,y:0}],go:true,col:COLS[runs.length%6]};
+      row(0,0,'Marble added to the acid and bung inserted.');A.lock(true);b.disabled=true;last=performance.now();requestAnimationFrame(step)};
+    A.acts.speed=b=>{speed=speed===1?5:speed===5?20:1;b.textContent='Speed ×'+speed};
+    A.acts.reset=()=>{if(run&&run.go)return;runs=[];run=null;$('.sum',A.root).innerHTML='<tr class="empty"><td colspan="7">Each finished run is summarised here.</td></tr>';show(0,0,0);A.redraw()};
+    A.changed=()=>show(0,0,0);show(0,0,0);A.obs('Set your conditions, then press Start.')}});
+
+LABS.push({id:'ph',unit:'u1',name:'pH and dilution',
+  aim:'Find out what happens to the pH of an acid and an alkali as they are diluted with water.',
+  eq:'Starting solutions: 0.1 mol l⁻¹ hydrochloric acid and 0.1 mol l⁻¹ sodium hydroxide',
+  svgLabel:'Beaker of solution with universal indicator and a pH meter',
+  st:{sub:'Hydrochloric acid',n:0},
+  controls:p=>sg('sub','Solution',['Hydrochloric acid','Sodium hydroxide'],'Hydrochloric acid')+sl(p,'n','Tenfold dilutions',0,7,1,0,'',0),
+  actions:'<button type="button" class="btn" data-act="measure">Measure pH</button>',
+  hint:'Each tenfold dilution means 1 cm³ of solution made up to 10 cm³ with water.',
+  graph:'pH against number of tenfold dilutions',
+  cols:[{h:'Solution'},{h:'Dilutions'},{h:'Concentration / mol l⁻¹'},{h:'pH'},{h:'Indicator colour'},{h:'Observation',edit:'text',wide:1}],
+  concl:'Describe how dilution changes the pH of an acid and of an alkali. Explain using the concentration of H⁺(aq) and OH⁻(aq) ions.',
+  init(A){const st=A.st,recs=[];
+    const calc=()=>{const c=.1/Math.pow(10,st.n),x=c/2+Math.sqrt(c*c/4+1e-14);return{c,pH:st.sub[0]==='H'?-Math.log10(x):14+Math.log10(x)}};
+    function show(){const {c,pH}=calc(),col=uiCol(pH);
+      A.svg(`${K.beaker(60,96,150,136,col[1],.62,{op:.82})}
+        ${K.wire('M300 158 C300 214 246 214 232 150 C222 96 210 20 174 30','#1d1d1d')}
+        <rect x="165" y="30" width="18" height="34" rx="3" fill="url(#kPlastic)"/><rect x="168" y="64" width="12" height="122" fill="url(#kGlass)" stroke="${K.GL}"/><circle cx="174" cy="192" r="8" fill="url(#kGlass)" stroke="${K.GL}"/><rect x="171" y="70" width="2" height="110" fill="#fff" opacity=".6"/>
+        ${K.meter(270,60,150,98,fx(pH,1),'pH METER',{light:1,fs:24})}
+        ${K.T(20,30,st.sub,{a:'start',s:12,f:'var(--ink)'})}${K.T(20,47,fx(c,Math.max(1,st.n+1))+' mol l⁻¹',{a:'start',s:10.5})}${K.TB(135,'universal indicator added')}`);
+      A.read([[Math.pow(10,st.n).toLocaleString('en-GB'),'dilution factor'],[fx(c,Math.min(8,st.n+1)),'conc. / mol l⁻¹'],[fx(pH,1),'pH']])}
+    A.redraw=()=>{const ser=['Hydrochloric acid','Sodium hydroxide'].map((s,i)=>({col:i?'--c3':'--c2',pts:recs.filter(r=>r.s===s).sort((a,b)=>a.x-b.x)}));
+      plot(A.cv,{series:ser,xl:'number of tenfold dilutions',yl:'pH',xmax:7,ymax:14,ystep:2,xstep:1});A.legend([['--c2','Hydrochloric acid'],['--c3','Sodium hydroxide']])};
+    A.acts.measure=()=>{const {c,pH}=calc(),p=Math.round((pH+gauss()*.04)*10)/10,col=uiCol(p);recs.push({s:st.sub,x:st.n,y:p});
+      A.table.add([st.sub,st.n,fx(c,Math.min(8,st.n+1)),fx(p,1),col[2],'']);A.obs(`Indicator is ${col[2]}. pH meter reads ${fx(p,1)}.`);A.redraw()};
+    A.table.onClear=()=>{recs.length=0;A.redraw()};A.changed=show;show();A.obs('Choose a solution and how many times to dilute it, then measure the pH.')}});
+
+LABS.push({id:'titration',unit:'u1',name:'Titration',
+  aim:'Find the concentration of a sodium hydroxide solution by titrating it with hydrochloric acid of known concentration.',
+  eq:'HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(ℓ) · 20.0 cm³ of sodium hydroxide pipetted into the flask',
+  svgLabel:'Burette of acid above a conical flask containing alkali and indicator',
+  st:{s:'A',c:.1,ind:'Phenolphthalein'},
+  controls:p=>sg('s','Sodium hydroxide sample',[['A','Sample A'],['B','Sample B'],['C','Sample C']],'A')+sg('c','Acid in burette',[[.1,'0.10 mol l⁻¹'],[.2,'0.20 mol l⁻¹']],.1)+sg('ind','Indicator',['Phenolphthalein','Methyl orange','Universal indicator'],'Phenolphthalein'),
+  actions:'<button type="button" class="btn" data-act="a1">Add 1.0 cm³</button><button type="button" class="btn" data-act="a01">Add 0.1 cm³</button><button type="button" class="btn ghost" data-act="rec">Record titre</button><button type="button" class="btn ghost" data-act="nf">New flask</button>',
+  hint:'Do a rough titration first, then accurate ones adding acid 0.1 cm³ at a time near the end-point. Changing the sample, acid or indicator starts a new flask.',
+  cols:[{h:'Sample'},{h:'Acid / mol l⁻¹'},{h:'Titration'},{h:'Initial reading / cm³'},{h:'Final reading / cm³'},{h:'Titre / cm³'},{h:'Notes',edit:'text',wide:1}],
+  extra:p=>`<p class="hint" id="${p}-mean">Concordant titres are within 0.2 cm³ of each other.</p><div class="check"><label for="${p}-ans" class="lbl">Concentration of NaOH (mol l⁻¹)</label><input id="${p}-ans" inputmode="decimal" placeholder="0.000"><button type="button" class="btn sm" data-act="chk">Check</button><span class="msg" id="${p}-chkmsg" aria-live="polite"></span></div>`,
+  concl:'Show your calculation: moles of acid = c × V, use the mole ratio, then c = n ÷ V for the alkali.',
+  init(A){const st=A.st,NAOH={A:.08,B:.115,C:.15};let read=r05(rnd(.2,1.4)),start=read,flask=0,done=false;const count={};
+    const pH=()=>{const nOH=NAOH[st.s]*.02,nH=st.c*flask/1000,V=(20+flask)/1000;if(Math.abs(nOH-nH)<1e-10)return 7;return nOH>nH?14+Math.log10((nOH-nH)/V):-Math.log10((nH-nOH)/V)};
+    const ind=p=>st.ind==='Phenolphthalein'?(p>8.3?['#e0389a','pink']:['transparent','colourless']):st.ind==='Methyl orange'?(p<3.4?['#d62828','red']:p<4.4?['#f08c00','orange']:['#f2c200','yellow']):(c=>[c[1],c[2]])(uiCol(p));
+    function show(){const p=pH(),[col,name]=ind(p),ly=15+read/50*170;let tk='';
+      for(let v=0;v<=50;v+=5){const y=15+v/50*170;tk+=`<line x1="214" y1="${y}" x2="${v%10?220:224}" y2="${y}" stroke="var(--muted)"/>`;if(v%10===0)tk+=TX(208,y+4,v,{s:10,a:'end'})}
+      const fl=col==='transparent'?'var(--acid)':col;
+      A.svg(`${K.stand(165,8,[[14,213],[134,213]])}${K.burette(206,24,124,Math.min(50.5,read),'var(--acid)')}
+        ${K.tile(213,110)}${K.flask(213,K.BENCH-4,62,84,fl,.42,{op:col==='transparent'?1:.85,nw:24,nh:20})}
+        ${K.lens(352,92,54,Math.min(50,read),'var(--acid)')}${K.tag(352,172,'reading '+fx(read,2)+' cm³',{s:11})}
+        ${K.T(10,40,'NaOH sample '+st.s,{s:11,f:'var(--ink)',a:'start'})}${K.T(10,56,'20.0 cm³ +',{s:9.5,a:'start'})}${K.T(10,70,st.ind.toLowerCase(),{s:9.5,a:'start'})}${K.T(10,84,'flask: '+name,{s:9.5,a:'start'})}${K.TB(213,'white tile')}`);
+      A.read([[fx(start,2),'initial / cm³'],[fx(read,2),'reading / cm³'],[fx(read-start,2),'acid added / cm³']]);
+      const veq=NAOH[st.s]*20/st.c,gap=veq-flask;
+      A.obs(read>49.9?'The burette is empty. Press New flask to refill it.':`Flask is ${name}.`+(gap>0&&gap<1&&st.ind==='Phenolphthalein'?' The pink fades for a moment where each drop lands.':'')+(gap<-1.5?' You have gone well past the end-point.':''))}
+    function newFlask(){if(read>30){read=r05(rnd(.2,1.4))}start=read;flask=0;done=false;show()}
+    function add(v){if(read+v>50.001){A.obs('Not enough acid left. Press New flask to refill the burette.');return}flask+=v;read=Math.round((read+v)*100)/100;show()}
+    function mean(){const t=A.table.rows.filter(r=>r[0]===st.s&&r[1]===fx(st.c,2)&&r[2]!=='Rough').map(r=>+r[5]).sort((a,b)=>a-b);let best=[];
+      for(let i=0;i<t.length;i++){const g=t.filter(x=>x>=t[i]&&x-t[i]<=.2001);if(g.length>best.length)best=g}
+      $('#titration-mean').textContent=best.length>=2?`Concordant titres for sample ${st.s}: ${best.map(x=>fx(x,2)).join(', ')} cm³ · mean ${fx(best.reduce((a,b)=>a+b)/best.length,2)} cm³`:'Concordant titres are within 0.2 cm³ of each other. You need at least two.'}
+    A.acts.a1=()=>add(1);A.acts.a01=()=>add(.1);A.acts.nf=newFlask;
+    A.acts.rec=()=>{if(!flask){A.obs('Add acid from the burette first.');return}if(done){A.obs('Already recorded. Press New flask for the next titration.');return}
+      const k=st.s+st.c;count[k]=(count[k]||0);const lab=count[k]===0?'Rough':String(count[k]);count[k]++;
+      A.table.add([st.s,fx(st.c,2),lab,fx(start,2),fx(read,2),fx(read-start,2),'']);done=true;mean();A.obs('Titre recorded. Press New flask to repeat.')};
+    A.acts.chk=()=>{const v=parseFloat($('#titration-ans').value),tru=NAOH[st.s],m=$('#titration-chkmsg');if(isNaN(v)){m.textContent='Type a concentration first.';return}
+      const e=Math.abs(v-tru)/tru;m.textContent=e<.03?`Correct for sample ${st.s}.`:e<.1?`Close for sample ${st.s}. Check your mean titre and rounding.`:`Not right for sample ${st.s}. Check the mole ratio and convert cm³ to litres.`};
+    A.table.onClear=()=>{for(const k in count)delete count[k];mean()};
+    A.changed=()=>{flask=0;start=read;done=false;show();mean()};show()}});
+
+LABS.push({id:'bonding',unit:'u1',name:'Bonding and conductivity',
+  aim:'Test substances as solids, when molten and in solution to decide what type of bonding and structure they have.',
+  svgLabel:'Circuit with battery, bulb, ammeter and two electrodes dipping into the substance',
+  st:{sub:'Sodium chloride',state:'Solid'},
+  controls:p=>se(p,'sub','Substance',['Sodium chloride','Potassium iodide','Copper(II) chloride','Glucose','Paraffin wax','Sulfur','Copper','Graphite','Silicon dioxide'],'Sodium chloride')+sg('state','Test it as a',['Solid','Molten','Solution']),
+  actions:'<button type="button" class="btn" data-act="test">Test conductivity</button>',
+  hint:'Lab heating can reach about 900 °C. Some substances do not dissolve in water.',
+  cols:[{h:'Substance'},{h:'Melting point / °C'},{h:'Tested as'},{h:'Bulb'},{h:'Current / A'},{h:'Observation at electrodes',edit:'text',wide:1},{h:'Bonding and structure',edit:'select',opts:['Ionic lattice','Covalent molecular','Covalent network','Metallic'],ans:1}],
+  concl:'Explain why ionic compounds conduct only when molten or in solution, and why covalent molecular substances never conduct.',
+  init(A){const st=A.st;const D={
+    'Sodium chloride':{mp:801,b:'Ionic lattice',sol:1,melt:1,eo:{Molten:'Silvery metal forms at the negative electrode; bubbles of gas at the positive.',Solution:'Bubbles of gas form at both electrodes.'}},
+    'Potassium iodide':{mp:681,b:'Ionic lattice',sol:1,melt:1,eo:{Molten:'Metal forms at the negative electrode; purple vapour at the positive.',Solution:'Bubbles at the negative electrode; brown colour forms around the positive.'}},
+    'Copper(II) chloride':{mp:498,b:'Ionic lattice',sol:1,melt:0,why:'It decomposes on heating instead of melting.',eo:{Solution:'Brown solid forms on the negative electrode; bubbles of gas with a bleach smell at the positive.'}},
+    'Glucose':{mp:146,b:'Covalent molecular',sol:1,melt:1},'Paraffin wax':{mp:55,b:'Covalent molecular',sol:0,melt:1},'Sulfur':{mp:115,b:'Covalent molecular',sol:0,melt:1},
+    'Copper':{mp:1085,b:'Metallic',sol:0,melt:0,solid:.8},'Graphite':{mp:3652,b:'Covalent network',sol:0,melt:0,solid:.6},'Silicon dioxide':{mp:1710,b:'Covalent network',sol:0,melt:0}};
+    function result(){const d=D[st.sub],s=st.state;
+      if(s==='Molten'&&!d.melt)return{can:0,msg:d.why||`Its melting point (${d.mp} °C) is too high to reach in the lab.`};
+      if(s==='Solution'&&!d.sol)return{can:0,msg:'It does not dissolve in water.'};
+      let I=0;if(s==='Solid')I=d.solid||0;else if(d.b==='Ionic lattice')I=s==='Molten'?.35:.25;
+      return{can:1,I:Math.max(0,I+(I?gauss()*.02:0)),eo:I&&d.eo?d.eo[s]||'':I?'No change at the electrodes.':'No change.'}}
+    function show(r){const d=D[st.sub],on=r&&r.can&&r.I>0;const fill=st.state==='Solution'?'var(--acid)':st.state==='Molten'?'#f2a541':'var(--chip)';
+      const B=K.BENCH,cx=235,SC={'Sodium chloride':'#f4f4f2','Potassium iodide':'#f6f4ee','Copper(II) chloride':'#4fa59a','Glucose':'#f7f5ef','Paraffin wax':'#efe7cf','Sulfur':'#f2d43c','Copper':'#b8693a','Graphite':'#3a3d40','Silicon dioxide':'#eef2f4'};
+      const MC={'Sodium chloride':'#f6a640','Potassium iodide':'#f2a541','Glucose':'#a8642a','Paraffin wax':'#f6efc8','Sulfur':'#b8501c'};
+      let cont,eb;
+      if(st.state==='Solution'){cont=K.beaker(165,120,140,112,st.sub==='Copper(II) chloride'?'rgba(70,160,170,.6)':'var(--acid)',.72);eb=B-14}
+      else if(st.state==='Molten'){const heat=d.melt&&!(r&&!r.can);cont=K.bunsen(cx,heat?'blue':null,{h:24})+K.tripod(cx,152,74,false)+`<path d="M${cx-38} 150 l38 6 l38 -6" stroke="#e6dcc8" stroke-width="3" fill="none"/><path d="M${cx-34} 108 h68 l-8 44 h-52 z" fill="url(#kPorcelain)" stroke="#a9a79f"/>${heat?`<path d="M${cx-31} 118 h62 l-6 32 h-50 z" fill="${MC[st.sub]||'#f2a541'}" opacity=".9"/>`:K.crystals(26,cx-24,cx+24,138,146,SC[st.sub],4)}`;eb=146}
+      else{cont=`${K.shadow(cx,150)}<path d="M${cx-75} ${B-26} Q${cx} ${B+12} ${cx+75} ${B-26} Z" fill="url(#kPorcelain)" stroke="#a9a79f"/>${st.sub==='Copper'?`<rect x="${cx-50}" y="${B-30}" width="100" height="8" rx="2" fill="url(#kCopper)"/>`:st.sub==='Graphite'?`<rect x="${cx-50}" y="${B-31}" width="100" height="9" rx="2" fill="url(#kCarbon)"/>`:K.crystals(46,cx-56,cx+56,B-34,B-22,SC[st.sub],5)}`;eb=B-24}
+      const ex1=cx-30,ex2=cx+30;
+      A.svg(`${cont}${K.strip(ex1-5,76,10,eb-76,'Carbon')}${K.strip(ex2-5,76,10,eb-76,'Carbon')}
+        ${K.power(14,30,104,70,'6 V d.c.',{on:1})}
+        ${K.wire(`M${14+104*.82} 90 C110 140 ${ex1} 40 ${ex1} 76`,'#1d1d1d')}${K.croc(ex1,78,'#1d1d1d')}
+        ${K.wire(`M${14+104*.62} 90 C78 40 180 22 232 22`)}
+        ${on?`<circle cx="244" cy="14" r="26" fill="url(#kGlow)"/>`:''}<rect x="232" y="16" width="24" height="14" rx="3" fill="url(#kPlastic)"/><circle cx="244" cy="10" r="9" fill="${on?'#fff3b0':'url(#kGlass)'}" stroke="${K.GL}"/><path d="M240 12 q4 -8 8 0" stroke="${on?'#ff9d1c':'#666'}" fill="none"/>
+        ${K.wire('M256 22 C310 22 365 40 365 78')}
+        ${K.meter(330,14,108,72,r&&r.can?fx(r.I,2):'0.00','AMMETER / A',{terms:1})}
+        ${K.wire(`M403 78 C403 120 ${ex2+30} 40 ${ex2} 76`,'#1d1d1d')}${K.croc(ex2,78,'#1d1d1d')}
+        ${K.TB(cx,st.sub+' · '+st.state.toLowerCase())}${r&&!r.can?K.tag(cx,118,'cannot be tested this way',{f:'var(--bad)'}):''}`);
+      A.read([[d.mp,'melting point / °C'],[r&&r.can?fx(r.I,2):'—','ammeter / A'],[r?(r.can?(on?'lights':'off'):'—'):'—','bulb']])}
+    A.acts.test=()=>{const r=result(),d=D[st.sub];show(r);
+      if(!r.can){A.obs(r.msg);A.table.add([st.sub,d.mp,st.state,'not tested','—',r.msg,''],{6:d.b});return}
+      A.obs(r.I>0?`The bulb lights. ${r.eo}`:'The bulb does not light and the ammeter reads zero.');
+      A.table.add([st.sub,d.mp,st.state,r.I>0?'lights':'does not light',fx(r.I,2),r.eo,''],{6:d.b})};
+    A.changed=()=>{show(null);A.obs('Press Test conductivity.')};show(null);A.obs('Choose a substance and how to test it.')}});
+
+/* ===================================================================
+   UNIT 2 — NATURE'S CHEMISTRY
+   =================================================================== */
+
+LABS.push({id:'hydrocarbons',unit:'u2',name:'Testing hydrocarbons',
+  aim:'Use bromine water to sort hydrocarbons into saturated and unsaturated, and identify their homologous series.',
+  eq:'Unsaturated (C=C) hydrocarbons decolourise bromine water quickly. Saturated hydrocarbons do not.',
+  svgLabel:'Test tube of hydrocarbon with bromine water added',
+  st:{h:'Hexane'},
+  controls:p=>se(p,'h','Hydrocarbon',['Pentane','Hexane','Octane','Pent-1-ene','Hex-1-ene','Hept-1-ene','Cyclopentane','Cyclohexane'],'Hexane'),
+  actions:'<button type="button" class="btn" data-act="add">Add bromine water and shake</button>',
+  hint:'Compare hex-1-ene and cyclohexane: same molecular formula, different result. They are isomers.',
+  cols:[{h:'Hydrocarbon'},{h:'Molecular formula'},{h:'Shortened structural formula'},{h:'Observation'},{h:'Time to decolourise / s'},{h:'Saturated?',edit:'select',opts:['Saturated','Unsaturated'],ans:1},{h:'Homologous series',edit:'select',opts:['Alkane','Alkene','Cycloalkane'],ans:1}],
+  concl:'Write the general formula for each series and explain the result using the type of carbon-to-carbon bonds.',
+  init(A){const st=A.st;const H={'Pentane':['C₅H₁₂','CH₃(CH₂)₃CH₃','Alkane'],'Hexane':['C₆H₁₄','CH₃(CH₂)₄CH₃','Alkane'],'Octane':['C₈H₁₈','CH₃(CH₂)₆CH₃','Alkane'],
+      'Pent-1-ene':['C₅H₁₀','CH₂=CH(CH₂)₂CH₃','Alkene'],'Hex-1-ene':['C₆H₁₂','CH₂=CH(CH₂)₃CH₃','Alkene'],'Hept-1-ene':['C₇H₁₄','CH₂=CH(CH₂)₄CH₃','Alkene'],
+      'Cyclopentane':['C₅H₁₀','ring of five CH₂ groups','Cycloalkane'],'Cyclohexane':['C₆H₁₂','ring of six CH₂ groups','Cycloalkane']};
+    let phase=0,busy=false;
+    function show(){const d=H[st.h],uns=d[2]==='Alkene';const brown=phase===1||(phase===2&&!uns);
+      const tx=203,ty=58,th=160,tw=26,lvl=phase?.55:.28,bt=ty+th,ly=bt-(th-6)*lvl;
+      const lower=phase===0?'var(--acid)':phase===1?'rgba(224,123,26,.75)':uns?'var(--acid)':'rgba(240,170,90,.5)';
+      const upper=phase===2&&!uns?'rgba(214,110,22,.9)':phase===2?'rgba(250,250,240,.35)':null;
+      const layer=upper?`<rect x="${tx+1.5}" y="${ly.toFixed(1)}" width="${tw-3}" height="26" fill="${upper}"/><path d="M${tx+1.5} ${(ly+26).toFixed(1)} h${tw-3}" stroke="#0004"/>`:'';
+      const T1=K.tube(tx,ty,th,lower,lvl,tw,{inside:layer})+(phase?K.bung(tx+tw/2,ty-8,tw-4,11):'');
+      A.svg(`${K.rack(150,140,[216,262])}<g transform="translate(0 ${phase===1?-18:0}) rotate(${phase===1?-12:0} 216 130)">${T1}</g>${K.tube(249,96,124,'var(--acid)',0,26)}${K.rackFront(150,140)}
+        ${K.dropper(330,K.BENCH-62,'#e07b1a','Br₂(aq)',{brown:1})}
+        ${K.T(78,86,st.h,{s:13,f:'var(--ink)'})}${K.T(78,104,d[0],{s:11})}${K.TB(216,phase===0?'hydrocarbon only':phase===1?'shaking…':(uns?'decolourised':'stays orange'))}`);
+      A.read([[d[0],'molecular formula'],[phase===2?(uns?'colourless':'orange'):'—','colour after shaking']])}
+    A.acts.add=b=>{if(busy)return;busy=true;b.disabled=true;phase=1;show();A.obs('Bromine water added. Shaking…');
+      setTimeout(()=>{phase=2;busy=false;b.disabled=false;const d=H[st.h],uns=d[2]==='Alkene',t=uns?fx(rnd(1.5,4),1):'did not decolourise';show();
+        const o=uns?'Bromine water decolourised rapidly (orange to colourless).':'No change. The bromine water stays orange.';A.obs(o);
+        A.table.add([st.h,d[0],d[1],o,t,'',''],{5:uns?'Unsaturated':'Saturated',6:d[2]})},1100)};
+    A.changed=()=>{phase=0;show();A.obs('Press the button to test this hydrocarbon.')};A.changed()}});
+
+LABS.push({id:'alcohols',unit:'u2',name:'Alcohols and carboxylic acids',
+  aim:'Compare the properties of alcohols and carboxylic acids, and see how they change as the carbon chain gets longer.',
+  svgLabel:'Test tube of the compound being tested',
+  st:{cmp:'Ethanol',test:'Mix with water'},
+  controls:p=>se(p,'cmp','Compound',['Methanol','Ethanol','Propan-1-ol','Butan-1-ol','Pentan-1-ol','Methanoic acid','Ethanoic acid','Propanoic acid','Butanoic acid'],'Ethanol')+sg('test','Test',['Mix with water','Universal indicator','Magnesium ribbon','Sodium carbonate'],'Mix with water'),
+  actions:'<button type="button" class="btn" data-act="do">Do the test</button>',
+  hint:'Boiling points are shown as data for each compound. Use them to spot the trend down each series.',
+  cols:[{h:'Compound'},{h:'Formula'},{h:'Boiling point / °C'},{h:'Test'},{h:'Observation',edit:'text',wide:1},{h:'Functional group',edit:'select',opts:['Hydroxyl','Carboxyl'],ans:1}],
+  concl:'Describe how the functional group affects pH and reactions, and how chain length affects solubility and boiling point.',
+  init(A){const st=A.st;const C={'Methanol':['CH₃OH',65,'Hydroxyl',1],'Ethanol':['C₂H₅OH',78,'Hydroxyl',1],'Propan-1-ol':['C₃H₇OH',97,'Hydroxyl',1],'Butan-1-ol':['C₄H₉OH',118,'Hydroxyl',.5],'Pentan-1-ol':['C₅H₁₁OH',138,'Hydroxyl',0],
+      'Methanoic acid':['HCOOH',101,'Carboxyl',1],'Ethanoic acid':['CH₃COOH',118,'Carboxyl',1],'Propanoic acid':['C₂H₅COOH',141,'Carboxyl',1],'Butanoic acid':['C₃H₇COOH',164,'Carboxyl',1]};
+    let res=null;
+    function run(){const d=C[st.cmp],acid=d[2]==='Carboxyl';switch(st.test){
+      case'Mix with water':return d[3]===1?{o:'Mixes completely with water to give one clear layer.',layers:0}:d[3]===.5?{o:'Partly mixes; two layers form after standing.',layers:1}:{o:'Does not mix; two separate layers form.',layers:1};
+      case'Universal indicator':{const p=acid?rnd(2.8,3.3):7;return{o:`Indicator turns ${uiCol(p)[2]} (pH about ${fx(p,0)}).`,col:uiCol(p)[1]}}
+      case'Magnesium ribbon':return acid?{o:'Slow stream of bubbles; gas gives a squeaky pop with a lit splint (hydrogen).',b:10}:{o:'No reaction.',b:0};
+      case'Sodium carbonate':return acid?{o:'Fizzes; gas turns limewater cloudy (carbon dioxide).',b:22,lime:1}:{o:'No reaction.',b:0}}}
+    function show(){const d=C[st.cmp],r=res;const fill=r&&r.col?r.col:'var(--acid)';
+      const tx=150,ty=60,th=160,tw=26,lvl=r?.55:.28,bt=ty+th,ly=bt-(th-6)*lvl;let inside='';
+      if(r&&r.layers)inside+=`<rect x="${tx+1.5}" y="${ly.toFixed(1)}" width="${tw-3}" height="28" fill="rgba(250,246,225,.6)"/><path d="M${tx+1.5} ${(ly+28).toFixed(1)} h${tw-3}" stroke="#0005"/>`;
+      if(st.test==='Magnesium ribbon'&&r)inside+=`<path d="M${tx+8} ${bt-12} q4 -12 8 -5 q3 6 5 -7" stroke="#cfd3d6" stroke-width="3" fill="none"/>`;
+      if(st.test==='Sodium carbonate'&&r)inside+=K.heap(tx+tw/2,bt-6,16,'#f4f4f2');
+      if(r&&r.b)inside+=K.bub(r.b,tx+3,tx+tw-3,ly+4,bt-6,2);
+      const lime=r&&r.lime;
+      A.svg(`${K.rack(110,170,[163,243])}${K.tube(tx,ty,th,fill,lvl,tw,{inside})}${lime?K.bung(tx+tw/2,ty-8,tw-4,11)+K.dtube(`M${tx+tw/2} ${ty-8} V34 Q${tx+tw/2} 26 ${tx+tw/2+10} 26 H${tx+tw/2+70} Q${tx+tw/2+80} 26 ${tx+tw/2+80} 36 V170`):''}
+        ${K.tube(230,90,130,lime?'rgba(236,236,228,.92)':'var(--acid)',lime?.6:0,26)}${K.rackFront(110,170)}
+        ${K.T(20,60,st.cmp,{s:13,f:'var(--ink)',a:'start'})}${K.T(20,78,d[0],{s:11,a:'start'})}${K.T(20,96,'b.p. '+d[1]+' °C',{s:11,a:'start'})}${K.TB(195,st.test.toLowerCase())}${lime?K.T(330,130,'limewater',{s:10}):''}`);
+      A.read([[d[0],'formula'],[d[1],'boiling point / °C']])}
+    A.acts.do=()=>{res=run();show();A.obs(res.o);const d=C[st.cmp];A.table.add([st.cmp,d[0],d[1],st.test,res.o,''],{5:d[2]})};
+    A.changed=()=>{res=null;show();A.obs('Choose a compound and a test.')};A.changed()}});
+
+LABS.push({id:'fuels',unit:'u2',name:'Energy from fuels',
+  aim:'Measure the energy released when alcohols burn and compare the energy per mole as the chain gets longer.',
+  eq:'Eh = c m ΔT · c = 4.18 kJ kg⁻¹ °C⁻¹',
+  svgLabel:'Spirit burner heating a copper can of water with a thermometer',
+  st:{f:'Ethanol',m:100},
+  controls:p=>se(p,'f','Fuel in spirit burner',['Methanol','Ethanol','Propan-1-ol','Butan-1-ol','Pentan-1-ol'],'Ethanol')+sl(p,'m','Mass of water',50,200,25,100,'g',0),
+  actions:'<button type="button" class="btn" data-act="lit">Light burner</button><button type="button" class="btn ghost" data-act="speed">Speed ×5</button>',
+  hint:'Fresh water is used for each run. Put the cap on when the temperature has risen by about 10–20 °C.',
+  graph:'Energy released per mole against number of carbon atoms',
+  cols:[{h:'Fuel'},{h:'Water / kg'},{h:'Start temp / °C'},{h:'End temp / °C'},{h:'ΔT / °C'},{h:'Burner before / g'},{h:'Burner after / g'},{h:'Mass burned / g'},{h:'Eh / kJ'},{h:'kJ per g'},{h:'kJ per mol'},{h:'Data booklet / kJ mol⁻¹'}],
+  concl:'Compare your values with the data booklet. Explain why the experimental values are lower and suggest improvements.',
+  init(A){const st=A.st;const F={'Methanol':[1,32,726],'Ethanol':[2,46,1367],'Propan-1-ol':[3,60,2021],'Butan-1-ol':[4,74,2676],'Pentan-1-ol':[5,88,3329]};
+    const mass={};Object.keys(F).forEach(k=>mass[k]=Math.round(rnd(82,96)*100)/100);
+    let lit=false,speed=5,last=0,run=null,Tw=+rnd(17,20).toFixed(1);const recs=[];
+    function show(){const T=run?run.T:Tw,frac=(T-0)/100;
+      const B=K.BENCH,fuel=Math.max(.15,Math.min(.8,(mass[st.f]-(run?run.b:0)-70)/30)),wickTop=B-51,soot=Math.min(.7,(run?run.t:0)/400);
+      A.svg(`${K.stand(110,18,[[86,180]])}${K.mat(225,110)}
+        ${lit?K.flame(225,wickTop,'yellow',{h:46}):''}
+        <rect x="180" y="58" width="90" height="82" rx="3" fill="url(#kCopper)"/><rect x="180" y="58" width="90" height="5" fill="#f3b98a" opacity=".8"/><ellipse cx="225" cy="58" rx="45" ry="4" fill="#5e2c10"/><ellipse cx="225" cy="60" rx="41" ry="3" fill="${K.WATER}"/>
+        <rect x="180" y="126" width="90" height="14" rx="2" fill="#1b1b1b" opacity="${soot.toFixed(2)}"/>
+        ${K.thermo(246,8,128,frac)}${K.tag(300,24,fx(T,1)+' °C',{s:12,a:'start'})}
+        ${K.shadow(225,60,B-3)}<rect x="195" y="${B-41}" width="60" height="38" rx="9" fill="url(#kGlass)" stroke="${K.GL}" stroke-width="1.4"/><rect x="197" y="${(B-41+38*(1-fuel)).toFixed(1)}" width="56" height="${(38*fuel-2).toFixed(1)}" rx="7" fill="rgba(200,220,240,.65)"/>
+        <rect x="216" y="${B-50}" width="18" height="10" fill="#c7cdd0" stroke="#7b8287"/><rect x="222" y="${wickTop}" width="6" height="10" fill="#efe7d0"/>
+        ${lit?`<path d="M300 ${B-3} h20 l-3 -12 h-14 z" fill="#3a4246"/>`:`<path d="M213 ${wickTop+9} h24 l-3 -14 h-18 z" fill="#3a4246"/>`}
+        ${K.TB(225,st.f+' spirit burner')}`);
+      A.read([[run?fx(run.t,0):'0','time / s'],[fx(T,1),'water / °C'],[fx(mass[st.f]-(run?run.b:0),2),'burner / g']])}
+    function step(now){if(!lit)return;const dt=(now-last)/1000*speed;last=now;run.t+=dt;run.b+=.006*dt;
+      const E=run.b*F[st.f][2]/F[st.f][1]*run.eff;run.T=run.Ti+E/(4.18*st.m/1000);show();
+      if(run.T>90){A.obs('Water is close to boiling. Burner capped automatically.');stop();return}requestAnimationFrame(step)}
+    function stop(){lit=false;A.lock(false);$('[data-act=lit]',A.root).textContent='Light burner';
+      const before=mass[st.f],after=Math.round((before-run.b)*100)/100,Tf=Math.round(run.T*10)/10,dT=+(Tf-run.Ti).toFixed(1),mb=+(before-after).toFixed(2);mass[st.f]=after;
+      const Eh=4.18*st.m/1000*dT,pg=Eh/mb,pm=pg*F[st.f][1];
+      if(mb>=.05){A.table.add([st.f,fx(st.m/1000,3),fx(run.Ti,1),fx(Tf,1),fx(dT,1),fx(before,2),fx(after,2),fx(mb,2),fx(Eh,2),fx(pg,1),fx(pm,0),F[st.f][2]]);recs.push({x:F[st.f][0],y:pm});A.obs(`Recorded. ΔT = ${fx(dT,1)} °C using ${fx(mb,2)} g of ${st.f.toLowerCase()}.`)}
+      else A.obs('Too little fuel burned to measure. Burn it for longer.');
+      Tw=+rnd(17,20).toFixed(1);run=null;show();A.redraw()}
+    A.redraw=()=>{plot(A.cv,{series:[{col:'--muted',dash:1,ref:1,pts:Object.values(F).map(v=>({x:v[0],y:v[2]}))},{col:'--c2',line:false,pts:recs}],xl:'number of carbon atoms',yl:'energy / kJ mol⁻¹',xmin:0,xmax:6,xstep:1,ymax:3500});
+      A.legend([['--c2','Your results'],['--muted','Data booklet values']])};
+    A.acts.lit=b=>{if(lit){stop();return}run={t:0,b:0,Ti:Tw,T:Tw,eff:rnd(.25,.35)};lit=true;A.lock(true);b.textContent='Put cap on';last=performance.now();A.obs('Burner lit. Watch the thermometer.');requestAnimationFrame(step)};
+    A.acts.speed=b=>{speed=speed===1?5:speed===5?20:1;b.textContent='Speed ×'+speed};
+    A.table.onClear=()=>{recs.length=0;A.redraw()};A.changed=show;show();A.obs('Choose a fuel and mass of water, then light the burner.')}});
+
+/* ===================================================================
+   UNIT 3 — CHEMISTRY IN SOCIETY
+   =================================================================== */
+
+LABS.push({id:'metals',unit:'u3',name:'Reactions of metals',
+  aim:'Place metals in a reactivity series using their reactions with water, dilute acid and solutions of other metal ions.',
+  svgLabel:'Beaker of solution with a piece of metal and a thermometer',
+  st:{m:'Magnesium',r:'Dilute hydrochloric acid'},
+  controls:p=>se(p,'m','Metal',['Potassium','Sodium','Calcium','Magnesium','Aluminium','Zinc','Iron','Tin','Lead','Copper','Silver','Gold'],'Magnesium')+se(p,'r','Added to',['Water','Dilute hydrochloric acid','Copper(II) sulfate solution','Silver nitrate solution','Zinc sulfate solution'],'Dilute hydrochloric acid'),
+  actions:'<button type="button" class="btn" data-act="add">Add the metal</button>',
+  hint:'Gas volume is collected for 1 minute. Displacement only happens if the metal is more reactive than the metal in the solution.',
+  cols:[{h:'Metal'},{h:'Added to'},{h:'Observation',edit:'text',wide:1},{h:'Temperature rise / °C'},{h:'Gas in 1 min / cm³'}],
+  concl:'List the metals in order of reactivity. Write an ion-electron equation for one displacement reaction.',
+  init(A){const st=A.st;const R={Potassium:12,Sodium:11,Calcium:10,Magnesium:9,Aluminium:8,Zinc:7,Iron:6,Tin:5,Lead:4,Copper:2,Silver:1,Gold:0};
+    const ION={'Copper(II) sulfate solution':['Copper',2,'#3d8bd9','Brown copper forms on the metal and the blue colour fades.'],'Silver nitrate solution':['Silver',1,'var(--acid)','Grey-silver crystals grow on the metal.'],'Zinc sulfate solution':['Zinc',7,'var(--acid)','A grey coating of zinc forms on the metal.']};
+    const ACID={Magnesium:[60,12,'Vigorous fizzing; magnesium quickly disappears.'],Aluminium:[18,3,'Slow at first, then steady fizzing once the oxide layer is removed.'],Zinc:[25,4,'Steady fizzing.'],Iron:[8,1.5,'Slow bubbling.'],Tin:[2,.5,'Very slow bubbling.'],Lead:[1,.2,'A few bubbles only.']};
+    const WATER={Potassium:[0,8,'Melts into a ball, whizzes around and burns with a lilac flame.'],Sodium:[0,6,'Melts into a ball and fizzes around the surface.'],Calcium:[25,3,'Steady fizzing; the water turns cloudy.'],Magnesium:[.5,.2,'Very few bubbles after a long time.']};
+    let res=null;
+    function run(){const m=st.m,r=R[m],H2=' Gas gives a squeaky pop with a lit splint.';
+      if(st.r==='Water'){const w=WATER[m];return w?{o:w[2]+(w[0]?H2:''),dT:w[1],gas:m==='Potassium'||m==='Sodium'?'—':w[0],b:w[0]?Math.min(25,w[0]):r>10?25:0}:{o:'No reaction.',dT:0,gas:0,b:0}}
+      if(st.r==='Dilute hydrochloric acid'){if(r>=10)return{o:'Not carried out: the reaction would be dangerously violent.',dT:'—',gas:'—',b:0,skip:1};const a=ACID[m];return a?{o:a[2]+H2,dT:a[1],gas:a[0],b:Math.min(30,a[0]/2)}:{o:'No reaction.',dT:0,gas:0,b:0}}
+      const ion=ION[st.r];if(r>=10)return{o:'The metal reacts with the water in the solution instead; fizzing, no displacement seen.',dT:WATER[m][1],gas:'—',b:20};
+      if(m===ion[0])return{o:'No reaction (same metal).',dT:0,gas:0,b:0};
+      if(r>ion[1])return{o:ion[3]+(st.r.startsWith('Silver')&&m==='Copper'?' The solution turns blue.':''),dT:+((r-ion[1])*1.4).toFixed(1),gas:0,b:0,coat:ion[0]};
+      return{o:'No reaction.',dT:0,gas:0,b:0}}
+    function show(){const ion=ION[st.r],sol=ion?ion[2]:'var(--acid)',fill=res&&res.coat==='Copper'?'#7fb3e6':sol;
+      const coat=res&&res.coat?{Copper:'#a0522d',Silver:'#c9ced6',Zinc:'#7d878c'}[res.coat]:null;
+      const B=K.BENCH,m=st.m,alk=st.r==='Water'&&(m==='Potassium'||m==='Sodium');let s='';
+      if(alk){s=`${K.beaker(50,150,230,82,'var(--acid)',.6,{noMarks:1})}${res?`<circle cx="160" cy="185" r="7" fill="url(#kBall)"/>${K.froth(144,178,190,12)}${m==='Potassium'?K.flame(160,180,'#b98ee6',{h:34}):''}`:''}${K.T(165,136,'glass trough of water',{s:10})}`}
+      else{const cx=105,base=B-4,top=base-120,piece=res&&res.skip?'':K.strip(cx-16,base-12,32,7,m)+(coat?`<rect x="${cx-17}" y="${base-13}" width="34" height="9" rx="2" fill="${coat}" opacity=".85"/>`:'');
+        const inside=piece+(res?K.bub(Math.round(res.b),cx-40,cx+40,base-46,base-8,2.2):'');
+        s=`${K.flask(cx,base,120,110,fill,.32,{inside,op:.85})}${K.thermo(cx-14,top-34,104,res&&typeof res.dT==='number'?(20+res.dT)/50:.4)}${K.bung(cx,top-8,27)}
+          ${K.dtube(`M${cx+6} ${top-8} V44 Q${cx+6} 34 ${cx+16} 34 H200 Q210 34 210 44 V70 H222`)}${K.stand(400,40,[[70,400]])}${K.syringe(222,70,170,res&&typeof res.gas==='number'?res.gas:0)}${K.T(312,104,'gas syringe (1 min) / cm³',{s:9.5})}`}
+      A.svg(`${s}${K.TB(230,st.m+' + '+st.r.toLowerCase(),{s:9.5})}${res&&res.skip?K.tag(110,150,'not carried out',{f:'var(--bad)'}):''}`);
+      A.read([[res?(typeof res.dT==='number'?fx(res.dT,1):res.dT):'—','temp rise / °C'],[res?res.gas:'—','gas in 1 min / cm³']])}
+    A.acts.add=()=>{res=run();show();A.obs(res.o);A.table.add([st.m,st.r,res.o,typeof res.dT==='number'?fx(res.dT,1):res.dT,res.gas])};
+    A.changed=()=>{res=null;show();A.obs('Choose a metal and what to add it to.')};A.changed()}});
+
+LABS.push({id:'cells',unit:'u3',name:'Electrochemical cells',
+  aim:'Measure the voltage between different pairs of metals and find which way electrons flow.',
+  svgLabel:'Two metals connected through a voltmeter in an electrolyte',
+  st:{m1:'Zinc',m2:'Copper',cell:'Single beaker',el:'Sodium chloride'},
+  controls:p=>se(p,'m1','Metal 1',['Magnesium','Zinc','Iron','Tin','Lead','Copper','Silver'],'Zinc')+se(p,'m2','Metal 2',['Magnesium','Zinc','Iron','Tin','Lead','Copper','Silver'],'Copper')+sg('cell','Cell',['Single beaker','Half-cells with ion bridge','Half-cells, no ion bridge'],'Single beaker')+sg('el','Electrolyte (single beaker)',[['Sodium chloride','Sodium chloride solution'],['Glucose','Glucose solution']],'Sodium chloride'),
+  actions:'<button type="button" class="btn" data-act="m">Record voltage</button>',
+  hint:'Keep metal 2 as copper and change metal 1 to build an electrochemical series. Half-cells contain each metal in a solution of its own ions.',
+  cols:[{h:'Metal 1'},{h:'Metal 2'},{h:'Cell'},{h:'Electrolyte'},{h:'Voltage / V'},{h:'Electrons flow',edit:'select',opts:['Metal 1 → Metal 2','Metal 2 → Metal 1','No flow'],ans:1}],
+  concl:'Explain how the distance apart in the electrochemical series affects voltage, and what the ion bridge does.',
+  init(A){const st=A.st;const E={Magnesium:-2.37,Zinc:-.76,Iron:-.44,Tin:-.14,Lead:-.13,Copper:.34,Silver:.8};const SYM={Magnesium:'Mg',Zinc:'Zn',Iron:'Fe',Tin:'Sn',Lead:'Pb',Copper:'Cu',Silver:'Ag'};
+    function calc(){const ok=st.m1!==st.m2&&(st.cell==='Half-cells with ion bridge'||(st.cell==='Single beaker'&&st.el==='Sodium chloride'));
+      if(!ok)return{V:0,dir:'No flow'};const d=E[st.m2]-E[st.m1];return{V:Math.max(0,Math.abs(d)*.8+gauss()*.01),dir:d>0?'Metal 1 → Metal 2':'Metal 2 → Metal 1'}}
+    let cur=calc();
+    function show(){const c=cur,s=st.cell!=='Single beaker',el=st.el==='Glucose'?'glucose':'NaCl(aq)';
+      const arrow=c.dir==='No flow'?'':c.dir.startsWith('Metal 1')?'→':'←';
+      const ION={Magnesium:'var(--acid)',Zinc:'var(--acid)',Iron:'rgba(170,205,150,.55)',Tin:'var(--acid)',Lead:'var(--acid)',Copper:'rgba(79,143,214,.7)',Silver:'var(--acid)'},x1=132,x2=316;
+      const br='M168 200 V140 Q168 122 186 122 H272 Q290 122 290 140 V200';
+      const cont=s?K.beaker(78,132,110,100,ION[st.m1],.7)+K.beaker(270,132,110,100,ION[st.m2],.7)+(st.cell==='Half-cells with ion bridge'?`<path d="${br}" fill="none" stroke="#e9dca0" stroke-width="12" stroke-linejoin="round"/><path d="${br}" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3"/>${K.T(229,116,'ion bridge: filter paper soaked in salt solution',{s:8.5})}`:''):K.beaker(86,132,290,100,'var(--acid)',.7);
+      A.svg(`${cont}${K.strip(x1-6,96,12,124,st.m1)}${K.strip(x2-6,96,12,124,st.m2)}
+        ${K.meter(178,8,104,70,fx(c.V,2),'VOLTMETER / V',{terms:1})}
+        ${K.wire(`M${178+104*.32} 70 C200 100 ${x1} 60 ${x1} 96`,'#c0392b')}${K.croc(x1,98,'#c0392b')}${K.wire(`M${178+104*.68} 70 C260 100 ${x2} 60 ${x2} 96`,'#1d1d1d')}${K.croc(x2,98,'#1d1d1d')}
+        ${arrow?K.tag(230,98,'e⁻ '+arrow,{s:13}):''}
+        ${K.TB(x1,SYM[st.m1]+(s?' in '+SYM[st.m1]+' ions':''),{s:9.5})}${K.TB(x2,SYM[st.m2]+(s?' in '+SYM[st.m2]+' ions':''),{s:9.5})}${s?'':K.T(231,192,el,{s:10})}`);
+      A.read([[fx(c.V,2),'voltmeter / V'],[c.dir==='No flow'?'none':c.dir.startsWith('Metal 1')?SYM[st.m1]+' → '+SYM[st.m2]:SYM[st.m2]+' → '+SYM[st.m1],'electron flow']])}
+    A.acts.m=()=>{cur=calc();show();A.obs(cur.V>0?`The voltmeter reads ${fx(cur.V,2)} V.`:'The voltmeter reads 0.00 V. No current flows.');
+      A.table.add([st.m1,st.m2,st.cell,st.cell==='Single beaker'?st.el+' solution':'metal ion solutions',fx(cur.V,2),''],{5:cur.dir})};
+    A.changed=()=>{cur=calc();show();A.obs('Press Record voltage to log this cell.')};A.changed()}});
+
+LABS.push({id:'analysis',unit:'u3',name:'Identifying mystery salts',
+  aim:'Use flame tests and precipitation tests to identify six unknown salts, including testing for ammonium ions in fertilisers.',
+  svgLabel:'Apparatus for the selected test on the unknown sample',
+  st:{s:1,t:'Flame test'},
+  controls:p=>sg('s','Sample',[1,2,3,4,5,6].map(n=>[n,'Sample '+n]),1)+se(p,'t','Test',['Look at the solution','Flame test','Add sodium hydroxide','Warm with sodium hydroxide (damp pH paper)','Add silver nitrate','Add barium chloride'],'Flame test'),
+  actions:'<button type="button" class="btn" data-act="do">Do the test</button>',
+  hint:'Silver nitrate tests for chloride ions. Barium chloride tests for sulfate ions. Use the data booklet for flame colours.',
+  cols:[{h:'Sample'},{h:'Test'},{h:'Observation',edit:'text',wide:1}],
+  extra:p=>`<h3 style="margin-top:18px">Identify the samples</h3><div class="idgrid"></div><div class="row tools"><button type="button" class="btn sm" data-act="chk">Check identities</button><button type="button" class="btn ghost sm" data-act="newset">New set of samples</button><span class="msg" id="${p}-idmsg" aria-live="polite"></span></div>`,
+  concl:'For each sample, state which observations identified the metal (or ammonium) ion and the non-metal ion.',
+  init(A){const st=A.st;const POOL=[['Lithium chloride','Li','Cl'],['Sodium sulfate','Na','SO4'],['Potassium chloride','K','Cl'],['Calcium chloride','Ca','Cl'],['Copper(II) sulfate','Cu','SO4'],['Iron(III) chloride','Fe3','Cl'],['Iron(II) sulfate','Fe2','SO4'],['Ammonium chloride','NH4','Cl'],['Magnesium sulfate','Mg','SO4'],['Barium chloride','Ba','Cl']];
+    const FL={Li:['#d01c4b','red (crimson)'],Na:['#f5b50a','yellow-orange'],K:['#b07cd8','lilac'],Ca:['#ef5b2b','orange-red'],Cu:['#2fb59a','blue-green'],Ba:['#8bd14b','green']};
+    const OH={Cu:['#5aa6e6','A pale blue precipitate forms.'],Fe3:['#9c4a1a','A red-brown precipitate forms.'],Fe2:['#3d6b35','A dark green precipitate forms.'],Mg:['#f4f4f4','A white precipitate forms.'],Ca:['#f4f4f4','A slight white precipitate forms.']};
+    const SC={Cu:'#7fb3e6',Fe3:'#d9a441',Fe2:'#cfe6b8'};let set=[],res=null;
+    function newset(){set=shuffle(POOL).slice(0,6);const g=$('.idgrid',A.root);
+      g.innerHTML=set.map((_,i)=>`<div class="f"><label for="analysis-id${i}">Sample ${i+1}</label><select id="analysis-id${i}"><option value="">Choose…</option>${POOL.map(p=>`<option>${p[0]}</option>`).join('')}</select></div>`).join('');$('#analysis-idmsg').textContent=''}
+    function run(){const [,c,a]=set[st.s-1];switch(st.t){
+      case'Look at the solution':return{o:SC[c]?`The solution is ${{Cu:'blue',Fe3:'yellow-brown',Fe2:'pale green'}[c]}.`:'The solution is colourless.',kind:'tube',sol:SC[c]};
+      case'Flame test':return FL[c]?{o:`The flame turns ${FL[c][1]}.`,kind:'flame',f:FL[c][0]}:{o:'No distinctive flame colour.',kind:'flame',f:null};
+      case'Add sodium hydroxide':return OH[c]?{o:OH[c][1],kind:'tube',sol:SC[c],ppt:OH[c][0]}:{o:'No visible change.',kind:'tube',sol:SC[c]};
+      case'Warm with sodium hydroxide (damp pH paper)':return c==='NH4'?{o:'A pungent gas is given off; damp pH paper turns blue (ammonia).',kind:'tube',paper:'#2d6fd2'}:{o:'No gas detected; damp pH paper stays green.',kind:'tube',paper:'#2a9d48',sol:SC[c],ppt:OH[c]?.[0]};
+      case'Add silver nitrate':return a==='Cl'?{o:'A white precipitate forms.',kind:'tube',sol:SC[c],ppt:'#f4f4f4'}:{o:'No precipitate.',kind:'tube',sol:SC[c]};
+      case'Add barium chloride':return a==='SO4'?{o:'A white precipitate forms.',kind:'tube',sol:SC[c],ppt:'#f4f4f4'}:{o:'No precipitate.',kind:'tube',sol:SC[c]}}}
+    function show(){const r=res;let g;
+      const B=K.BENCH;
+      if(r&&r.kind==='flame'){g=`${K.bunsen(200,r.f||'blue')}<path d="M400 60 L240 132" stroke="#8a6a3a" stroke-width="7" stroke-linecap="round"/><path d="M242 131 L214 141" stroke="#b9bfc3" stroke-width="1.5"/><circle cx="210" cy="143" r="4.5" fill="none" stroke="#c9ced2" stroke-width="1.6"/>
+        ${K.shadow(340,60)}<path d="M310 ${B-2} q30 -10 60 0" fill="url(#kGlass)" stroke="${K.GL}"/>${K.heap(340,B-5,26,'#f2f2ee')}${K.TB(200,'Bunsen burner and nichrome wire loop',{s:9.5})}`}
+      else{const tx=205,ty=56,th=160,tw=30,bt=ty+th,lv=.5,ly=bt-(th-6)*lv,warm=r&&r.paper;
+        const inside=r&&r.ppt?`<rect x="${tx+2}" y="${(ly+6).toFixed(1)}" width="${tw-4}" height="${(bt-ly-14).toFixed(1)}" fill="${r.ppt}" opacity=".45" filter="url(#kHaze)"/><path d="M${tx+2} ${bt-24} V${bt-15} A13 13 0 0 0 ${tx+tw-2} ${bt-15} V${bt-24} Q${tx+tw/2} ${bt-28} ${tx+2} ${bt-24}Z" fill="${r.ppt}" stroke="#0003" stroke-width=".5"/>`:'';
+        g=`${warm?K.beaker(160,140,120,92,'var(--acid)',.65)+`<path d="M178 132 q6 -10 0 -20 q-6 -10 0 -20 M262 132 q6 -10 0 -20" stroke="#cfd8da" stroke-width="2" fill="none" opacity=".7"/>`:K.rack(150,140,[220,266])}
+          ${K.tube(tx,ty,th,r&&r.sol?r.sol:'var(--acid)',lv,tw,{inside,op:.85})}${warm?'':K.rackFront(150,140)}
+          ${r&&r.paper?`<rect x="${tx+6}" y="18" width="18" height="30" rx="1" fill="${r.paper}"/><path d="M${tx+15} 18 V8 H300" stroke="#8a8f93" stroke-width="2" fill="none"/>${K.T(305,12,'damp pH paper',{a:'start',s:9.5})}`:''}
+          ${K.TB(220,st.t.toLowerCase().replace(' (damp ph paper)',''),{s:9.5})}${warm?K.T(220,128,'hot water bath',{s:9}):''}`}
+      A.svg(g+K.T(60,40,'Sample '+st.s,{s:14,f:'var(--ink)'}));A.read([[st.s,'sample'],[r?(r.kind==='flame'?'flame':'tube'):'—','test type']])}
+    A.acts.do=()=>{res=run();show();A.obs(res.o);A.table.add([st.s,st.t,res.o])};
+    A.acts.chk=()=>{let ok=0,n=0;set.forEach((p,i)=>{const s=$('#analysis-id'+i),f=s.parentElement;f.classList.remove('ok','bad');if(!s.value)return;n++;const g=s.value===p[0];ok+=g;f.classList.add(g?'ok':'bad')});$('#analysis-idmsg').textContent=n?`${ok} of ${n} identified correctly.`:'Choose an identity for at least one sample.'};
+    let armed=0;A.acts.newset=b=>{if(!armed){armed=1;b.textContent='Tap again for new samples';setTimeout(()=>{armed=0;b.textContent='New set of samples'},3000);return}armed=0;b.textContent='New set of samples';newset();res=null;show();A.obs('New samples are ready. Previous results no longer match these samples.')};
+    A.changed=()=>{res=null;show();A.obs('Choose a sample and a test.')};newset();A.changed()}});
+
+LABS.push({id:'nuclear',unit:'u3',name:'Radioactivity',
+  aim:'Find the half-life of three radioactive samples, and test how far alpha, beta and gamma radiation can penetrate.',
+  eq:'Background count ≈ 20 counts per minute',
+  svgLabel:'Radioactive source facing a Geiger-Müller tube connected to a counter',
+  st:{s:'A',src:'Alpha',ab:'None'},
+  controls:p=>sg('s','Half-life: sample',[['A','Sample A'],['B','Sample B'],['C','Sample C']],'A')+sg('src','Penetration: source',['Alpha','Beta','Gamma'],'Alpha')+sg('ab','Penetration: absorber',[['None','None'],['Paper','Paper'],['Aluminium','3 mm aluminium'],['Lead','2 cm lead']],'None'),
+  actions:'<button type="button" class="btn" data-act="decay">Time the decay</button><button type="button" class="btn ghost" data-act="speed">Speed ×1</button><button type="button" class="btn" data-act="pen">Count 1 minute</button>',
+  hint:'Decay readings are taken every minute. For half-life, find how long it takes for the count rate to halve.',
+  graph:'Count rate against time',
+  cols:[{h:'Experiment'},{h:'Sample or source'},{h:'Absorber'},{h:'Time / min'},{h:'Count rate / counts min⁻¹'}],
+  extra:p=>`<div class="check"><label for="${p}-hl" class="lbl">Half-life of sample</label><select id="${p}-hls"><option>A</option><option>B</option><option>C</option></select><input id="${p}-hl" inputmode="decimal" placeholder="minutes"><button type="button" class="btn sm" data-act="chk">Check</button><span class="msg" id="${p}-hlmsg" aria-live="polite"></span></div>`,
+  concl:'State the half-life of each sample and how you found it. Describe what stops each type of radiation.',
+  init(A){const st=A.st,HL={A:2,B:4,C:6},N0=800,BG=20;let run=null,runs=[],speed=1,last=0,mode='decay';
+    const PEN={Alpha:{None:380,Paper:0,Aluminium:0,Lead:0},Beta:{None:360,Paper:340,Aluminium:0,Lead:0},Gamma:{None:260,Paper:258,Aluminium:240,Lead:70}};
+    const count=v=>Math.max(0,Math.round(v+gauss()*Math.sqrt(v)));
+    let shown=0;
+    function show(){const pen=mode==='pen',ab={None:null,Paper:['var(--chip)',4],Aluminium:['var(--metal)',8],Lead:['#555b66',18]}[st.ab];
+      const B=K.BENCH,y=128,go=(run&&run.go)||pen,stopX=pen?(st.src==='Alpha'&&st.ab!=='None'?168:st.src==='Beta'&&(st.ab==='Aluminium'||st.ab==='Lead')?168:st.src==='Gamma'&&st.ab==='Lead'&&Math.random()<.6?168:250):250;
+      const AB={Paper:'#f6f1e2',Aluminium:'url(#kMetal)',Lead:'#4a5157'};
+      A.svg(`${K.stand(40,92,[[y,74]])}<rect x="74" y="${y-6}" width="34" height="12" rx="2" fill="url(#kMetalV)"/><rect x="108" y="${y-8}" width="10" height="16" rx="2" fill="#2d3438"/>
+        <circle cx="92" cy="${y-20}" r="8" fill="#f2c200" stroke="#222"/><circle cx="92" cy="${y-20}" r="1.6" fill="#222"/>${[0,120,240].map(a=>`<path d="M92 ${y-20} l${(6.5*Math.cos((a-90)*Math.PI/180)).toFixed(1)} ${(6.5*Math.sin((a-90)*Math.PI/180)).toFixed(1)}" stroke="#222" stroke-width="3.2"/>`).join('')}
+        ${pen&&ab?`<rect x="${(170-ab[1]/2).toFixed(1)}" y="86" width="${ab[1]}" height="84" fill="${AB[st.ab]}" stroke="#0005"/><rect x="167" y="170" width="6" height="${B-176}" fill="url(#kMetal)"/><rect x="152" y="${B-6}" width="36" height="6" rx="1" fill="url(#kPlastic)"/>`:''}
+        ${go?K.tracks(120,stopX,y,pen?14:8,'#f2b33d',10):''}
+        ${K.stand(420,92,[[y,368]])}<rect x="250" y="${y-11}" width="112" height="22" rx="4" fill="url(#kPlastic)"/><rect x="246" y="${y-9}" width="5" height="18" rx="1" fill="#9aa9ad"/><rect x="262" y="${y-11}" width="6" height="22" fill="#c43c2c"/>
+        ${K.wire(`M362 ${y} C392 ${y} 380 166 352 168`,'#1d1d1d')}
+        ${K.meter(236,166,130,62,String(shown),'COUNTS / MIN',{light:1,fs:19})}
+        ${K.TB(96,pen?st.src.toLowerCase()+' source':'sample '+st.s)}${K.T(306,104,'GM tube',{s:9.5})}${run&&run.go?K.tag(200,36,'t = '+fx(run.t,1)+' min',{s:11}):''}`);
+      A.read([[shown,'count rate / min⁻¹'],[run&&run.go?fx(run.t,1):'—','time / min']])}
+    A.redraw=()=>{const all=[...runs,...(run&&run.go?[run]:[])];plot(A.cv,{series:all.map(r=>({pts:r.pts,col:r.col})),xl:'time / min',yl:'count rate / counts min⁻¹',xmax:24,ymax:900,xstep:2,ystep:100,empty:'Press Time the decay to plot a sample.'});
+      A.legend(all.map((r,i)=>[r.col,`Run ${i+1}: sample ${r.s}`]))};
+    function step(now){const dt=(now-last)/1000*speed*.5;last=now;const prev=run.t;run.t=Math.min(24,run.t+dt);
+      for(let m=Math.floor(prev)+1;m<=run.t;m++){const c=count(N0*Math.pow(.5,m/HL[run.s])+BG);run.pts.push({x:m,y:c});shown=c;A.table.add(['Half-life','Sample '+run.s,'None',m,c])}
+      show();A.redraw();if(run.t>=24){run.go=false;runs.push(run);A.lock(false);$('[data-act=decay]',A.root).disabled=false;A.obs('Timing finished. Read the half-life from your graph.');return}requestAnimationFrame(step)}
+    A.acts.decay=b=>{if(run&&run.go)return;mode='decay';const c=count(N0+BG);run={s:st.s,t:0,pts:[{x:0,y:c}],go:true,col:COLS[runs.length%6]};shown=c;A.table.add(['Half-life','Sample '+st.s,'None',0,c]);
+      A.lock(true);b.disabled=true;A.obs('Counting… a reading is recorded every minute.');last=performance.now();requestAnimationFrame(step)};
+    A.acts.speed=b=>{speed=speed===1?4:speed===4?10:1;b.textContent='Speed ×'+speed};
+    A.acts.pen=()=>{if(run&&run.go)return;mode='pen';shown=count(PEN[st.src][st.ab]+BG);show();A.table.add(['Penetration',st.src,{None:'None',Paper:'Paper',Aluminium:'3 mm aluminium',Lead:'2 cm lead'}[st.ab],1,shown]);
+      A.obs(shown<45?'Count rate is at background level: the radiation is stopped.':'Radiation is getting through to the GM tube.')};
+    A.acts.chk=()=>{const s=$('#nuclear-hls').value,v=parseFloat($('#nuclear-hl').value),m=$('#nuclear-hlmsg');if(isNaN(v)){m.textContent='Type a half-life in minutes.';return}
+      const e=Math.abs(v-HL[s])/HL[s];m.textContent=e<=.15?`Correct for sample ${s}.`:`Not quite for sample ${s}. Remember to subtract the background count first.`};
+    A.changed=k=>{if(k==='s')mode='decay';else mode='pen';show()};show();A.redraw();A.obs('Time a decay, or choose a source and absorber and count for 1 minute.')}});
+
+/* shared helpers for new experiments */
+const mixHex=(a,b,t)=>{const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));const A=p(a),B=p(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('')};
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+/* ---------- 8 & N5: paper chromatography (shared builder) ---------- */
+function chromLab(cfg){
+  return {id:cfg.id,unit:cfg.unit,name:cfg.name,aim:cfg.aim,eq:cfg.eq,svgLabel:'Chromatography paper in a beaker of solvent with a ruler alongside',
+    st:{lv:'ok'},
+    controls:p=>`<div class="f"><span class="lbl">Spot these samples (up to 5)</span><div class="seg-multi" id="${p}-pick" role="group" aria-label="Samples">${cfg.samples.map((s,i)=>`<button type="button" data-s="${i}" aria-pressed="${i<4}">${s[0]}</button>`).join('')}</div></div>`+sg('lv','Solvent level',[['ok','Below the pencil line'],['hi','Above the pencil line']],'ok'),
+    actions:`<button type="button" class="btn" data-act="run">Run the solvent</button><button type="button" class="btn ghost" data-act="stop">Remove paper</button>${cfg.ninhydrin?'<button type="button" class="btn ghost" data-act="spray">Spray with ninhydrin</button>':''}<button type="button" class="btn ghost" data-act="new">New paper</button>`,
+    hint:`Click a spot on the paper to measure its distance from the pencil line. Rf = distance moved by spot ÷ distance moved by solvent.${cfg.ninhydrin?' Amino acids are colourless until sprayed.':''}`,
+    side:p=>`<div class="check" style="display:block"><h3 style="margin:0 0 6px">${cfg.idTitle}</h3><div class="idgrid">${cfg.unknowns.map((u,i)=>`<fieldset id="${p}-id${i}" style="border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:0"><legend class="lbl">${u}</legend>${cfg.std.map(s=>`<label style="display:flex;gap:8px;align-items:center;min-height:30px"><input type="checkbox" value="${s[0]}"> ${s[0]}</label>`).join('')}</fieldset>`).join('')}</div><p class="hint">Tick every component you find.</p><div class="row"><button type="button" class="btn sm" data-act="chk">Check</button><span class="msg" id="${p}-imsg" aria-live="polite"></span></div></div>`,
+    cols:[{h:'Sample'},{h:'Spot distance / mm'},{h:'Solvent front / mm'},{h:'Rf',edit:'text'},{h:'Identity',edit:'select',opts:cfg.std.map(s=>s[0]),ans:1}],
+    concl:cfg.concl,
+    init(A){const st=A.st;const unk={};cfg.unknowns.forEach(u=>{const k=cfg.pick?cfg.pick(u).map(n=>cfg.std.find(z=>z[0]===n)):shuffle(cfg.std).slice(0,cfg.nUnk||2+Math.floor(Math.random()*2));unk[u]=k});
+      const SAM=cfg.samples.map(s=>[s[0],s[1]==='?'?unk[s[0]]:s[1].map(n=>cfg.std.find(z=>z[0]===n))]);
+      let sel=[0,1,2,3],front=0,run=false,done=false,shown=!cfg.ninhydrin,spots=[],lineY=215,top=25;
+      const pxmm=1.6;
+      function layout(){spots=[];const lanes=sel.map(i=>SAM[i]);lanes.forEach((s,li)=>{(s[1]||[]).forEach(d=>{const rf=clamp(d[1]+gauss()*.012,.03,.97);spots.push({lane:li,name:d[0],rf,col:cfg.ninhydrin?'#7b3fa0':d[2],sample:s[0]})})})}
+      function draw(){const lanes=sel.map(i=>SAM[i]);const W=240,x0=40,lw=W/Math.max(1,lanes.length);const fy=lineY-front*pxmm;let s='';
+        const B=K.BENCH;s+=`<rect x="${x0-14}" y="14" width="${W+28}" height="${B-14}" rx="3" fill="url(#kGlass)" stroke="${K.GL}" stroke-width="1.6"/>`;
+        const lvlY=st.lv==='ok'?lineY+8:lineY-8;s+=K.liquidPath(`M${x0-12} ${lvlY} V${B-2} H${x0+W+12} V${lvlY} Z`,'rgba(180,215,232,.6)',x0-12,x0+W+12,lvlY)+`<rect x="${x0}" y="${top}" width="${W}" height="${lineY+12-top}" fill="#fbfaf3" stroke="#e1dccb"/><rect x="${x0}" y="${lvlY}" width="${W}" height="${lineY+12-lvlY}" fill="rgba(150,195,215,.35)"/>
+          <rect x="${x0-18}" y="9" width="${W+36}" height="6" rx="3" fill="url(#kGlass)" stroke="${K.GL}"/>${[x0+20,x0+W-20].map(x=>`<rect x="${x-5}" y="11" width="10" height="${top-4}" rx="2" fill="#3a4246"/>`).join('')}`;
+        if(front>0)s+=`<rect x="${x0}" y="${fy.toFixed(1)}" width="${W}" height="${(lineY-fy+12).toFixed(1)}" fill="rgba(150,195,215,.3)"/><line x1="${x0}" y1="${fy.toFixed(1)}" x2="${x0+W}" y2="${fy.toFixed(1)}" stroke="var(--c6)" stroke-dasharray="${done?'0':'3 3'}"/>`;
+        s+=`<line x1="${x0}" y1="${lineY}" x2="${x0+W}" y2="${lineY}" stroke="var(--muted)"/>`;
+        lanes.forEach((l,i)=>{s+=K.T(x0+lw*(i+.5),K.BENCH+(i%2?24:12),l[0],{s:8,f:'#dfe8e6'})});
+        if(st.lv==='hi'&&front>0){}else spots.forEach((p,i)=>{const y=lineY-p.rf*front*pxmm,x=x0+lw*(p.lane+.5);if(front===0)s+=`<circle cx="${x}" cy="${lineY}" r="3" fill="${shown?p.col:'#d8d4c8'}"/>`;else if(shown)s+=`<ellipse data-sp="${i}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="7" ry="5" fill="${p.col}" fill-opacity=".85" style="cursor:pointer"/>`});
+        s+=K.ruler(300,lineY,top,pxmm,{w:34})+K.T(392,lineY+4,'pencil line',{s:9})+K.T(392,30,'ruler',{s:9});
+        A.svg(s);A.read([[fx(front,0),'solvent front / mm'],[shown?'visible':'colourless','spots']])}
+      A.root.addEventListener('click',e=>{const sp=e.target.closest('[data-sp]');if(sp){if(!done){A.obs('Remove the paper and mark the solvent front before measuring.');return}const p=spots[+sp.dataset.sp];
+          const d=Math.round(p.rf*front+gauss()*.6),f=Math.round(front);A.table.add([p.sample,d,f,'',''],{4:p.name});A.obs(`Spot measured: ${d} mm from the line; solvent front ${f} mm.`);return}
+        const b=e.target.closest(`#${cfg.id}-pick button`);if(b){if(run||front>0){A.obs('Start a new paper to change the samples.');return}const i=+b.dataset.s;const on=b.getAttribute('aria-pressed')==='true';
+          if(!on&&sel.length>=5){A.obs('Five samples fit on the paper.');return}b.setAttribute('aria-pressed',!on);sel=on?sel.filter(x=>x!==i):[...sel,i].sort((a,b)=>a-b);layout();draw()}});
+      A.acts.run=b=>{if(run||done)return;if(!sel.length){A.obs('Choose at least one sample.');return}run=true;b.disabled=true;A.lock(true);const target=rnd(95,112),t0=performance.now();
+        if(st.lv==='hi')A.obs('The solvent is above the pencil line: the spots dissolve into the solvent in the beaker.');else A.obs('Solvent rising up the paper…');
+        const step=n=>{const k=(n-t0)/6000;front=target*(1-Math.exp(-3*k));draw();if(run&&front<target-.5)requestAnimationFrame(step);else{run=false;b.disabled=false}};requestAnimationFrame(step)};
+      A.acts.stop=()=>{if(!front){A.obs('Run the solvent first.');return}run=false;done=true;A.lock(false);draw();A.obs(shown?(st.lv==='hi'?'No spots on the paper: they washed into the solvent.':'Paper removed and the solvent front marked in pencil. Click each spot to measure it.'):'Paper removed and dried. The spots are invisible: spray with ninhydrin.')};
+      A.acts.spray=()=>{if(!done){A.obs('Remove and dry the paper first.');return}shown=true;draw();A.obs(st.lv==='hi'?'Nothing appears: the amino acids washed into the solvent.':'Purple spots appear. Click each spot to measure it.')};
+      A.acts.new=()=>{run=false;done=false;front=0;shown=!cfg.ninhydrin;layout();draw();A.lock(false);A.obs('New paper with fresh spots on the pencil line.')};
+      A.acts.chk=()=>{let ok=0,n=0;cfg.unknowns.forEach((u,i)=>{const s=$(`#${cfg.id}-id${i}`),v=[...s.querySelectorAll('input:checked')].map(o=>o.value);if(!v.length)return;n++;const want=unk[u].map(z=>z[0]).sort();const good=v.sort().join()===want.join();s.style.borderColor=good?'var(--ok)':'var(--bad)';ok+=good});
+        $(`#${cfg.id}-imsg`).textContent=n?`${ok} of ${n} correct.`:'Choose the components of at least one unknown.'};
+      A.changed=k=>{if(k==='lv'){run=false;done=false;front=0;shown=!cfg.ninhydrin;layout();draw()}};layout();draw();A.obs('Choose samples, then run the solvent.')}};
+}
+
+/* ===================================================================
+   N5 — NEW EXPERIMENTS
+   =================================================================== */
+
+/* ---------- Making a soluble salt ---------- */
+const N5ACID={'Hydrochloric acid':['chloride',2],'Sulfuric acid':['sulfate',1],'Nitric acid':['nitrate',2]};
+const N5BASE={'Copper(II) oxide':['copper(II)','#1e1e1e',false,'#4f8fd6','blue'],'Copper(II) carbonate':['copper(II)','#4f9f7a',true,'#4f8fd6','blue'],'Magnesium oxide':['magnesium','#f4f4f4',false,'#f2f6f8','white'],'Magnesium carbonate':['magnesium','#f4f4f4',true,'#f2f6f8','white'],'Zinc carbonate':['zinc','#f4f4f4',true,'#f2f6f8','white']};
+const SALTS=[];['copper(II)','magnesium','zinc'].forEach(m=>['chloride','sulfate','nitrate'].forEach(a=>SALTS.push(m+' '+a)));
+LABS.push({id:'salt',unit:'u1',name:'Making a soluble salt',
+  aim:'Prepare a pure, dry sample of a soluble salt by reacting an acid with an insoluble base, then filtering and evaporating.',
+  eq:'acid + metal oxide → salt + water · acid + metal carbonate → salt + water + carbon dioxide · 25 cm³ of 1.0 mol l⁻¹ acid',
+  svgLabel:'Beaker of acid on a tripod, then a filter funnel, then an evaporating basin',
+  st:{acid:'Sulfuric acid',base:'Copper(II) oxide'},
+  controls:p=>se(p,'acid','Acid',Object.keys(N5ACID),'Sulfuric acid')+se(p,'base','Insoluble base',Object.keys(N5BASE),'Copper(II) oxide'),
+  actions:'<button type="button" class="btn ghost" data-act="warm">1 Warm the acid</button><button type="button" class="btn" data-act="add">2 Add a spatula of base</button><button type="button" class="btn ghost" data-act="filt">3 Filter</button><button type="button" class="btn ghost" data-act="evap">4 Evaporate and crystallise</button>',
+  hint:'Keep adding the base until some is left over and will not react. That means all the acid has been used up.',
+  cols:[{h:'Acid'},{h:'Base'},{h:'Spatulas added'},{h:'Observations',edit:'text',wide:1},{h:'Salt made',edit:'select',opts:SALTS,ans:1},{h:'Purity'}],
+  concl:'Explain why the base is added in excess and why it is removed by filtering. Write a word equation and a balanced formula equation for your reaction.',
+  init(A){const st=A.st;let warm=false,added=0,need=0,phase=0,fil=false,ev=false;
+    const B=()=>N5BASE[st.base],salt=()=>B()[0]+' '+N5ACID[st.acid][0];
+    function reset(){warm=false;added=0;need=4+Math.floor(Math.random()*3);phase=0;fil=false;ev=false}
+    function draw(){const b=B(),excess=added>need,frac=Math.min(1,added/need);const sol=fil||ev?b[3]:mixHex('#d6ebf0',b[3],frac);
+      let s='';
+      const BB=K.BENCH;
+      if(!fil){const inside=(excess?K.heap(115,130,Math.min(70,(added-need)*16+14),b[1]):'')+(b[2]&&added&&!excess?K.bub(12,66,164,96,128,2):'')+(added&&!excess?K.heap(115,130,10,b[1]):'');
+        s+=`${K.bunsen(115,warm?'blue':null,{h:38})}${K.tripod(115,134,96)}${K.beaker(62,70,106,62,sol,.6,{inside,noShadow:1,op:.85})}${K.T(115,54,st.acid,{s:10.5,f:'var(--ink)'})}
+          ${K.shadow(330,70)}<path d="M296 ${BB-2} q34 -12 68 0" fill="url(#kGlass)" stroke="${K.GL}"/>${K.heap(330,BB-5,34,b[1])}<path d="M352 ${BB-16} l40 -26" stroke="#9aa3a8" stroke-width="3" stroke-linecap="round"/>${K.TB(330,'base on a watch glass',{s:9.5})}`}
+      else{s+=`${K.stand(52,40,[[74,82]])}<ellipse cx="120" cy="74" rx="44" ry="5" fill="none" stroke="#3a4246" stroke-width="3"/>${K.funnel(120,70,80,{residue:added>need?b[1]:null})}${K.flask(120,BB-2,80,90,sol,.36,{op:.85,nw:22,nh:24})}${K.TB(120,'filtrate',{s:9.5})}${K.T(120,58,'residue: excess base',{s:9.5})}
+          ${K.bunsen(330,ev?'blue':null,{h:38})}${K.tripod(330,134,96)}${K.basin(330,106,96,sol,ev?0:.6,ev?K.crystals(18,306,354,114,126,b[3],9):'')}${K.T(330,86,ev?'crystals of '+salt():'evaporating basin',{s:9.5})}`}
+      A.svg(s+K.T(450,24,'base: '+st.base,{s:10,f:'var(--ink)',a:'end'}));A.read([[added,'spatulas added'],[excess?'yes':'no','base in excess'],[ev?'crystals':fil?'filtered':warm?'warm':'cold','stage']])}
+    A.acts.warm=()=>{if(fil){A.obs('Already filtered. Change the acid or base to start again.');return}warm=true;draw();A.obs('The acid is warmed gently to speed up the reaction.')};
+    A.acts.add=()=>{if(fil){A.obs('Already filtered.');return}added++;draw();const b=B(),ex=added>need;
+      A.obs(ex?'Some solid is left over and will not react: the base is now in excess.':`The solid ${warm?'quickly ':'slowly '}disappears${b[2]?' with fizzing':''} and the solution turns ${b[4]==='blue'?'more blue':'clearer'}.`)};
+    A.acts.filt=()=>{if(!added){A.obs('Add the base first.');return}fil=true;draw();A.obs(added>need?'Excess base stays in the filter paper. The filtrate is the salt solution.':'Nothing is left in the filter paper: some acid may not have reacted.')};
+    A.acts.evap=()=>{if(!fil){A.obs('Filter first, or the excess base will contaminate your salt.');return}ev=true;draw();
+      const pure=added>need?'Pure':'Contaminated with acid';A.obs(`Crystals of ${salt()} form as the water evaporates.${added>need?'':' They are damp and acidic because not all the acid reacted.'}`);
+      A.table.add([st.acid,st.base,added,'','',pure],{4:salt()})};
+    A.changed=()=>{reset();draw();A.obs('New beaker of acid.')};reset();draw();A.obs('Warm the acid, then add the base one spatula at a time.')}});
+
+/* ---------- Neutralisation: temperature change ---------- */
+LABS.push({id:'neutral',unit:'u1',name:'Neutralisation: temperature change',
+  aim:'Add acid to an alkali in portions, measure the temperature and use the graph to find the end-point and the concentration of the alkali.',
+  eq:'HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(ℓ) · 25.0 cm³ of sodium hydroxide in a polystyrene cup · 2.0 mol l⁻¹ hydrochloric acid',
+  svgLabel:'Polystyrene cup with a thermometer and a burette of acid above it',
+  st:{s:'A',v:5},
+  controls:p=>sg('s','Sodium hydroxide sample',[['A','Sample A'],['B','Sample B'],['C','Sample C']],'A')+sg('v','Add acid in portions of',[[2,'2 cm³'],[5,'5 cm³']],5),
+  actions:'<button type="button" class="btn" data-act="add">Add acid and stir</button><button type="button" class="btn ghost" data-act="new">New cup</button>',
+  hint:'The highest temperature is reached at the end-point. Draw a straight line through the rising points and one through the falling points; they cross at the end-point.',
+  graph:'Temperature against volume of acid added',
+  extra:p=>`<div class="check"><label for="${p}-ep" class="lbl">End-point volume (cm³)</label><input id="${p}-ep" inputmode="decimal" placeholder="0.0"><label for="${p}-cc" class="lbl">NaOH concentration (mol l⁻¹)</label><input id="${p}-cc" inputmode="decimal" placeholder="0.00"><button type="button" class="btn sm" data-act="chk">Check</button><span class="msg" id="${p}-nmsg" aria-live="polite"></span></div>`,
+  cols:[{h:'Sample'},{h:'Acid added / cm³'},{h:'Temperature / °C'}],
+  concl:'Explain why the temperature rises then falls. Calculate the concentration of the sodium hydroxide from the end-point volume.',
+  init(A){const st=A.st;const C={A:+rnd(1.0,1.3).toFixed(2),B:+rnd(1.4,1.7).toFixed(2),C:+rnd(1.8,2.1).toFixed(2)};let V=0,T0=+rnd(18,20).toFixed(1),T=T0,pts=[];
+    const temp=v=>{const nOH=C[st.s]*.025,nH=2*v/1000,n=Math.min(nOH,nH);return T0+n*57.6e3/((25+v)*4.18)*.88};
+    function draw(){const B=K.BENCH;A.svg(`${K.stand(165,4,[[10,213],[120,213]])}${K.burette(206,20,110,V,'var(--acid)')}
+      ${K.shadow(225,86)}<path d="M181 168 L190 ${B} H260 L269 168 Z" fill="url(#kFoam)" stroke="#c9c4b8"/><ellipse cx="225" cy="168" rx="44" ry="5" fill="#f4f2ec" stroke="#c9c4b8"/><ellipse cx="225" cy="169" rx="40" ry="3.6" fill="${K.WATER}"/>
+      <rect x="240" y="96" width="5" height="100" rx="2" fill="url(#kMetal)"/>${K.wire('M242 96 C242 56 300 56 330 70','#1d1d1d')}
+      ${K.meter(330,52,110,64,fx(T,1),'°C · THERMOMETER',{light:1,fs:20})}
+      ${K.T(80,60,'NaOH sample '+st.s,{s:11,f:'var(--ink)'})}${K.T(80,76,'25.0 cm³ in a cup',{s:9.5})}${K.TB(225,'polystyrene cup',{s:9.5})}`);
+      A.read([[fx(V,1),'acid added / cm³'],[fx(T,1),'temperature / °C']])}
+    A.redraw=()=>{plot(A.cv,{series:[{pts,col:'--c2',line:false}],xl:'volume of acid / cm³',yl:'temperature / °C',xmax:40,ymin:Math.floor(T0)-2,ymax:Math.floor(T0)+16,xstep:5,ystep:2,empty:'Add acid to plot the temperature.'})};
+    A.acts.add=()=>{if(V+st.v>40){A.obs('That is enough points. Start a new cup to repeat.');return}V+=st.v;T=+(temp(V)+gauss()*.12).toFixed(1);pts.push({x:V,y:T});A.table.add([st.s,fx(V,1),fx(T,1)]);draw();A.redraw();
+      A.obs(V===st.v?'The temperature rises: neutralisation is exothermic.':'Stirred and read the highest temperature.')};
+    A.acts.new=()=>{V=0;T0=+rnd(18,20).toFixed(1);T=T0;pts=[{x:0,y:T0}];draw();A.redraw();A.obs('New cup of sodium hydroxide.')};
+    A.acts.chk=()=>{const ep=parseFloat($('#neutral-ep').value),cc=parseFloat($('#neutral-cc').value),want=C[st.s]*25/2,m=$('#neutral-nmsg');const out=[];
+      if(!isNaN(ep))out.push(Math.abs(ep-want)<=1.2?'End-point is about right.':'End-point not right: find where your two lines cross.');
+      if(!isNaN(cc))out.push(Math.abs(cc-C[st.s])/C[st.s]<.06?'Concentration correct.':'Concentration not right: moles of acid = 2.0 × volume in litres; ratio 1:1; divide by 0.025 l.');
+      m.textContent=out.join(' ')||'Type an answer first.'};
+    A.changed=k=>{if(k==='s')A.acts.new()};pts=[{x:0,y:T0}];draw();A.redraw();A.obs('Add acid in portions and record the temperature each time.')}});
+
+/* ---------- Electrolysis ---------- */
+const ELY={'Copper(II) chloride solution':['#4f8fd6',true,'Copper','Chlorine','A brown solid coats the electrode.','Bubbles of gas; damp blue litmus paper turns red then white (bleached).','Cu²⁺ + 2e⁻ → Cu','2Cl⁻ → Cl₂ + 2e⁻'],
+  'Copper(II) bromide solution':['#6b8f6e',true,'Copper','Bromine','A brown solid coats the electrode.','The solution around the electrode turns orange-brown.','Cu²⁺ + 2e⁻ → Cu','2Br⁻ → Br₂ + 2e⁻'],
+  'Zinc iodide solution':['#f4f4f4',true,'Zinc','Iodine','A grey solid coats the electrode.','The solution around the electrode turns brown.','Zn²⁺ + 2e⁻ → Zn','2I⁻ → I₂ + 2e⁻'],
+  'Nickel(II) chloride solution':['#7fc49a',true,'Nickel','Chlorine','A silvery-grey solid coats the electrode.','Bubbles of gas; damp blue litmus paper is bleached.','Ni²⁺ + 2e⁻ → Ni','2Cl⁻ → Cl₂ + 2e⁻'],
+  'Molten lead(II) bromide':['#f2e5c9',true,'Lead','Bromine','A silvery bead of liquid lead forms below the electrode.','Red-brown fumes of bromine are given off.','Pb²⁺ + 2e⁻ → Pb','2Br⁻ → Br₂ + 2e⁻'],
+  'Solid lead(II) bromide':['#f2e5c9',false],'Glucose solution':['#f4f4f4',false]};
+const EPROD=['Copper','Zinc','Nickel','Lead','Chlorine','Bromine','Iodine','Nothing'];
+LABS.push({id:'electrolysis',unit:'u3',name:'Electrolysis',
+  aim:'Pass electricity through ionic compounds and identify the products at each electrode.',
+  eq:'Positive metal ions gain electrons at the negative electrode (reduction) · negative ions lose electrons at the positive electrode (oxidation)',
+  svgLabel:'Beaker of electrolyte with two carbon electrodes connected to a power supply and an ammeter',
+  st:{e:'Copper(II) chloride solution',ps:'dc',I:.5},
+  controls:p=>se(p,'e','Electrolyte',Object.keys(ELY),'Copper(II) chloride solution')+sg('ps','Power supply',[['dc','d.c.'],['ac','a.c.']],'dc')+sl(p,'I','Current',.1,1,.1,.5,'A',1),
+  actions:'<button type="button" class="btn" data-act="on">Switch on for 5 minutes</button>',
+  hint:'A d.c. supply is needed so that each electrode keeps the same charge and the products can be identified.',
+  cols:[{h:'Electrolyte'},{h:'Supply'},{h:'At negative electrode'},{h:'At positive electrode'},{h:'Product at −',edit:'select',opts:EPROD,ans:1},{h:'Product at +',edit:'select',opts:EPROD,ans:1}],
+  concl:'Write ion-electron equations for each electrode and say which is reduction and which is oxidation. Explain why the solid did not conduct.',
+  init(A){const st=A.st;let on=0,busy=false;
+    function draw(){const e=ELY[st.e],c=e[1];const coat=on&&c&&st.ps==='dc'?Math.min(1,on)*10:0;
+      const B=K.BENCH,molten=/lead\(II\) bromide/.test(st.e),ex1=200,ex2=262,act=on&&c&&st.ps==='dc';let cont,eb;
+      if(molten){const heat=st.e.startsWith('Molten');cont=`${K.bunsen(231,heat?'blue':null,{h:22})}${K.tripod(231,152,74,false)}<path d="M193 150 l38 6 l38 -6" stroke="#e6dcc8" stroke-width="3" fill="none"/><path d="M195 102 h72 l-8 50 h-56 z" fill="url(#kPorcelain)" stroke="#a9a79f"/><path d="M198 ${heat?114:136} h66 l-${heat?6:3} ${heat?36:14} h-${heat?54:60} z" fill="${heat?'#f2c27a':'#f2e5c9'}"/>`;eb=146}
+      else{cont=K.beaker(150,116,162,116,e[0]==='#f4f4f4'?'var(--acid)':e[0],.68,{op:.75});eb=B-16}
+      const mcol=st.e.includes('Zinc')?'#9aa3a8':st.e.includes('Nickel')?'#b9c0c6':st.e.includes('lead')?'#c8ccd0':'url(#kCopper)';
+      A.svg(`${cont}<rect x="180" y="${molten?92:108}" width="102" height="8" rx="2" fill="url(#kPlastic)"/>
+        ${K.strip(ex1-6,70,12,eb-70,'Carbon')}${K.strip(ex2-6,70,12,eb-70,'Carbon')}
+        ${act&&coat?`<rect x="${ex1-8}" y="${(eb-coat*5).toFixed(0)}" width="16" height="${(coat*5).toFixed(0)}" rx="3" fill="${mcol}"/>`:''}
+        ${act&&/Chlor|Nickel/.test(st.e)?K.bub(14,ex2-8,ex2+8,124,eb-4,2.2):''}${act&&/brom|iodide/.test(st.e)&&!molten?`<ellipse cx="${ex2}" cy="${eb-36}" rx="20" ry="40" fill="${st.e.includes('iodide')?'#8a4a1c':'#d96b1c'}" fill-opacity=".45" filter="url(#kHaze)"/>`:''}${act&&molten&&st.e.startsWith('Molten')?`<path d="M${ex2+10} 92 q-8 -16 4 -30 q10 -14 0 -28" stroke="#c0501c" stroke-width="8" fill="none" opacity=".35" filter="url(#kHaze)"/>`:''}
+        ${K.power(10,26,116,74,st.ps==='dc'?'d.c. supply':'a.c. supply',{on:on>0})}
+        ${K.wire(`M${(10+116*.82).toFixed(1)} 90 C140 150 ${ex1} 30 ${ex1} 72`,'#1d1d1d')}${K.croc(ex1,74,'#1d1d1d')}
+        ${K.wire(`M${(10+116*.62).toFixed(1)} 90 C70 140 150 0 300 12 C340 14 365 50 365 78`,'#c0392b')}
+        ${K.meter(330,22,108,66,on&&c?fx(st.I,1):'0.0','AMMETER / A',{terms:1})}
+        ${K.wire(`M403 80 C403 120 ${ex2+30} 30 ${ex2} 72`,'#c0392b')}${K.croc(ex2,74,'#c0392b')}
+        ${K.TB(ex1-34,st.ps==='dc'?'negative (−)':'electrode',{s:9.5})}${K.TB(ex2+34,st.ps==='dc'?'positive (+)':'electrode',{s:9.5})}`);
+      A.read([[on&&c?fx(st.I,1):'0.0','current / A'],[c?'conducts':'does not conduct','electrolyte']])}
+    A.acts.on=b=>{if(busy)return;busy=true;b.disabled=true;on=0;const e=ELY[st.e],t0=performance.now();
+      const step=n=>{on=Math.min(1,(n-t0)/1800);draw();if(on<1){requestAnimationFrame(step);return}busy=false;b.disabled=false;let neg,pos,pn,pp;
+        if(!e[1]){neg=pos='No change.';pn=pp='Nothing';A.obs(st.e.startsWith('Solid')?'The bulb stays off: the ions are not free to move in the solid.':'No current flows: glucose is covalent and has no ions.')}
+        else if(st.ps==='ac'){neg=pos='Small amounts of both products appear at each electrode.';pn=pp=null;A.obs('With a.c. the electrodes keep swapping charge, so both products form at both electrodes.')}
+        else{neg=e[4];pos=e[5];pn=e[2];pp=e[3];A.obs(`Negative: ${e[4]} Positive: ${e[5]}`)}
+        A.table.add([st.e,st.ps==='dc'?'d.c.':'a.c.',neg,pos,'',''],pn?{4:pn,5:pp}:{})};requestAnimationFrame(step)};
+    A.changed=()=>{on=0;draw()};draw();A.obs('Choose an electrolyte and switch on.')}});
+
+/* ---------- Precipitation ---------- */
+const PSOL={'Silver nitrate':['Ag⁺','NO₃⁻'],'Barium chloride':['Ba²⁺','Cl⁻'],'Lead(II) nitrate':['Pb²⁺','NO₃⁻'],'Copper(II) sulfate':['Cu²⁺','SO₄²⁻'],'Iron(III) chloride':['Fe³⁺','Cl⁻'],'Calcium chloride':['Ca²⁺','Cl⁻'],
+  'Sodium chloride':['Na⁺','Cl⁻'],'Potassium iodide':['K⁺','I⁻'],'Sodium sulfate':['Na⁺','SO₄²⁻'],'Sodium hydroxide':['Na⁺','OH⁻'],'Sodium carbonate':['Na⁺','CO₃²⁻']};
+const PPT={'Ag⁺|Cl⁻':['Silver chloride','white','#f2f2f2'],'Ag⁺|I⁻':['Silver iodide','pale yellow','#efe2a0'],'Ag⁺|OH⁻':['Silver oxide','brown','#6a4a2a'],'Ag⁺|CO₃²⁻':['Silver carbonate','cream','#efe6c8'],
+  'Ba²⁺|SO₄²⁻':['Barium sulfate','white','#f2f2f2'],'Ba²⁺|CO₃²⁻':['Barium carbonate','white','#f2f2f2'],'Pb²⁺|Cl⁻':['Lead(II) chloride','white','#f2f2f2'],'Pb²⁺|I⁻':['Lead(II) iodide','bright yellow','#f2c200'],
+  'Pb²⁺|SO₄²⁻':['Lead(II) sulfate','white','#f2f2f2'],'Pb²⁺|OH⁻':['Lead(II) hydroxide','white','#f2f2f2'],'Pb²⁺|CO₃²⁻':['Lead(II) carbonate','white','#f2f2f2'],'Cu²⁺|OH⁻':['Copper(II) hydroxide','pale blue','#7fb2e6'],
+  'Cu²⁺|CO₃²⁻':['Copper(II) carbonate','blue-green','#5aa99a'],'Fe³⁺|OH⁻':['Iron(III) hydroxide','rust-brown','#9a4a14'],'Ca²⁺|CO₃²⁻':['Calcium carbonate','white','#f2f2f2'],'Ca²⁺|OH⁻':['Calcium hydroxide','faint white','#f6f6f6']};
+const PCOLS={'Copper(II) sulfate':'#4f8fd6','Iron(III) chloride':'#d9a441'};
+const PNAMES=['No precipitate',...new Set(Object.values(PPT).map(v=>v[0]))].sort();
+const PUNK=['Silver nitrate','Barium chloride','Lead(II) nitrate','Calcium chloride','Copper(II) sulfate','Iron(III) chloride'];
+LABS.push({id:'precip',unit:'u3',name:'Precipitation reactions',
+  aim:'Mix pairs of solutions, use the solubility table to name any precipitate, and identify an unknown solution.',
+  eq:'A precipitate is an insoluble solid formed when two solutions are mixed. Ions that stay in solution are spectator ions.',
+  svgLabel:'Two dropping bottles above a test tube',
+  st:{a:'Silver nitrate',b:'Sodium chloride'},
+  controls:p=>`<div class="f"><label for="${p}-a">Solution 1</label><select id="${p}-a" data-k="a">${[...Object.keys(PSOL),'Unknown solution U'].map(k=>`<option>${k}</option>`).join('')}</select></div>`+se(p,'b','Solution 2',Object.keys(PSOL),'Sodium chloride'),
+  actions:'<button type="button" class="btn" data-act="mix">Mix</button>',
+  hint:'Check the table of solubilities in the data booklet. The unknown is one of the coloured or metal-ion solutions in Solution 1.',
+  side:p=>`<div class="check"><label class="lbl" for="${p}-u">Unknown U is</label><select id="${p}-u"><option value="">Choose…</option>${PUNK.map(k=>`<option>${k}</option>`).join('')}</select><button type="button" class="btn sm" data-act="chk">Check</button><span class="msg" id="${p}-umsg" aria-live="polite"></span></div>`,
+  cols:[{h:'Solution 1'},{h:'Solution 2'},{h:'Observation'},{h:'Precipitate',edit:'select',opts:PNAMES,ans:1},{h:'Spectator ions',edit:'text',wide:1}],
+  concl:'Write an ionic equation for each precipitate, leaving out spectator ions.',
+  init(A){const st=A.st;const U=PUNK[Math.floor(Math.random()*PUNK.length)];let res=null,k=0,busy=false;
+    const real=()=>st.a==='Unknown solution U'?U:st.a;
+    function find(){const x=PSOL[real()],y=PSOL[st.b];return PPT[x[0]+'|'+y[1]]||PPT[y[0]+'|'+x[1]]||null}
+    function draw(){const c1=PCOLS[real()]||'#f2f6f8',c2=PCOLS[st.b]||'#f2f6f8';const base=mixHex(c1,c2,.5);
+      const B=K.BENCH,tx=205,ty=70,th=150,tw=32,bt=ty+th,lv=.5,ly=bt-(th-6)*lv;
+      const inside=res&&res.p?`<rect x="${tx+2}" y="${(ly+4).toFixed(1)}" width="${tw-4}" height="${(bt-ly-10).toFixed(1)}" fill="${res.p[2]}" opacity="${(.55*k*(1.2-k*.5)).toFixed(2)}" filter="url(#kHaze)"/><path d="M${tx+2} ${(bt-14-14*k).toFixed(1)} V${bt-16} A14 14 0 0 0 ${tx+tw-2} ${bt-16} V${(bt-14-14*k).toFixed(1)} Z" fill="${res.p[2]}" opacity="${(.95*k).toFixed(2)}"/>`:'';
+      A.svg(`${K.rack(150,150,[221,276])}${K.tube(tx,ty,th,res?base:'var(--acid)',lv,tw,{inside,op:.85})}${K.tube(263,110,110,'var(--acid)',0,26)}${K.rackFront(150,150)}
+        ${K.dropper(50,B-62,st.a==='Unknown solution U'?'var(--acid)':c1,st.a==='Unknown solution U'?'U':st.a.split(' ')[0])}${K.dropper(372,B-62,c2,st.b.split(' ')[0])}
+        ${res&&k<1?`<path d="M${tx+tw/2-3} 12 h6 v38 l-2 10 h-2 l-2 -10 z" fill="url(#kGlass)" stroke="${K.GL}"/><path d="M${tx+tw/2-4} 0 h8 v13 h-8z" fill="#2b2b2b"/>${K.drop(tx+tw/2,70+k*60,c2)}`:''}`);
+      A.read([[res?(res.p?res.p[1]:'none'):'—','precipitate colour']])}
+    A.acts.mix=b=>{if(busy)return;busy=true;b.disabled=true;res={p:find()};const t0=performance.now();
+      const step=n=>{k=Math.min(1,(n-t0)/1200);draw();if(k<1){requestAnimationFrame(step);return}busy=false;b.disabled=false;
+        let o=res.p?`A ${res.p[1]} precipitate forms.`:'No precipitate: the mixture stays clear.';if(real()==='Iron(III) chloride'&&st.b==='Potassium iodide'){o='The solution turns darker brown (a redox reaction makes iodine); no precipitate.'}
+        if(res.p&&res.p[0]==='Calcium hydroxide')o='A faint white cloudiness forms (calcium hydroxide is only slightly soluble).';
+        A.obs(o);A.table.add([st.a,st.b,o,'',''],{3:res.p?res.p[0]:'No precipitate'})};requestAnimationFrame(step)};
+    A.acts.chk=()=>{const v=$('#precip-u').value;$('#precip-umsg').textContent=!v?'Choose an answer.':v===U?'Correct!':'Not right. Try more test solutions.'};
+    A.changed=()=>{res=null;k=0;draw()};draw();A.obs('Choose two solutions and mix them.')}});
+
+/* ---------- Flame tests ---------- */
+const FLAME={Lithium:['#d21f3c','red'],Sodium:['#ffb400','yellow'],Potassium:['#b98ee6','lilac'],Calcium:['#ff6a1a','orange-red'],Copper:['#2fbf9b','blue-green'],Barium:['#8fd14f','green'],Strontium:['#e3132d','red']};
+const FKEYS=Object.keys(FLAME);
+LABS.push({id:'flame',unit:'u3',name:'Flame tests',
+  aim:'Identify metal ions from the colour they give to a flame, and find the metals in three unknown samples.',
+  eq:'Flame colours are listed in the data booklet. A clean loop matters: sodium contamination gives a strong yellow flame.',
+  svgLabel:'Bunsen burner flame with a wire loop holding the sample',
+  st:{m:'Lithium chloride',clean:'yes'},
+  controls:p=>`<div class="f"><label for="${p}-m">Sample</label><select id="${p}-m" data-k="m"><optgroup label="Known compounds">${FKEYS.map(k=>`<option>${k} chloride</option>`).join('')}</optgroup><optgroup label="Unknowns"><option>Unknown X</option><option>Unknown Y</option><option>Unknown Z</option></optgroup></select></div>`+sg('clean','Clean the loop first',[['yes','Yes, in acid'],['no','No']],'yes'),
+  actions:'<button type="button" class="btn" data-act="test">Hold in the flame</button>',
+  hint:'Lithium and strontium both give red flames, so they are hard to tell apart.',
+  side:p=>`<div class="check" style="display:block"><div class="idgrid">${['X','Y','Z'].map(u=>`<div><label class="lbl" for="${p}-u${u}">Unknown ${u}</label><select id="${p}-u${u}"><option value="">Choose…</option>${FKEYS.map(k=>`<option>${k}</option>`).join('')}</select></div>`).join('')}</div><div class="row" style="margin-top:8px"><button type="button" class="btn sm" data-act="chk">Check unknowns</button><span class="msg" id="${p}-fmsg" aria-live="polite"></span></div></div>`,
+  cols:[{h:'Sample'},{h:'Flame colour'},{h:'Metal ion',edit:'select',opts:FKEYS,ans:1}],
+  concl:'Explain why a clean loop is needed. Suggest why flame tests cannot always identify a metal on their own.',
+  init(A){const st=A.st;const pool=shuffle(FKEYS.filter(k=>k!=='Strontium'));const UNK={'Unknown X':pool[0],'Unknown Y':pool[1],'Unknown Z':pool[2]};let lit=null,dirty=false;
+    const metal=()=>UNK[st.m]||st.m.replace(' chloride','');
+    function draw(){const B=K.BENCH;A.svg(`${K.bunsen(210,lit||'blue')}
+      <path d="M400 54 L250 120" stroke="#8a6a3a" stroke-width="7" stroke-linecap="round"/><path d="M252 119 L223 132" stroke="#b9bfc3" stroke-width="1.5"/><circle cx="219" cy="134" r="4.5" fill="none" stroke="#c9ced2" stroke-width="1.6"/>
+      ${K.beaker(40,170,56,62,'rgba(220,235,240,.6)',.6)}${K.T(68,160,'acid to clean the loop',{s:9})}
+      ${K.shadow(340,60)}<path d="M310 ${B-2} q30 -10 60 0" fill="url(#kGlass)" stroke="${K.GL}"/>${K.heap(340,B-5,26,'#f4f4f0')}
+      ${K.T(110,40,st.m,{s:12,f:'var(--ink)'})}${K.TB(210,'Bunsen burner',{s:9.5})}${K.TB(340,'sample',{s:9.5})}`);
+      A.read([[lit?'lit':'blue','flame']])}
+    A.acts.test=()=>{const m=metal(),f=FLAME[m];let col=f[0],name=f[1];if(st.clean==='no'&&dirty&&m!=='Sodium'){col=mixHex(f[0],'#ffb400',.55);name=f[1]+', hidden by a strong yellow'}
+      lit=col;draw();dirty=true;A.obs(`The flame turns ${name}.`);A.table.add([st.m,name],{2:m});setTimeout(()=>{lit=null;draw()},1600)};
+    A.acts.chk=()=>{let ok=0,n=0;['X','Y','Z'].forEach(u=>{const s=$('#flame-u'+u);if(!s.value)return;n++;const g=s.value===UNK['Unknown '+u];s.parentElement.className=g?'ok':'bad';ok+=g});$('#flame-fmsg').textContent=n?`${ok} of ${n} correct.`:'Choose at least one answer.'};
+    A.changed=k=>{if(k==='clean'&&st.clean==='yes')dirty=false;draw()};draw();A.obs('Clean the loop, dip it in a sample and hold it in the flame.')}});
+
+/* ---------- Chromatography of food dyes ---------- */
+const DYES=[['Red dye R1',.52,'#d6283a'],['Yellow dye Y1',.78,'#f2c200'],['Blue dye B1',.90,'#2d6fd2'],['Red dye R2',.30,'#a8123f'],['Yellow dye Y2',.62,'#e9a400']];
+LABS.push(chromLab({id:'chromatography',unit:'u3',name:'Chromatography of food dyes',
+  aim:'Separate the dyes in coloured sweets by paper chromatography and identify them by comparing with known dyes.',
+  eq:'Solvent: water · each dye moves a different distance depending on how soluble it is and how strongly it sticks to the paper',
+  std:DYES,samples:[['Red dye R1',['Red dye R1']],['Yellow dye Y1',['Yellow dye Y1']],['Blue dye B1',['Blue dye B1']],['Orange sweet','?'],['Green sweet','?'],['Red dye R2',['Red dye R2']],['Yellow dye Y2',['Yellow dye Y2']]],
+  unknowns:['Orange sweet','Green sweet'],idTitle:'Which dyes are in each sweet?',pick:u=>{const r=Math.random()<.5?'Red dye R1':'Red dye R2',y=Math.random()<.5?'Yellow dye Y1':'Yellow dye Y2';return u==='Orange sweet'?[r,y]:[y,'Blue dye B1']},
+  concl:'Identify the dyes in each sweet. Explain how chromatography separates the dyes and why the start line is drawn in pencil.'}));
+
+/* ---------- navigation: one experiment at a time (menu is index.html) ---------- */
+LK.init('n5');
+$('#labs').innerHTML=LABS.map(shell).join('');
+LABS.forEach(mount);
+let current=null;
+function open(id){const L=LABS.find(l=>l.id===id);if(!L){location.replace('index.html');return}current=L;
+  $$('.lab').forEach(s=>s.hidden=s.id!=='lab-'+L.id);try{history.replaceState(null,'','#'+L.id)}catch(_){}
+  const root=$('#lab-'+L.id);LK.attach(L.id,{root,after:$('header',root)});L.A.redraw();window.scrollTo(0,0)}
+addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(id&&(!current||current.id!==id))open(id)});
+addEventListener('resize',()=>current&&current.A.redraw());
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>current&&current.A.redraw());
+open((location.hash||'').slice(1));
+</script>
+</body></html>

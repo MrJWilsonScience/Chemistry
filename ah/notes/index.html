@@ -1,0 +1,1055 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Advanced Higher Chemistry</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: single worksheet column — controls strip, question card, stepwise working */
+:root{
+  --bg:#f3f6f7; --paper:#ffffff; --fg:#17262b; --muted:#5a6d73; --line:#d5dfe2;
+  --accent:#0f7c8a; --accent-soft:#e0f1f3; --pink:#c2366b; --pink-soft:#fbe7ef;
+  --display:"Trebuchet MS",Trebuchet,sans-serif;
+  --body:"Trebuchet MS",Trebuchet,sans-serif;
+  --mono:"Trebuchet MS",Trebuchet,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1719; --paper:#172226; --fg:#e4eef0; --muted:#93a8ad; --line:#2a3a3f;
+  --accent:#4cc3d2; --accent-soft:#16343a; --pink:#f07aa5; --pink-soft:#3a1c28; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1719; --paper:#172226; --fg:#e4eef0; --muted:#93a8ad; --line:#2a3a3f;
+  --accent:#4cc3d2; --accent-soft:#16343a; --pink:#f07aa5; --pink-soft:#3a1c28; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:20px}
+h1{font-family:var(--display);font-weight:700;font-size:1.9rem;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:2px 0 0}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{border:0;border-radius:8px;padding:10px 18px;font:600 1rem var(--body);cursor:pointer;background:var(--fg);color:var(--bg)}
+.btn.alt{background:var(--accent-soft);color:var(--accent)}
+button:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px;display:grid;gap:16px}
+.label{font:600 .75rem var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.eq{font-family:var(--mono);font-size:1.1rem;background:var(--accent-soft);padding:14px;border-radius:8px;overflow-x:auto;white-space:nowrap}
+.q{font-size:1.15rem}
+.data{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.data div{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.data b{display:block;font-family:var(--display);font-size:1.05rem}
+.data span{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.unk{color:var(--pink);font-weight:600}
+.steps{display:grid;gap:12px}
+.step{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.num{font-family:var(--display);font-weight:700;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center}
+.step h3{margin:4px 0 4px;font-family:var(--display);font-size:1.05rem}
+.step .m{font-family:var(--mono);font-size:.95rem;line-height:1.8;overflow-x:auto;min-width:0}
+.ans{background:var(--pink-soft);color:var(--pink);font-weight:600;padding:2px 6px;border-radius:4px}
+sup,sub{font-size:.7em}
+.seg{display:flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--paper)}
+.seg button{border:0;background:none;color:var(--fg);font:600 .95rem var(--body);padding:8px 14px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.eq{white-space:normal;line-height:2.2}
+.formula{font-size:clamp(1rem,3.2vw,1.5rem);text-align:center;padding:14px;background:var(--accent-soft);border-radius:8px;overflow-x:auto;white-space:nowrap}
+.name{font-family:var(--display);font-size:clamp(1.2rem,4vw,1.6rem);font-weight:700;text-align:center;padding:14px;background:var(--accent-soft);border-radius:8px}
+.gw{overflow:hidden;background:var(--accent-soft);border-radius:8px;padding:8px}
+.gw svg{display:block;height:auto}
+.wrap>*,.card>*{min-width:0}
+.pair{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px}
+.pair>.mol{flex:1 1 200px;min-width:0;display:grid;gap:4px}
+.pair .op{font-size:1.5rem;color:var(--muted);flex:0 0 auto}
+.cap{font-size:.9rem;color:var(--muted);text-align:center}
+.tw{overflow-x:auto}
+table.tbl{border-collapse:collapse;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{border:1px solid var(--line);padding:5px 12px;text-align:center}
+.tbl th{background:var(--accent-soft);font-weight:600}
+.step .m{white-space:normal}
+.nuc{display:inline-flex;align-items:center;vertical-align:middle;font-size:1.15em;margin:0 2px}
+.nuc .ms{display:inline-flex;flex-direction:column;align-items:flex-end;font-size:.62em;line-height:1.05;margin-right:1px}
+.qbox{display:inline-block;min-width:2.2em;border:2px dashed var(--pink);border-radius:6px;padding:0 6px;color:var(--pink);font-weight:700;text-align:center}
+.hl{color:var(--pink);font-weight:700}
+.good{color:#1f8a5b;font-weight:600}
+.mk{display:inline-block;font-size:.8rem;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:1px 9px;margin-left:6px;vertical-align:2px}
+.ansbox{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:4px}
+.ansbox input{font:600 1.05rem var(--body);padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper);color:var(--fg);width:12em;max-width:100%}
+.ansbox .unit{color:var(--muted)}
+.fbk{font-weight:600}.fbk.ok{color:#1f8a5b}.fbk.no{color:var(--pink)}
+.btn.tog[aria-pressed="true"]{background:var(--accent);color:#fff}
+#sheetq>li{padding:14px 0;border-bottom:1px solid var(--line);display:grid;gap:10px}
+#sheetq,#sheeta{padding-left:0;margin:0;list-style:none}
+[hidden]{display:none!important}
+#sheeta>li{padding:10px 0;border-bottom:1px solid var(--line)}
+@media print{.controls,#show,#sheetans,header .sub{display:none!important}.card{border:0;padding:0}#sheeta{display:block!important}#sheetq>li{break-inside:avoid}}
+</style><style>.hcp,.fgsvg{--ink:var(--fg);--bond:var(--fg);--h:var(--fg);--o:var(--fg)}
+.hcp .q p,.hcp .a p{margin:.5em 0;max-width:75ch}
+.hcp .eqn{font-size:1.12rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.hcp .note{color:var(--muted);font-size:.9rem}
+.hcp .molwrap{overflow-x:auto;margin:8px 0}
+.hcp svg.mol{display:block;width:100%;max-height:46vh;min-width:min(100%,420px)}
+.hcp .mol .bd{stroke:var(--ink);stroke-width:2.6;stroke-linecap:round}
+.hcp .mol .hb{stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.hcp .mol text{font-family:var(--body);font-weight:700;text-anchor:middle;dominant-baseline:central;fill:var(--ink)}
+.hcp .mol .lb{font-size:24px}
+.hcp .mol .hh{font-size:19px}
+.hcp .mol .op{font-size:26px}
+.hcp .mol .ring,.hcp .mol .box{fill:none;stroke:var(--accent);stroke-width:3}
+.hcp .mol .box{stroke-dasharray:7 5}
+.hcp .tt{border-collapse:collapse;font-variant-numeric:tabular-nums;margin:6px 0}
+.hcp .tt td,.hcp .tt th{border:1px solid var(--line);padding:5px 12px;text-align:center}
+.hcp .tt th{font-size:.85rem;color:var(--muted)}.n5p{--ink:var(--fg)}
+.n5p .q p,.n5p .a p{margin:.5em 0;max-width:75ch}
+.n5p .eqn{font-size:1.12rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.n5p .note{color:var(--muted);font-size:.9rem}
+.n5p .molwrap{overflow-x:auto;margin:8px 0}
+.n5p svg.mol{display:block;width:100%;max-height:46vh;min-width:min(100%,420px)}
+.n5p .mol .bd{stroke:var(--ink);stroke-width:2.6;stroke-linecap:round}
+.n5p .mol .hb{stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.n5p .mol text{font-family:var(--body);font-weight:700;text-anchor:middle;dominant-baseline:central;fill:var(--ink)}
+.n5p .mol .lb{font-size:24px}
+.n5p .mol .hh{font-size:19px}
+.n5p .mol .op{font-size:26px}
+.n5p .mol .ring,.n5p .mol .box{fill:none;stroke:var(--accent);stroke-width:3}
+.n5p .mol .box{stroke-dasharray:7 5}
+.n5p .tt{border-collapse:collapse;font-variant-numeric:tabular-nums;margin:6px 0}
+.n5p .tt td,.n5p .tt th{border:1px solid var(--line);padding:5px 12px;text-align:center}
+.n5p .tt th{font-size:.85rem;color:var(--muted)}
+.n5p .gap{color:var(--accent)}
+.n5p .nuc{display:inline-flex;flex-direction:column;align-items:flex-end;line-height:1.05;font-size:.62em;vertical-align:middle;margin-right:2px}
+
+.apphead{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between}
+.crumbs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;color:var(--muted);font-size:.95rem}
+.crumb{border:0;background:none;color:var(--accent);font:600 .95rem var(--body);cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px}
+.crumbs .here{color:var(--fg);font-weight:600}
+.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.ucard,.tcard{display:grid;gap:4px;text-align:left;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--fg);cursor:pointer;font:inherit}
+.ucard{padding:22px;min-height:110px;align-content:start}
+.ucard b{font-family:var(--display);font-size:1.2rem}.tcard b{font-family:var(--display);font-size:1.02rem}
+.ucard span,.tcard span{color:var(--muted);font-size:.92rem}
+.ucard:hover,.tcard:hover,.ucard:focus-visible,.tcard:focus-visible{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.mix{background:var(--accent-soft);border-color:transparent}
+.grp{display:grid;gap:10px}.grp h2,#unit-title{font-family:var(--display);margin:6px 0 0}
+#unit-title{font-size:1.5rem}.grp h2{font-size:1.1rem}
+#gen-title{font-family:var(--display);font-size:1.5rem;margin:0}
+.vstack{display:grid;gap:18px}
+.btn:disabled{opacity:.4;cursor:default}.qnum{color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+.co{width:2.6em;font:600 1.1rem var(--body);text-align:center;border:1.5px solid var(--line);border-radius:6px;padding:4px 2px;background:var(--paper);color:var(--fg);margin-right:3px}
+.co.ok{border-color:#1f8a5b;background:color-mix(in srgb,#1f8a5b 15%,transparent)}
+.eq.bal{font-size:1.2rem;line-height:2.6}
+.sp{white-space:nowrap}.spec{color:var(--pink);text-decoration:line-through;text-decoration-thickness:2px}
+.bad{color:var(--pink);font-weight:600}
+.ref{display:flex;align-items:center;gap:16px;flex-wrap:wrap;color:var(--muted)}
+.isoref .gw{padding:4px}.isoref svg{width:240px;max-width:100%}
+.u0{color:#d1495b}.u1{color:#2a9d8f}.u2{color:#e9a03b}.u3{color:#5b6ee1}.u4{color:#9c4fd6}.u5{color:#4f9d2f}
+.timer{position:sticky;top:8px;z-index:5;justify-self:start;padding:8px 16px;border-radius:999px;background:var(--accent);color:#fff;font-weight:700;font-size:1.1rem}
+.selfmark{margin-top:14px;align-items:center}.selfmark span{color:var(--muted)}
+.book{position:fixed;top:0;right:0;bottom:0;width:min(520px,100vw);background:var(--paper);border-left:1px solid var(--line);box-shadow:-8px 0 24px rgba(0,0,0,.15);overflow:auto;padding:16px;z-index:20;display:grid;gap:12px;align-content:start}
+.bookhead{display:flex;justify-content:space-between;align-items:center}
+.book table{border-collapse:collapse;width:100%;font-size:.95rem}.book td,.book th{border:1px solid var(--line);padding:4px 6px;text-align:left}
+.tcard .sc{color:var(--accent);font-size:.85rem;font-weight:600}
+body.present .apphead h1,body.present .apphead .sub,body.present .crumbs,body.present #ctrls{display:none}
+body.present .wrap{max-width:none}body.present #qcard,body.present #work,body.present #sheet{zoom:1.45}body.present #qcard svg{max-width:900px!important}
+.uA{color:#d1495b}.uB{color:#2a9d8f}.uW{color:#e9a03b}
+.key{display:flex;gap:16px;flex-wrap:wrap;font-size:.95rem}
+.key span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:currentColor}
+</style>
+<div class="wrap">
+<header class="apphead"><div><h1>Advanced Higher Chemistry: topic practice</h1><p class="sub">Unlimited questions on every topic, with worked answers · data from the Higher and Advanced Higher data booklet</p></div><div class="controls"><button class="btn alt" id="book-btn">Data booklet</button><button class="btn alt tog" id="pres-btn" aria-pressed="false">Presentation mode</button><button class="btn alt" id="home-btn">All units</button></div></header>
+<nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+<section id="v-home" class="vstack"><div class="ugrid" id="units"></div></section>
+<section id="v-unit" class="vstack" hidden><h2 id="unit-title"></h2><div id="groups" class="vstack"></div></section>
+<section id="v-gen" class="vstack" hidden>
+  <div><h2 id="gen-title"></h2><p class="sub" id="gen-sub"></p></div>
+  <div class="controls" id="ctrls"></div>
+  <div class="controls">
+    <button class="btn alt" id="prev" aria-label="Previous question">‹ Previous</button>
+    <button class="btn alt" id="nextq" aria-label="Next question">Next ›</button>
+    <span class="qnum" id="qnum"></span>
+    <button class="btn" id="new">New question</button>
+    <button class="btn alt" id="showdata" hidden>Show data</button>
+    <button class="btn alt" id="show">Show worked answer</button>
+    <button class="btn alt" id="sheet-btn">Worksheet (10 questions)</button>
+    <button class="btn alt tog" id="marks-btn" aria-pressed="false">Show marks</button>
+    <label class="qnum">Timed quiz <select id="quizmin"><option value="10">10 min</option><option value="15">15 min</option><option value="20">20 min</option></select></label><button class="btn alt" id="quiz-btn">Start quiz</button>
+    <span class="qnum" id="score"></span>
+  </div>
+  <div class="timer" id="timer" hidden></div>
+  <section class="card" aria-live="polite" id="qcard"></section>
+  <section class="card" id="work" hidden><div class="label">Worked answer</div><div class="steps" id="steps"></div><div class="controls selfmark" id="selfmark"><span>How did you do?</span><button class="btn alt" id="sm-ok">I got it right</button><button class="btn alt" id="sm-no">Not yet</button></div></section>
+  <section class="card" id="sheet" hidden><div class="label">Worksheet</div><ol id="sheetq"></ol><div class="controls"><button class="btn alt" id="sheetans">Show answers</button></div><ol id="sheeta" hidden></ol></section>
+</section>
+</div>
+<aside class="book" id="book" hidden aria-label="Data booklet"><div class="bookhead"><b>Data booklet</b><button class="btn alt" id="book-close">Close</button></div><div class="controls" id="booktabs"></div><div id="bookbody"></div></aside><script>
+const LEVEL="H";
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const rint=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const sf=(x,n=3)=>Number(Number(x).toPrecision(n)).toString();
+const sub=s=>String(s).replace(/(\d+)/g,"<sub>$1</sub>");
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const cap1=s=>s[0].toUpperCase()+s.slice(1);
+const chg=q=>q===0?"":(Math.abs(q)>1?Math.abs(q):"")+(q>0?"+":"−");
+const EM="e<sup>−</sup>";
+const RAM_N5={H:1,He:4,Li:7,Be:9,B:11,C:12,N:14,O:16,F:19,Ne:20,Na:23,Mg:24.5,Al:27,Si:28,P:31,S:32,Cl:35.5,Ar:40,K:39,Ca:40,Ti:48,V:51,Cr:52,Mn:55,Fe:56,Co:59,Ni:58.5,Cu:63.5,Zn:65.5,Br:80,Rb:85.5,Sr:87.5,Ag:108,Sn:118.5,I:127,Ba:137.5,Hg:200.5,Pb:207};
+const RAM_H={H:1.0,He:4.0,Li:6.9,Be:9.0,B:10.8,C:12.0,N:14.0,O:16.0,F:19.0,Ne:20.2,Na:23.0,Mg:24.3,Al:27.0,Si:28.1,P:31.0,S:32.1,Cl:35.5,Ar:39.9,K:39.1,Ca:40.1,Ti:47.9,V:50.9,Cr:52.0,Mn:54.9,Fe:55.8,Co:58.9,Ni:58.7,Cu:63.5,Zn:65.4,Br:79.9,Rb:85.5,Sr:87.6,Ag:107.9,Sn:118.7,I:126.9,Ba:137.3,Hg:200.6,Pb:207.2};
+let RAM=(typeof LEVEL!=="undefined"&&LEVEL==="H")?RAM_H:RAM_N5;
+/* Solubilities of Selected Compounds in Water (data booklet): vs very soluble, s soluble, i insoluble, null no data */
+const SOL_AN=["bromide","carbonate","chloride","iodide","nitrate","phosphate","sulfate","oxide","hydroxide"];
+const SOLTAB={aluminium:"vs - vs vs vs i vs i i",ammonium:"vs vs vs vs vs vs vs - -",barium:"vs i vs vs vs i i vs vs",calcium:"vs i vs vs vs i s s s","copper(II)":"vs i vs - vs i vs i i","iron(II)":"vs i vs vs vs i vs i i","iron(III)":"vs - vs - vs i vs i i","lead(II)":"s i s i vs i i i i",lithium:"vs vs vs vs vs i vs vs vs",magnesium:"vs i vs vs vs i vs i i",nickel:"vs i vs vs vs i vs i i",potassium:"vs vs vs vs vs vs vs vs vs",silver:"i i i i vs i s i -",sodium:"vs vs vs vs vs vs vs vs vs","tin(II)":"vs i vs s - i vs i i",zinc:"vs i vs vs vs i vs i i"};
+function solOf(cation,anion){const r=SOLTAB[cation];if(!r)return undefined;const v=r.split(" ")[SOL_AN.indexOf(anion)];return v==="-"?null:v;}
+const SOLWORD={vs:"very soluble",s:"soluble",i:"insoluble"};
+function parse(f){const tok=f.match(/[A-Z][a-z]?|\d+|\(|\)/g),st=[{}];let i=0;
+  const merge=(a,b,k)=>{for(const x in b)a[x]=(a[x]||0)+b[x]*k;};
+  while(i<tok.length){const t=tok[i++];
+    if(t==="(")st.push({});
+    else if(t===")"){const g=st.pop();let k=1;if(/^\d+$/.test(tok[i]||""))k=+tok[i++];merge(st[st.length-1],g,k);}
+    else if(/^[A-Z]/.test(t)){let k=1;if(/^\d+$/.test(tok[i]||""))k=+tok[i++];merge(st[st.length-1],{[t]:1},k);}}
+  return st[0];}
+const gfm=f=>Object.entries(parse(f)).reduce((t,[e,k])=>t+RAM[e]*k,0);
+const fR=e=>RAM===RAM_H?RAM[e].toFixed(1):RAM[e];
+const gfmWork=f=>Object.entries(parse(f)).map(([e,k])=>k>1?`(${k} × ${fR(e)})`:`${fR(e)}`).join(" + ")+` = ${sf(gfm(f),4)} g`;
+function balance(L,R){const all=[...L,...R].map(parse),keys=[...new Set(all.flatMap(Object.keys))],n=all.length,k=Array(n).fill(1);
+  for(let max=1;max<=26;max++){const rec=i=>{if(i===n)return k.some(v=>v===max)&&keys.every(x=>all.reduce((s,e,j)=>s+(e[x]||0)*k[j]*(j<L.length?1:-1),0)===0);
+    for(let v=1;v<=max;v++){k[i]=v;if(rec(i+1))return true;}return false;};if(rec(0))return k.slice();}return null;}
+const nuc=(A,Z,sym,q=0)=>`<span class="nuc"><span class="ms"><span>${A}</span><span>${Z}</span></span>${sym}${q?`<sup>${chg(q)}</sup>`:""}</span>`;
+const SYM=["","H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr","Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe","Cs","Ba","La","Ce","Pr","Nd","Pm","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn","Fr","Ra","Ac","Th","Pa","U","Np","Pu","Am"];
+const ENAME={1:"hydrogen",2:"helium",3:"lithium",4:"beryllium",5:"boron",6:"carbon",7:"nitrogen",8:"oxygen",9:"fluorine",10:"neon",11:"sodium",12:"magnesium",13:"aluminium",14:"silicon",15:"phosphorus",16:"sulfur",17:"chlorine",18:"argon",19:"potassium",20:"calcium",26:"iron",29:"copper",30:"zinc",35:"bromine",47:"silver",53:"iodine",55:"caesium",6.1:"",82:"lead",83:"bismuth",84:"polonium",86:"radon",88:"radium",90:"thorium",91:"protactinium",92:"uranium",93:"neptunium",94:"plutonium",95:"americium",38:"strontium",39:"yttrium",27:"cobalt",28:"nickel",15.1:"",54:"xenon",56:"barium",1.1:"",36:"krypton",37:"rubidium",43:"technetium",85:"astatine",87:"francium",89:"actinium",81:"thallium",52:"tellurium",58:"cerium",57:"lanthanum"};
+const STEM=["meth","eth","prop","but","pent","hex","hept","oct"];
+const MULT=["","","di","tri","tetra"];
+const COLS=[null,"#c2366b","#1f8a5b","#d17a00"];
+function G(){const g={A:[],B:[]};g.at=(el,x,y,u=0)=>(g.A.push({el,x,y,u}),g.A.length-1);g.bd=(a,b,o=1)=>g.B.push({a,b,o});return g;}
+function drawG(g,colour){const gr=g;
+  const SC=58,A=g.A.map(t=>({...t})),B=g.B.map(b=>({...b}));
+  const val={C:4,O:2,N:3,Cl:1,Br:1,F:1,I:1,H:1};
+  const base=A.length;
+  for(let i=0;i<base;i++){const t=A[i];if(!val[t.el])continue;let used=0;const dirs=[];
+    B.forEach(b=>{if(b.a===i||b.b===i){used+=b.o;const o=A[b.a===i?b.b:b.a];dirs.push(Math.atan2(o.y-t.y,o.x-t.x));}});
+    for(let k=0;k<val[t.el]-used;k++){let best=null,bs=-1e9;
+      for(let d=0;d<360;d+=15){const th=d*Math.PI/180,L=0.72,hx=t.x+L*Math.cos(th),hy=t.y+L*Math.sin(th);
+        let md=Math.PI;dirs.forEach(e=>{let df=Math.abs(th-e)%(2*Math.PI);if(df>Math.PI)df=2*Math.PI-df;md=Math.min(md,df);});
+        let sc=md+(d%90===0?(md>=1.5&&!g.ring?0.9:0.15):0);if(g.ring&&i<g.rn){const r=Math.hypot(t.x,t.y)||1;sc+=1.2*(t.x*Math.cos(th)+t.y*Math.sin(th))/r;}A.forEach((o,j)=>{if(j!==i&&Math.hypot(o.x-hx,o.y-hy)<0.55)sc-=5;});
+        if(sc>bs){bs=sc;best=[hx,hy,th];}}
+      const h=A.push({el:"H",x:best[0],y:best[1],u:t.u})-1;B.push({a:i,b:h,o:1});dirs.push(best[2]);}}
+  const X=t=>t.x*SC,Y=t=>-t.y*SC,xs=A.map(X),ys=A.map(Y),minx=Math.min(...xs)-16,miny=Math.min(...ys)-16,W=Math.max(...xs)-minx+16,H=Math.max(...ys)-miny+16;
+  const col=u=>colour&&u?COLS[u]:"var(--fg)";let s="";
+  B.forEach(bd=>{const p=A[bd.a],q=A[bd.b],x1p=X(p),y1p=Y(p),x2p=X(q),y2p=Y(q),L=Math.hypot(x2p-x1p,y2p-y1p),ux=(x2p-x1p)/L,uy=(y2p-y1p)/L;
+    const r1=p.el==="*"?0:11,r2=q.el==="*"?0:11,x1=x1p+ux*r1,y1=y1p+uy*r1,x2=x2p-ux*r2,y2=y2p-uy*r2,c=col(q.u||p.u);
+    (bd.o===2?[-3.5,3.5]:[0]).forEach(o=>s+=`<line x1="${x1-uy*o}" y1="${y1+ux*o}" x2="${x2-uy*o}" y2="${y2+ux*o}" stroke="${c}" stroke-width="${colour&&(q.u||p.u)?2.6:1.8}"/>`);});
+  A.forEach(t=>{if(t.el!=="*")s+=`<text x="${X(t)}" y="${Y(t)+6}" text-anchor="middle" font-size="${t.el==="H"?16:18}" font-weight="${t.el==="H"?400:600}" fill="${col(t.u)}" font-family="var(--body)">${t.el}</text>`;});
+  return `<div class="gw"><svg viewBox="${minx} ${miny} ${W} ${H}" style="width:100%;max-width:${W}px;margin:0 auto" stroke-linecap="round" role="img" aria-label="structural formula">${s}</svg></div>`;
+}
+/* ---- chain molecule model: carbons numbered 1..n left to right ---- */
+const mk=(type,n,o={})=>({type,n,subs:o.subs||[],dbl:o.dbl??null,oh:o.oh??null,ko:o.ko??null,X:o.X||[]});
+const clone=m=>({...m,subs:m.subs.map(s=>({...s})),X:m.X.map(x=>({...x}))});
+function bondsAt(m,i){let b=m.type==="cyclo"?2:(i>1)+(i<m.n);
+  if(m.dbl!=null&&(i===m.dbl||i===m.dbl+1))b++;
+  b+=m.subs.filter(s=>s.pos===i).length+m.X.filter(x=>x.pos===i).length+(m.oh===i?1:0);
+  if(m.type==="acid"&&i===1)b+=3;if(m.type==="ald"&&i===1)b+=2;if(m.type==="ket"&&i===m.ko)b+=2;return b;}
+const hOn=(m,i)=>4-bondsAt(m,i);
+function capOK(m){for(let i=1;i<=m.n;i++)if(hOn(m,i)<0)return false;return true;}
+const carbons=m=>m.n+m.subs.reduce((a,s)=>a+s.len,0);
+function counts(m){let H=0;for(let i=1;i<=m.n;i++)H+=hOn(m,i);H+=m.subs.reduce((a,s)=>a+2*s.len+1,0);if(m.oh)H++;if(m.type==="acid")H++;
+  const c={C:carbons(m),H};m.X.forEach(x=>c[x.el]=(c[x.el]||0)+1);const O=(m.oh?1:0)+(m.type==="acid"?2:0)+(m.type==="ald"||m.type==="ket"?1:0);if(O)c.O=O;return c;}
+function molF(m){const c=counts(m);let s="C"+(c.C>1?c.C:"")+"H"+(c.H>1?c.H:"");["Br","Cl","F","O"].forEach(e=>{if(c[e])s+=e+(c[e]>1?c[e]:"");});return s;}
+function rev(m){const n=m.n,r=clone(m);r.subs.forEach(s=>s.pos=n+1-s.pos);r.X.forEach(x=>x.pos=n+1-x.pos);if(m.oh)r.oh=n+1-m.oh;if(m.ko)r.ko=n+1-m.ko;if(m.dbl)r.dbl=n-m.dbl;return r;}
+function key(m){const p=m.dbl?[m.dbl]:m.oh?[m.oh]:m.ko?[m.ko]:[];return [...p,...[...m.subs,...m.X].map(s=>s.pos).sort((a,b)=>a-b)];}
+function normalize(m){if(m.type==="acid"||m.type==="cyclo"||m.type==="ald")return m;const r=rev(m),a=key(m),b=key(r);
+  for(let i=0;i<a.length;i++){if(a[i]<b[i])return m;if(b[i]<a[i])return r;}return name(m)<=name(r)?m:r;}
+const XN={Br:"bromo",Cl:"chloro",F:"fluoro",I:"iodo"};
+function prefixGroups(m){const g={};m.subs.forEach(s=>{const k=s.len===1?"methyl":"ethyl";(g[k]=g[k]||[]).push(s.pos);});m.X.forEach(x=>{(g[XN[x.el]]=g[XN[x.el]]||[]).push(x.pos);});return g;}
+function name(m){const g=prefixGroups(m),keys=Object.keys(g).sort(),st=STEM[m.n-1];
+  if(m.type==="cyclo")return (keys[0]||"")+"cyclo"+st+"ane";
+  const pre=keys.map(k=>{const p=g[k].sort((a,b)=>a-b);return p.join(",")+"-"+MULT[p.length]+k;}).join("-");
+  let base;
+  if(m.type==="alkane")base=st+"ane";
+  else if(m.type==="alkene")base=m.n<=3?st+"ene":`${st}-${m.dbl}-ene`;
+  else if(m.type==="alcohol")base=m.n<=2?st+"anol":`${st}an-${m.oh}-ol`;
+  else if(m.type==="ald")base=st+"anal";
+  else if(m.type==="ket")base=m.n<=4?st+"anone":`${st}an-${m.ko}-one`;
+  else base=st+"anoic acid";
+  return pre+base;}
+function shortF(m){if(m.type==="cyclo")return null;const parts=[];
+  for(let i=m.n;i>=1;i--){let t;
+    if(m.type==="acid"&&i===1)t=m.n===1?"HCOOH":"COOH";
+    else if(m.type==="ald"&&i===1)t=m.n===1?"HCHO":"CHO";
+    else if(m.type==="ket"&&i===m.ko)t="CO";
+    else{const h=hOn(m,i);t="C"+(h?"H"+(h>1?h:""):"");
+      m.X.filter(x=>x.pos===i).forEach(x=>t+=x.el);
+      if(m.oh===i)t+=(i===1||m.n===1)?"OH":"(OH)";
+      const ss=m.subs.filter(s=>s.pos===i),me=ss.filter(s=>s.len===1).length,et=ss.filter(s=>s.len===2).length;
+      if(me)t+="(CH3)"+(me>1?me:"");if(et)t+="(CH2CH3)"+(et>1?et:"");}
+    parts.push(t);if(i>1&&m.dbl===i-1)parts.push("=");}
+  return parts.join("");}
+function molG(m,hl){const g=G(),C=[];
+  if(m.type==="cyclo"){g.ring=true;g.rn=m.n;const n=m.n,R=0.5/Math.sin(Math.PI/n);
+    for(let i=0;i<n;i++){const a=Math.PI/2+i*2*Math.PI/n;C.push(g.at("C",R*Math.cos(a),R*Math.sin(a)));}
+    for(let i=0;i<n;i++)g.bd(C[i],C[(i+1)%n]);
+    m.subs.forEach(s=>{const a=Math.PI/2+(s.pos-1)*2*Math.PI/n;let prev=C[s.pos-1];for(let k=1;k<=s.len;k++){const c=g.at("C",(R+k)*Math.cos(a),(R+k)*Math.sin(a));g.bd(prev,c);prev=c;}});
+    return g;}
+  for(let i=1;i<=m.n;i++)C[i]=g.at("C",i-1,0);
+  for(let i=1;i<m.n;i++)g.bd(C[i],C[i+1],m.dbl===i?2:1);
+  const used={};const place=i=>{used[i]=used[i]||[];const pref=i%2?1:-1,d=!used[i].includes(pref)?pref:-pref;used[i].push(d);return d;};
+  if(m.type==="ald"){const o1=g.at("O",0,1,hl?1:0);g.bd(C[1],o1,2);used[1]=[1];}
+  if(m.type==="ket"){used[m.ko]=[];const d=place(m.ko);const o1=g.at("O",m.ko-1,d,hl?1:0);g.bd(C[m.ko],o1,2);}
+  if(m.type==="acid"){const o1=g.at("O",0,1,hl?1:0);g.bd(C[1],o1,2);const o2=g.at("O",-1,0,hl?1:0);g.bd(C[1],o2);used[1]=["side",1,-1];}
+  m.subs.forEach(s=>{const d=place(s.pos);let prev=C[s.pos];for(let k=1;k<=s.len;k++){const c=g.at("C",s.pos-1,d*k);g.bd(prev,c);prev=c;}});
+  const put=(i,el,u)=>{let x=i-1,y=0;used[i]=used[i]||[];
+    if((i===1||i===m.n)&&!used[i].includes("side")){x=(i===1&&m.n>1)?-1:m.n;used[i].push("side");}else y=place(i);
+    const a=g.at(el,x,y,u);g.bd(C[i],a);return a;};
+  if(m.oh)put(m.oh,"O",hl?1:0);
+  m.X.forEach(x=>put(x.pos,x.el,hl?1:0));
+  if(m.lay)layout(g,m,C);
+  return g;}
+/* layout variation: bend an end of the main chain so it looks like a branch, and/or mirror the drawing */
+function layout(g,m,C){const L=m.lay,A=g.A,save=A.map(t=>[t.x,t.y]);
+  if(L.bend){const {end,k,dir}=L.bend,n=m.n,corner=end==="R"?n-k:k+1;
+    for(let j=1;j<=k;j++){const i=end==="R"?n-k+j:k+1-j;A[C[i]].x=corner-1;A[C[i]].y=dir*j;}
+    // atoms attached to bent carbons (H only later) – none allowed; check clashes
+    const heavy=A.map((t,i)=>i);let bad=false;for(let i=0;i<A.length;i++)for(let j=i+1;j<A.length;j++)if(Math.hypot(A[i].x-A[j].x,A[i].y-A[j].y)<0.9)bad=true;
+    if(bad)A.forEach((t,i)=>{t.x=save[i][0];t.y=save[i][1];});}
+  if(L.flip)A.forEach(t=>t.x=-t.x);}
+function vary(m,o={}){if(!m||m.type==="cyclo")return m;const lay={flip:Math.random()<.5};
+  if((o.bend??.45)>Math.random()&&m.n>=4){const end=pick(["L","R"]),k=rint(1,Math.min(3,m.n-3)),idx=[];for(let j=1;j<=k;j++)idx.push(end==="R"?m.n-k+j:j);
+    const corner=end==="R"?m.n-k:k+1,att=i=>m.subs.some(s=>s.pos===i)||m.X.some(x=>x.pos===i)||m.oh===i||m.ko===i||(m.type==="acid"||m.type==="ald")&&i===1;
+    if(!idx.some(att)){const usedDirs=m.subs.filter(s=>s.pos===corner).length+(m.oh===corner?1:0)+(m.ko===corner?1:0);if(usedDirs<2){const dir=usedDirs?(corner%2?-1:1):pick([1,-1]);lay.bend={end,k,dir};}}}
+  m.lay=lay;return m;}
+/* plausible wrong names for "spot the mistake" questions */
+function wrongName(m){const right=name(m),opts=[];
+  if(m.type!=="acid"&&m.type!=="ald"&&m.type!=="cyclo"){const r=name(rev(m));if(r!==right)opts.push([r,"The chain has been numbered from the wrong end. Number from the end that gives the "+(m.dbl?"double bond":m.oh?"–OH group":"branches")+" the lowest number."]);}
+  const g=prefixGroups(m),keys=Object.keys(g);
+  if(keys.some(k=>g[k].length>1)){const w=right.replace(/-(di|tri|tetra)(methyl|ethyl)/g,"-$2");if(w!==right)opts.push([w,"When the same branch appears more than once, a prefix is needed: di (2), tri (3) or tetra (4)."]);}
+  if(keys.length>1){const pre=keys.sort().reverse().map(k=>{const q=g[k].sort((a,b)=>a-b);return q.join(",")+"-"+MULT[q.length]+k;}).join("-"),w=pre+right.slice(right.indexOf(STEM[m.n-1]+(m.type==="cyclo"?"":"")));
+    if(w!==right&&m.type!=="cyclo")opts.push([w,"Branches must be listed in alphabetical order (ethyl before methyl)."]);}
+  return opts.length?pick(opts):null;}
+const showMol=(m,fmt,hl)=>fmt==="short"&&m.type!=="cyclo"?`<div class="formula">${sub(shortF(m))}</div>`:drawG(molG(m,hl),hl);
+function randMol(type,o={}){
+  for(let t=0;t<800;t++){
+    if(type==="cyclo"){const n=rint(o.nmin&&o.nmin>3?o.nmin:3,Math.min(6,o.nmax??6));const m=mk("cyclo",n,{subs:Math.random()<(o.branch??.35)?[{pos:1,len:1}]:[]});if(carbons(m)<=(o.maxC??8))return m;continue;}
+    const nmin=Math.max({alkane:1,alkene:2,alcohol:1,acid:1,ald:1,ket:3}[type],o.nmin??1),nmax=o.nmax??(type==="acid"||type==="ald"||type==="ket"?6:8);if(nmax<nmin)return null;
+    const n=rint(nmin,nmax),m=mk(type,n);
+    if(type==="alkene")m.dbl=rint(1,n-1);
+    if(type==="alcohol")m.oh=rint(1,n);
+    if(type==="ket")m.ko=rint(2,n-1);
+    const ns=Math.random()<(o.branch??.55)?pick([1,1,1,2,2,3]):0;
+    for(let k=0;k<ns;k++){const len=Math.random()<.8?1:2,lo=len===1?2:3,hi=len===1?n-1:n-2;if(hi<lo)continue;m.subs.push({pos:rint(lo,hi),len});}
+    if(carbons(m)>(o.maxC??8)||!capOK(m))continue;
+    return normalize(m);}
+  return null;}
+function describeName(m){ // steps explaining the name
+  const st=STEM[m.n-1],g=prefixGroups(m),out=[];
+  if(m.type==="cyclo")out.push(`The carbons form a ring of ${m.n}, so the name starts <b>cyclo</b> and uses the stem <b>${st}-</b>.`);
+  else out.push(`The longest chain has <b>${m.n}</b> carbon atom${m.n>1?"s":""}, so the stem is <b>${st}-</b>.`);
+  const end={alkane:"Only single C–C bonds: ending <b>-ane</b>.",cyclo:"Only single C–C bonds: ending <b>-ane</b>.",
+    alkene:m.n<=3?"There is a C=C double bond: ending <b>-ene</b> (no number needed for this short chain).":`There is a C=C double bond. Number the chain from the end nearer the double bond: it starts at carbon <b>${m.dbl}</b>, giving <b>-${m.dbl}-ene</b>.`,
+    alcohol:m.n<=2?"There is a hydroxyl group (–OH): ending <b>-anol</b>.":`There is a hydroxyl group (–OH). Number from the end nearer the –OH: it is on carbon <b>${m.oh}</b>, giving <b>-an-${m.oh}-ol</b>.`,
+    acid:"There is a carboxyl group (–COOH): ending <b>-anoic acid</b>. The carboxyl carbon is always carbon 1.",
+    ald:"It is an aldehyde: the carbonyl group (C=O) is at the end of the chain (–CHO). Ending <b>-anal</b>; the carbonyl carbon is always carbon 1.",
+    ket:m.n<=4?"It is a ketone: the carbonyl group (C=O) is inside the chain. Ending <b>-anone</b> (no number needed for this short chain).":`It is a ketone: the carbonyl group (C=O) is inside the chain. Number from the end nearer the C=O: it is on carbon <b>${m.ko}</b>, giving <b>-an-${m.ko}-one</b>.`}[m.type];
+  out.push(end);
+  const keys=Object.keys(g).sort();
+  if(keys.length)out.push("Branches: "+keys.map(k=>`${g[k].length>1?MULT[g[k].length]:""}${k} on carbon${g[k].length>1?"s":""} ${g[k].sort((a,b)=>a-b).join(" and ")}`).join("; ")+(keys.length>1?". Branches are listed in alphabetical order.":"."));
+  else out.push("There are no branches.");
+  return out;}
+
+const bendNote=m=>m.lay&&m.lay.bend?`<br><b>Watch out:</b> the longest chain is not all drawn in a straight line. It turns a corner, so follow it round: it has <b>${m.n}</b> carbons.`:"";
+const MODS=[];
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Electronic Configuration
+//@moduleonly 1
+//@sub Advanced Higher Chemistry · spdf notation for atoms and ions (elements 1–36)
+//@level AH
+//@libs chem
+const CONTROLS=[{id:"t",label:"Species",opts:[["atom","Atoms"],["ion","Ions"],["tm","Transition metal ions"]]}];
+const ORD=[["1s",2],["2s",2],["2p",6],["3s",2],["3p",6],["4s",2],["3d",10],["4p",6]];
+const EL=["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr"];
+const NAMES=["hydrogen","helium","lithium","beryllium","boron","carbon","nitrogen","oxygen","fluorine","neon","sodium","magnesium","aluminium","silicon","phosphorus","sulfur","chlorine","argon","potassium","calcium","scandium","titanium","vanadium","chromium","manganese","iron","cobalt","nickel","copper","zinc","gallium","germanium","arsenic","selenium","bromine","krypton"];
+function fill(n){const c={};let r=n;for(const [o,m] of ORD){if(r<=0)break;c[o]=Math.min(m,r);r-=c[o];}
+  if(n===24){c["4s"]=1;c["3d"]=5;}if(n===29){c["4s"]=1;c["3d"]=10;}return c;}
+const ORDER_SHOW=["1s","2s","2p","3s","3p","3d","4s","4p"];
+const fmt=c=>ORDER_SHOW.filter(o=>c[o]).map(o=>`${o}<sup>${c[o]}</sup>`).join(" ");
+function make(){const t=opt("t");
+  if(t==="atom"){const z=rint(3,36),c=fill(z);return {q:`Write the <span class="unk">electronic configuration</span> of ${NAMES[z-1]} (Z = ${z}) in spdf notation.`,noAns:true,
+    steps:[["Aufbau order","Fill 1s, 2s, 2p, 3s, 3p, 4s then 3d, 4p (the data booklet periodic table gives Z)."],...(z===24||z===29?[["Exception",`${EL[z-1]} has ${z===24?"a half-filled":"a full"} 3d subshell, which is more stable, so 4s holds only one electron.`]]:[]),["Answer",`<span class="ans">${fmt(c)}</span>`]]};}
+  let z,q;if(t==="tm"){z=rint(21,30);q=z===21?3:z===30?2:pick([2,3]);if(z===29)q=pick([1,2]);if(z===24)q=3;if(z===25)q=2;}
+  else{const o=pick([[3,1],[4,2],[11,1],[12,2],[13,3],[19,1],[20,2],[7,-3],[8,-2],[9,-1],[15,-3],[16,-2],[17,-1],[35,-1]]);z=o[0];q=o[1];}
+  const c=fill(z);let r=q;
+  if(q>0){for(const o of ["4p","4s","3d","3p","3s","2p","2s"]){while(r>0&&c[o]){c[o]--;r--;}}}else{let e=-q;for(const [o,m] of ORD){const h=c[o]||0;if(h<m){const a=Math.min(m-h,e);c[o]=h+a;e-=a;}if(!e)break;}}
+  const ch=q>0?`${q>1?q:""}+`:`${-q>1?-q:""}−`;
+  return {q:`Write the <span class="unk">electronic configuration</span> of the ${EL[z-1]}<sup>${ch}</sup> ion in spdf notation.`,noAns:true,
+    steps:[["Atom",`${EL[z-1]}: ${fmt(fill(z))}`],["Electrons",q>0?(z>20?`Remove ${q} electron${q>1?"s":""}; for transition metals the 4s electrons are lost before the 3d.`:`Remove ${q} electron${q>1?"s":""} from the outer subshell.`):`Add ${-q} electron${q<-1?"s":""} to fill the outer subshell.`],["Answer",`<span class="ans">${fmt(c)||"(no electrons)"}</span>`]]};}
+
+return {id:'econfig',lvl:'AH',title:'Electronic Configuration',sub:'Advanced Higher Chemistry · spdf notation for atoms and ions (elements 1–36)',desc:'spdf for atoms and ions',CONTROLS,ST,make,auto:false};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Spectroscopy
+//@moduleonly 1
+//@sub Advanced Higher Chemistry · E = Lhc/λ, c = fλ and proton NMR
+//@level AH
+//@libs chem
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Question type",opts:[["E","Energy from wavelength"],["lam","Wavelength from energy"],["f","Frequency"],["nmr","Proton NMR"]]}];
+const L=6.02e23,h=6.63e-34,c=3.00e8;
+const NMR=[["ethanol, CH<sub>3</sub>CH<sub>2</sub>OH",[["CH<sub>3</sub>",3,"triplet"],["CH<sub>2</sub>",2,"quartet"],["OH",1,"singlet"]]],["ethanal, CH<sub>3</sub>CHO",[["CH<sub>3</sub>",3,"doublet"],["CHO",1,"quartet"]]],["propanone, CH<sub>3</sub>COCH<sub>3</sub>",[["CH<sub>3</sub> (both)",6,"singlet"]]],
+ ["methyl ethanoate, CH<sub>3</sub>COOCH<sub>3</sub>",[["CH<sub>3</sub>CO",3,"singlet"],["OCH<sub>3</sub>",3,"singlet"]]],["chloroethane, CH<sub>3</sub>CH<sub>2</sub>Cl",[["CH<sub>3</sub>",3,"triplet"],["CH<sub>2</sub>",2,"quartet"]]],["propan-2-ol, (CH<sub>3</sub>)<sub>2</sub>CHOH",[["CH<sub>3</sub> (both)",6,"doublet"],["CH",1,"multiplet (7 lines, ignoring OH)"],["OH",1,"singlet"]]],["ethyl ethanoate, CH<sub>3</sub>COOCH<sub>2</sub>CH<sub>3</sub>",[["CH<sub>3</sub>CO",3,"singlet"],["OCH<sub>2</sub>",2,"quartet"],["CH<sub>2</sub>CH<sub>3</sub>",3,"triplet"]]],["methanol, CH<sub>3</sub>OH",[["CH<sub>3</sub>",3,"singlet"],["OH",1,"singlet"]]],["ethanoic acid, CH<sub>3</sub>COOH",[["CH<sub>3</sub>",3,"singlet"],["COOH",1,"singlet"]]],["propanoic acid, CH<sub>3</sub>CH<sub>2</sub>COOH",[["CH<sub>3</sub>",3,"triplet"],["CH<sub>2</sub>",2,"quartet"],["COOH",1,"singlet"]]],["butanone, CH<sub>3</sub>COCH<sub>2</sub>CH<sub>3</sub>",[["CH<sub>3</sub>CO",3,"singlet"],["CH<sub>2</sub>",2,"quartet"],["CH<sub>2</sub>CH<sub>3</sub>",3,"triplet"]]],["1-chloropropane, CH<sub>2</sub>ClCH<sub>2</sub>CH<sub>3</sub>",[["CH<sub>2</sub>Cl",2,"triplet"],["CH<sub>2</sub>",2,"multiplet (sextet)"],["CH<sub>3</sub>",3,"triplet"]]],["2-methylpropane, (CH<sub>3</sub>)<sub>3</sub>CH",[["CH<sub>3</sub> (all three)",9,"doublet"],["CH",1,"multiplet (10 lines)"]]],["methyl propanoate, CH<sub>3</sub>CH<sub>2</sub>COOCH<sub>3</sub>",[["CH<sub>3</sub>",3,"triplet"],["CH<sub>2</sub>",2,"quartet"],["OCH<sub>3</sub>",3,"singlet"]]],["benzene, C<sub>6</sub>H<sub>6</sub>",[["C<sub>6</sub>H<sub>6</sub> (all equivalent)",6,"singlet"]]]];
+const e=x=>{const p=Math.floor(Math.log10(Math.abs(x)));return `${(x/10**p).toFixed(2)} × 10<sup>${p}</sup>`;};
+function make(){const t=opt("t"),lam=rint(200,750);
+  const K=`L = 6.02 × 10<sup>23</sup> mol<sup>−1</sup>, h = 6.63 × 10<sup>−34</sup> J s, c = 3.00 × 10<sup>8</sup> m s<sup>−1</sup> (data booklet)`;
+  if(t==="E"){const E=L*h*c/(lam*1e-9)/1000;return {q:`Calculate the <span class="unk">energy, in kJ mol<sup>−1</sup></span>, of radiation with a wavelength of ${lam} nm.`,
+    steps:[["Constants",K,0],["Convert λ",`${lam} nm = ${lam} × 10<sup>−9</sup> m`],["E = Lhc ÷ λ",`E = (6.02 × 10<sup>23</sup> × 6.63 × 10<sup>−34</sup> × 3.00 × 10<sup>8</sup>) ÷ ${lam} × 10<sup>−9</sup> = ${e(E*1000)} J mol<sup>−1</sup>`],["Answer",`E = <span class="ans">${sf(E,3)} kJ mol<sup>−1</sup></span>`]]};}
+  if(t==="lam"){const E=rint(160,600),l=L*h*c/(E*1000)*1e9;return {q:`Calculate the <span class="unk">wavelength, in nm</span>, of radiation with an energy of ${E} kJ mol<sup>−1</sup>.`,
+    steps:[["Constants",K,0],["λ = Lhc ÷ E",`λ = (6.02 × 10<sup>23</sup> × 6.63 × 10<sup>−34</sup> × 3.00 × 10<sup>8</sup>) ÷ (${E} × 10<sup>3</sup>) = ${e(l*1e-9)} m`],["Answer",`λ = <span class="ans">${sf(l,3)} nm</span>`]]};}
+  if(t==="f"){const f=c/(lam*1e-9);return {q:`Calculate the <span class="unk">frequency</span> of light with a wavelength of ${lam} nm, in Hz (×10<sup>14</sup>).`,
+    steps:[["c = fλ, so f = c ÷ λ",`f = 3.00 × 10<sup>8</sup> ÷ ${lam} × 10<sup>−9</sup> = ${e(f)} Hz`],["Answer",`f = <span class="ans">${sf(f/1e14,3)}</span> × 10<sup>14</sup> Hz`]]};}
+  const [n,env]=pick(NMR);return {q:`Predict the proton NMR spectrum of ${n}: the <span class="unk">number of peaks</span>, their relative areas and their splitting.`,noAns:true,
+    steps:[["Environments",`<span class="ans">${env.length}</span> hydrogen environment${env.length>1?"s":""}: ${env.map(x=>x[0]).join(", ")}`],["Integration",`Peak area ratio <span class="ans">${env.map(x=>x[1]).join(" : ")}</span>`],["Splitting (n + 1 rule)",env.map(x=>`${x[0]}: ${x[2]}`).join("<br>")+`<br><span class="muted">Chemical shifts can be checked against the data booklet's proton NMR table.</span>`]]};}
+
+return {id:'spectro',lvl:'AH',title:'Spectroscopy',sub:'Advanced Higher Chemistry · E = Lhc/λ, c = fλ and proton NMR',desc:'E = Lhc/λ and proton NMR',CONTROLS,ST,make,auto:true};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Transition Metal Complexes
+//@moduleonly 1
+//@sub Advanced Higher Chemistry · oxidation states, naming complexes and colour
+//@level AH
+//@libs chem
+const CONTROLS=[{id:"t",label:"Question type",opts:[["ox","Oxidation state"],["name","Name a complex"],["col","Colour"]]}];
+const OX=[["MnO<sub>4</sub><sup>−</sup>","Mn",7],["MnO<sub>4</sub><sup>2−</sup>","Mn",6],["MnO<sub>2</sub>","Mn",4],["Cr<sub>2</sub>O<sub>7</sub><sup>2−</sup>","Cr",6],["CrO<sub>4</sub><sup>2−</sup>","Cr",6],["Cr<sub>2</sub>O<sub>3</sub>","Cr",3],["VO<sub>2</sub><sup>+</sup>","V",5],["VO<sup>2+</sup>","V",4],["V<sub>2</sub>O<sub>5</sub>","V",5],["Fe<sub>2</sub>O<sub>3</sub>","Fe",3],["[Fe(CN)<sub>6</sub>]<sup>4−</sup>","Fe",2],["[Fe(CN)<sub>6</sub>]<sup>3−</sup>","Fe",3],["[CuCl<sub>4</sub>]<sup>2−</sup>","Cu",2],["[Co(NH<sub>3</sub>)<sub>6</sub>]<sup>3+</sup>","Co",3],["[Ni(H<sub>2</sub>O)<sub>6</sub>]<sup>2+</sup>","Ni",2],["Cu<sub>2</sub>O","Cu",1],["[Cr(H<sub>2</sub>O)<sub>6</sub>]<sup>3+</sup>","Cr",3],["CrO<sub>3</sub>","Cr",6],["Mn<sub>2</sub>O<sub>7</sub>","Mn",7],["[Fe(H<sub>2</sub>O)<sub>6</sub>]<sup>2+</sup>","Fe",2],["TiO<sub>2</sub>","Ti",4],["[CoCl<sub>4</sub>]<sup>2−</sup>","Co",2],["[Cu(NH<sub>3</sub>)<sub>4</sub>(H<sub>2</sub>O)<sub>2</sub>]<sup>2+</sup>","Cu",2],["VO<sub>3</sub><sup>−</sup>","V",5],["[Ni(CN)<sub>4</sub>]<sup>2−</sup>","Ni",2]];
+const ROM=["0","I","II","III","IV","V","VI","VII"];
+const LIG=[["H<sub>2</sub>O","aqua",0],["NH<sub>3</sub>","ammine",0],["Cl","chlorido",-1],["CN","cyanido",-1],["OH","hydroxido",-1],["F","fluorido",-1]];
+const MET=[["Fe","iron","ferrate",[2,3]],["Co","cobalt","cobaltate",[2,3]],["Cu","copper","cuprate",[2]],["Ni","nickel","nickelate",[2]],["Cr","chromium","chromate",[3]],["Mn","manganese","manganate",[2]],["Zn","zinc","zincate",[2]]];
+const PRE=["","","di","tri","tetra","penta","hexa"];
+const WH=["purple","violet","blue","green-blue","blue-green","green","yellow-green","yellow","orange","red"]; // booklet colour wheel order
+const COL=WH.map((c,i)=>[c,WH[(i+5)%10]]);
+function make(){const t=opt("t");
+  if(t==="ox"){const [f,m,o]=pick(OX);return {q:`State the <span class="unk">oxidation state</span> of ${m} in ${f}.`,ans:{text:[String(o),"+"+o,ROM[o]]},
+    steps:[["Rules","O is −2, H is +1, Cl is −1, CN is −1, NH<sub>3</sub> and H<sub>2</sub>O are 0. The oxidation states add up to the overall charge."],["Answer",`${m}: <span class="ans">+${o}</span>`]]};}
+  if(t==="name"){const [ms,mn,ma,os]=pick(MET),o=pick(os),[lf,ln,lc]=pick(LIG),n=pick(lc===0?[4,6]:[4,6]),ch=o+n*lc,cs=ch===0?"":`<sup>${Math.abs(ch)>1?Math.abs(ch):""}${ch>0?"+":"−"}</sup>`;
+    const lfx=lc?lf+`<sup>−</sup>`:lf,form=`[${ms}(${lf})<sub>${n}</sub>]${cs}`,nm=`${PRE[n]}${ln}${ch<0?ma:mn}(${ROM[o]})`;
+    return {q:`Name the complex <span class="unk">${form}</span>.`,ans:{text:[nm]},steps:[["Ligands",`${n} × ${lfx} = <b>${PRE[n]}${ln}</b>`],["Metal oxidation state",`${o>0?"+":""}${o}: ${ch<0?"the complex is negative, so the metal name ends in -ate":"the complex is not negative, so use the metal's normal name"}`],["Answer",`<span class="ans">${nm}</span>${ch?` ion`:""}`]]};}
+  const [a,s]=pick(COL);return {q:`A transition metal complex absorbs mainly <span class="unk">${a}</span> light. What colour does it appear?`,ans:{text:[s]},
+    steps:[["Colour wheel","The colour seen is the complementary colour, opposite the absorbed colour on the colour wheel in the data booklet."],["Answer",`It appears <span class="ans">${s}</span>.`],["Why","Ligands split the d orbitals; electrons absorb light to move to the higher d orbitals (d–d transition)."]]};}
+
+return {id:'tmetals',lvl:'AH',title:'Transition Metal Complexes',sub:'Advanced Higher Chemistry · oxidation states, naming complexes and colour',desc:'Oxidation states, naming, colour',CONTROLS,ST,make,auto:false};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Reaction Kinetics
+//@moduleonly 1
+//@sub Advanced Higher Chemistry · orders from initial rates, rate equations and the rate constant
+//@level AH
+//@libs chem
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Find",opts:[["ord","Orders and rate equation"],["k","Rate constant and units"]]}];
+const KU=["s<sup>−1</sup>","mol<sup>−1</sup> l s<sup>−1</sup>","mol<sup>−2</sup> l<sup>2</sup> s<sup>−1</sup>","mol<sup>−3</sup> l<sup>3</sup> s<sup>−1</sup>"];
+function make(){const a=rint(0,2),b=rint(0,2);if(a+b===0)return null;const k=rint(11,99)/10*10**-rint(1,3),A0=pick([0.1,0.2]),B0=pick([0.1,0.2]);
+  const runs=[[A0,B0],[2*A0,B0],[A0,2*B0]],r=runs.map(([x,y])=>k*x**a*y**b);
+  const tbl=`<table class="dt"><tr><th>Exp</th><th>[A] / mol l<sup>−1</sup></th><th>[B] / mol l<sup>−1</sup></th><th>Initial rate / mol l<sup>−1</sup> s<sup>−1</sup></th></tr>${runs.map((x,i)=>`<tr><td>${i+1}</td><td>${x[0]}</td><td>${x[1]}</td><td>${sf(r[i],3)}</td></tr>`).join("")}</table>`;
+  const rq=`rate = k${a?`[A]${a>1?`<sup>${a}</sup>`:""}`:""}${b?`[B]${b>1?`<sup>${b}</sup>`:""}`:""}`,tot=a+b;
+  const fac=x=>x===0?"unchanged, so order 0":x===1?"doubles, so order 1":"× 4, so order 2";
+  const s1=[["Order in A (exp 1 → 2)",`[A] doubles, rate ${fac(a)}`],["Order in B (exp 1 → 3)",`[B] doubles, rate ${fac(b)}`]];
+  if(opt("t")==="ord")return {display:tbl,q:`Determine the <span class="unk">rate equation</span> for the reaction A + B → products, and the overall order.`,noAns:true,steps:[...s1,["Rate equation",`<span class="ans">${rq}</span>, overall order ${tot}`]]};
+  return {display:tbl,q:`Use experiment 1 to calculate the <span class="unk">rate constant, k</span>, including its units.`,steps:[...s1,["Rearrange",`${rq}, so k = rate ÷ (${a?`[A]${a>1?`<sup>${a}</sup>`:""}`:""}${b?`[B]${b>1?`<sup>${b}</sup>`:""}`:""})`],["Substitute",`k = ${sf(r[0],3)} ÷ (${a?`${A0}${a>1?`<sup>${a}</sup>`:""}`:""}${a&&b?" × ":""}${b?`${B0}${b>1?`<sup>${b}</sup>`:""}`:""})`],["Answer",`k = <span class="ans">${sf(k,3)} ${KU[tot-1]}</span>`]]};}
+
+return {id:'kinetics',lvl:'AH',title:'Reaction Kinetics',sub:'Advanced Higher Chemistry · orders from initial rates, rate equations and the rate constant',desc:'Orders, rate equations, k',CONTROLS,ST,make,auto:true};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Equilibrium Constants
+//@h1 Equilibrium Constants
+//@sub Advanced Higher Chemistry · K = [C]<sup>c</sup>[D]<sup>d</sup> ÷ [A]<sup>a</sup>[B]<sup>b</sup> (data booklet relationship)
+//@level AH
+//@libs chem
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Find",opts:[["K","Equilibrium constant"],["c","An equilibrium concentration"]]}];
+const RX=[{r:[["H<sub>2</sub>",1],["I<sub>2</sub>",1]],p:[["HI",2]],st:"(g)"},{r:[["N<sub>2</sub>",1],["H<sub>2</sub>",3]],p:[["NH<sub>3</sub>",2]],st:"(g)"},{r:[["SO<sub>2</sub>",2],["O<sub>2</sub>",1]],p:[["SO<sub>3</sub>",2]],st:"(g)"},
+ {r:[["N<sub>2</sub>O<sub>4</sub>",1]],p:[["NO<sub>2</sub>",2]],st:"(g)"},{r:[["PCl<sub>5</sub>",1]],p:[["PCl<sub>3</sub>",1],["Cl<sub>2</sub>",1]],st:"(g)"},{r:[["CH<sub>3</sub>COOH",1],["C<sub>2</sub>H<sub>5</sub>OH",1]],p:[["CH<sub>3</sub>COOC<sub>2</sub>H<sub>5</sub>",1],["H<sub>2</sub>O",1]],st:"(ℓ)"},{r:[["CO",1],["H<sub>2</sub>O",1]],p:[["CO<sub>2</sub>",1],["H<sub>2</sub>",1]],st:"(g)"},{r:[["CO",1],["H<sub>2</sub>",2]],p:[["CH<sub>3</sub>OH",1]],st:"(g)"},{r:[["CH<sub>4</sub>",1],["H<sub>2</sub>O",1]],p:[["CO",1],["H<sub>2</sub>",3]],st:"(g)"},{r:[["NO",2],["O<sub>2</sub>",1]],p:[["NO<sub>2</sub>",2]],st:"(g)"},{r:[["N<sub>2</sub>",1],["O<sub>2</sub>",1]],p:[["NO",2]],st:"(g)"},{r:[["HI",2]],p:[["H<sub>2</sub>",1],["I<sub>2</sub>",1]],st:"(g)"}];
+const term=([s,n])=>`[${s}]${n>1?`<sup>${n}</sup>`:""}`;
+function make(){const x=pick(RX),cs=[...x.r,...x.p].map(()=>pick([0.05,0.1,0.15,0.2,0.25,0.3,0.4,0.5,0.8,1.0,1.2,1.5,2.0])),nr=x.r.length;
+  const num=x.p.reduce((a,[,n],i)=>a*cs[nr+i]**n,1),den=x.r.reduce((a,[,n],i)=>a*cs[i]**n,1),K=num/den;
+  const eqn=x.r.map(([s,n])=>`${n>1?n:""}${s}`).join(" + ")+" ⇌ "+x.p.map(([s,n])=>`${n>1?n:""}${s}`).join(" + ");
+  const expr=`K = ${x.p.map(term).join("")} ÷ ${x.r.map(term).join("")}`;const sp=[...x.r,...x.p];
+  if(opt("t")==="K")return {eq:eqn,eqLabel:"Equilibrium",q:`At equilibrium the concentrations (mol l<sup>−1</sup>) are: ${sp.map((s,i)=>`[${s[0]}] = ${cs[i]}`).join(", ")}. Calculate the <span class="unk">equilibrium constant</span>, K.`,
+    steps:[["Write the expression",expr],["Substitute",`K = ${x.p.map(([,n],i)=>`${cs[nr+i]}${n>1?`<sup>${n}</sup>`:""}`).join(" × ")} ÷ (${x.r.map(([,n],i)=>`${cs[i]}${n>1?`<sup>${n}</sup>`:""}`).join(" × ")})`],["Answer",`K = <span class="ans">${sf(K)}</span> (no units)`]]};
+  const j=rint(0,sp.length-1),[s,n]=sp[j],Kr=Number(sf(K,3)),isP=j>=nr;
+  const others=sp.map((t,i)=>i===j?null:`[${t[0]}] = ${cs[i]}`).filter(Boolean).join(", ");
+  const rest=isP?num/cs[j]**n:den/cs[j]**n;const val=isP?(Kr*den/rest)**(1/n):(num/(Kr*rest))**(1/n);
+  return {eq:eqn,eqLabel:"Equilibrium",q:`K = ${Kr}. At equilibrium ${others} (mol l<sup>−1</sup>). Calculate the <span class="unk">equilibrium concentration of ${s}</span>, in mol l<sup>−1</sup>.`,
+    steps:[["Write the expression",expr],["Rearrange",`${term([s,n])} = ${isP?`K × ${x.r.map(term).join("")} ÷ (other products)`:`${x.p.map(term).join("")} ÷ (K × other reactants)`}`],
+      ["Answer",`${n>1?`${term([s,n])} = ${sf(val**n)}, so `:""}[${s}] = <span class="ans">${sf(val)} mol l<sup>−1</sup></span>`]]};}
+
+return {id:'kc',lvl:'AH',title:'Equilibrium Constants',sub:'Advanced Higher Chemistry · K = [C]<sup>c</sup>[D]<sup>d</sup> ÷ [A]<sup>a</sup>[B]<sup>b</sup> (data booklet relationship)',desc:'Calculate K or a concentration',CONTROLS,ST,make,auto:true};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title pH of Strong Acids and Bases
+//@h1 pH of Strong Acids and Bases
+//@sub Advanced Higher Chemistry · pH = −log<sub>10</sub>[H<sub>3</sub>O<sup>+</sup>] · K<sub>w</sub> = [H<sub>3</sub>O<sup>+</sup>][OH<sup>−</sup>] = 1.01 × 10<sup>−14</sup> at 25 °C (data booklet)
+//@level AH
+//@libs
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Questions on",opts:[["a","Strong acids"],["b","Strong bases"],["mix","Mixed"]],def:"mix",noRand:true},{id:"m",label:"Find",opts:[["ph","Find pH"],["conc","Find concentration"]]}];
+const KW=1.01e-14,PKW=-Math.log10(KW); // 14.00 (2 d.p.)
+const dp=(x,n=2)=>x.toFixed(n);
+const sci=x=>{if(x>=0.001&&x<1)return sf(x,3);const e=Math.floor(Math.log10(x)),m=x/10**e;return e===0?sf(x):`${sf(m)} × 10<sup>${e<0?"−"+(-e):e}</sup>`;};
+const KWs=`1.01 × 10<sup>−14</sup>`;
+const two=(a,b)=>`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px 18px"><div><b>Method 1: using K<sub>w</sub></b><br>${a}</div><div><b>Method 2: using pOH</b><br>${b}</div></div>`;
+const SA=[["hydrochloric acid","HCl","a"],["nitric acid","HNO<sub>3</sub>","a"],["hydrobromic acid","HBr","a"],["sodium hydroxide","NaOH","b"],["potassium hydroxide","KOH","b"],["lithium hydroxide","LiOH","b"],["hydriodic acid","HI","a"],["perchloric acid","HClO<sub>4</sub>","a"],["rubidium hydroxide","RbOH","b"],["caesium hydroxide","CsOH","b"]];
+function make(){const t=opt("t"),m=opt("m"),want=t==="mix"?pick(["a","b"]):t;
+  const [n,f]=pick(SA.filter(s=>s[2]===want)),base=want==="b";
+  const c=pick([1,1.5,2,2.5,3,4,5,8])*10**-pick([1,2,3,4]);
+  const eq=base?`${f}(aq) → ${f.replace("OH","")}<sup>+</sup>(aq) + OH<sup>−</sup>(aq)`:`${f}(aq) + H<sub>2</sub>O(ℓ) → H<sub>3</sub>O<sup>+</sup>(aq) + ${f.replace(/^H/,"")}<sup>−</sup>(aq)`;
+  const head={eqLabel:"Ionisation (strong, so fully ionised)",eq};
+  const consts=["Relationships",`pH = −log[H<sub>3</sub>O<sup>+</sup>]<br>K<sub>w</sub> = [H<sub>3</sub>O<sup>+</sup>][OH<sup>−</sup>] = ${KWs}<br>pH + pOH = 14`];
+  if(m==="ph"){
+    if(!base){const pH=-Math.log10(c),pOH=PKW-pH;return {...head,q:`Calculate the <span class="unk">pH</span> of ${sci(c)} mol l<sup>−1</sup> ${n}.`,data:[[f,`c = ${sci(c)} mol l<sup>−1</sup><br>strong acid, fully ionised`],consts],
+      steps:[["Concentration of H₃O⁺",`Fully ionised and 1 : 1, so [H<sub>3</sub>O<sup>+</sup>] = ${sci(c)} mol l<sup>−1</sup>`],
+        ["Check with [OH⁻] and pOH",two(`[OH<sup>−</sup>] = K<sub>w</sub> ÷ [H<sub>3</sub>O<sup>+</sup>] = ${KWs} ÷ (${sci(c)}) = ${sci(KW/c)} mol l<sup>−1</sup>`,`pOH = −log[OH<sup>−</sup>] = ${dp(pOH,3)}<br>pH + pOH = 14<br>pH = 14 − ${dp(pOH,3)} = ${dp(14-pOH,2)}`),0],
+        ["pH",`pH = −log[H<sub>3</sub>O<sup>+</sup>] = −log(${sci(c)})<br>pH = <span class="ans">${dp(pH)}</span>`]]};}
+    const H=KW/c,pOH=-Math.log10(c),pH=PKW-pOH;
+    return {...head,q:`Calculate the <span class="unk">pH</span> of ${sci(c)} mol l<sup>−1</sup> ${n}.`,data:[[f,`c = ${sci(c)} mol l<sup>−1</sup><br>strong base, fully ionised`],consts],
+      steps:[["Concentration of OH⁻",`Fully ionised and 1 : 1, so [OH<sup>−</sup>] = ${sci(c)} mol l<sup>−1</sup>`],
+        ["Two routes to pH",two(`[H<sub>3</sub>O<sup>+</sup>] = K<sub>w</sub> ÷ [OH<sup>−</sup>]<br>= ${KWs} ÷ (${sci(c)})<br>= ${sci(H)} mol l<sup>−1</sup><br>pH = −log(${sci(H)}) = ${dp(pH)}`,
+          `pOH = −log[OH<sup>−</sup>]<br>= −log(${sci(c)})<br>= ${dp(pOH,3)}<br>pH + pOH = 14<br>pH = 14 − ${dp(pOH,3)} = ${dp(14-pOH)}`)],
+        ["pH",(Math.abs(Number(dp(pH))-Number(dp(14-pOH)))>0.001?"The two methods can differ in the last decimal place because K<sub>w</sub> = 1.01 × 10<sup>−14</sup> while pH + pOH = 14 is rounded. Either answer is accepted.<br>":"Both methods give the same answer.<br>")+"pH = <span class=\"ans\">"+dp(14-pOH)+"</span>"]]};}
+  const pHr=Number(dp(-Math.log10(base?KW/c:c))),Hr=10**-pHr,pOHr=PKW-pHr,OH=KW/Hr;
+  if(!base)return {...head,q:`A solution of ${n} has a pH of ${dp(pHr)}. Calculate the <span class="unk">concentration</span> of the ${n}, in mol l<sup>−1</sup>.`,data:[[f,`pH = ${dp(pHr)}<br>c = <span class="unk">?</span>`],consts],
+    steps:[["Concentration of H₃O⁺",`[H<sub>3</sub>O<sup>+</sup>] = 10<sup>−pH</sup> = 10<sup>−${dp(pHr)}</sup> = ${sci(Hr)} mol l<sup>−1</sup>`],
+      ["Check with [OH⁻] and pOH",two(`[OH<sup>−</sup>] = K<sub>w</sub> ÷ [H<sub>3</sub>O<sup>+</sup>] = ${sci(OH)} mol l<sup>−1</sup>`,`pH + pOH = 14<br>pOH = 14 − ${dp(pHr)} = ${dp(14-pHr,2)}<br>[OH<sup>−</sup>] = 10<sup>−${dp(14-pHr,2)}</sup> = ${sci(10**-(14-pHr))} mol l<sup>−1</sup>`),0],
+      ["Concentration of "+f,`Fully ionised and 1 : 1, so [${f}] = [H<sub>3</sub>O<sup>+</sup>]<br>c = <span class="ans">${sci(Hr)} mol l<sup>−1</sup></span>`]]};
+  return {...head,q:`A solution of ${n} has a pH of ${dp(pHr)}. Calculate the <span class="unk">concentration</span> of the ${n}, in mol l<sup>−1</sup>.`,data:[[f,`pH = ${dp(pHr)}<br>c = <span class="unk">?</span>`],consts],
+    steps:[["Two routes to [OH⁻]",two(`[H<sub>3</sub>O<sup>+</sup>] = 10<sup>−pH</sup> = 10<sup>−${dp(pHr)}</sup> = ${sci(Hr)} mol l<sup>−1</sup><br>[OH<sup>−</sup>] = K<sub>w</sub> ÷ [H<sub>3</sub>O<sup>+</sup>]<br>= ${KWs} ÷ (${sci(Hr)})<br>= ${sci(OH)} mol l<sup>−1</sup>`,
+        `pH + pOH = 14<br>pOH = 14 − ${dp(pHr)} = ${dp(14-pHr,2)}<br>[OH<sup>−</sup>] = 10<sup>−pOH</sup> = 10<sup>−${dp(14-pHr,2)}</sup><br>= ${sci(10**-(14-pHr))} mol l<sup>−1</sup>`)],
+      ["Concentration of "+f,`Fully ionised and 1 : 1, so [${f}] = [OH<sup>−</sup>]<br>c = <span class="ans">${sci(OH)} mol l<sup>−1</sup></span>`]]};}
+
+return {id:'phstrong',lvl:'AH',title:'pH of Strong Acids and Bases',sub:'Advanced Higher Chemistry · pH = −log<sub>10</sub>[H<sub>3</sub>O<sup>+</sup>] · K<sub>w</sub> = [H<sub>3</sub>O<sup>+</sup>][OH<sup>−</sup>] = 1.01 × 10<sup>−14</sup> at 25 °C (data booklet)',desc:'pH, pOH and K<sub>w</sub>',CONTROLS,ST,make,auto:true};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title pH of Weak Acids and Bases
+//@h1 pH of Weak Acids and Bases
+//@sub Advanced Higher Chemistry · pH = ½pK<sub>a</sub> − ½log c (acids) · pH = 7 + ½pK<sub>a</sub> + ½log c (bases)
+//@level AH
+//@libs
+const AUTO_ANS=1;
+const CONTROLS=[{id:"m",label:"Type",opts:[["acid","Weak acid"],["base","Weak base"]]}];
+
+const RAM={H:1.0,He:4.0,Li:6.9,Be:9.0,B:10.8,C:12.0,N:14.0,O:16.0,F:19.0,Ne:20.2,Na:23.0,Mg:24.3,Al:27.0,Si:28.1,P:31.0,S:32.1,Cl:35.5,Ar:39.9,K:39.1,Ca:40.1,Ti:47.9,V:50.9,Cr:52.0,Mn:54.9,Fe:55.8,Co:58.9,Ni:58.7,Cu:63.5,Zn:65.4,Br:79.9,Rb:85.5,Sr:87.6,Ag:107.9,Sn:118.7,I:126.9,Ba:137.3,Hg:200.6,Pb:207.2};
+const EL={H:"hydrogen",C:"carbon",N:"nitrogen",O:"oxygen",Na:"sodium",Mg:"magnesium",Al:"aluminium",S:"sulfur",Cl:"chlorine",K:"potassium",Ca:"calcium",Fe:"iron",Cu:"copper",Zn:"zinc"};
+const dp=(x,n=2)=>x.toFixed(n);
+const gfm=c=>Object.entries(c).reduce((t,[e,k])=>t+RAM[e]*k,0);
+const gfmWork=sp=>Object.entries(sp.c).map(([e,k])=>k>1?`(${k} × ${RAM[e].toFixed(1)})`:`${RAM[e].toFixed(1)}`).join(" + ")+` = ${sf(gfm(sp.c),4)} g`;
+const sci=x=>{if(x>=0.01&&x<1000)return sf(x);const e=Math.floor(Math.log10(x)),m=x/10**e;return `${sf(m)} × 10<sup>${e<0?"−"+(-e):e}</sup>`;};
+const SP=(n,f,c,s,k,gas)=>({n,f,c,s,k,gas});
+const eqHtml=r=>{const t=s=>(s.k>1?s.k:"")+s.f;return r.filter(s=>s.s==="r").map(t).join(" + ")+" → "+r.filter(s=>s.s==="p").map(t).join(" + ");};
+const ratioStep=(K,U,nK)=>{const nU=Number(sf(nK))*U.k/K.k;return [nU,`${K.k} mol ${K.f} : ${U.k} mol ${U.f}<br>${sf(nK)} mol : ${sf(nK)} × ${U.k}/${K.k} = ${sf(nU)} mol ${U.f}`];};
+
+
+
+const WA=[["ethanoic acid","CH<sub>3</sub>COOH",4.76,"CH<sub>3</sub>COO<sup>−</sup>"],["methanoic acid","HCOOH",3.75,"HCOO<sup>−</sup>"],["propanoic acid","C<sub>2</sub>H<sub>5</sub>COOH",4.87,"C<sub>2</sub>H<sub>5</sub>COO<sup>−</sup>"],["benzoic acid","C<sub>6</sub>H<sub>5</sub>COOH",4.20,"C<sub>6</sub>H<sub>5</sub>COO<sup>−</sup>"],["butanoic acid","CH<sub>3</sub>(CH<sub>2</sub>)<sub>2</sub>COOH",4.83,"CH<sub>3</sub>(CH<sub>2</sub>)<sub>2</sub>COO<sup>−</sup>"],["hydrofluoric acid","HF",3.20,"F<sup>−</sup>"],["chloroethanoic acid","CH<sub>2</sub>ClCOOH",2.86,"CH<sub>2</sub>ClCOO<sup>−</sup>"],["phenol","C<sub>6</sub>H<sub>5</sub>OH",9.99,"C<sub>6</sub>H<sub>5</sub>O<sup>−</sup>"],["hypochlorous acid","HOCl",7.53,"OCl<sup>−</sup>"],["pentanoic acid","CH<sub>3</sub>(CH<sub>2</sub>)<sub>3</sub>COOH",4.84,"CH<sub>3</sub>(CH<sub>2</sub>)<sub>3</sub>COO<sup>−</sup>"],["hydrocyanic acid","HCN",9.21,"CN<sup>−</sup>"]];
+const WB=[["ammonia","NH<sub>3</sub>",9.25,"NH<sub>4</sub><sup>+</sup>"],["methylamine","CH<sub>3</sub>NH<sub>2</sub>",10.66,"CH<sub>3</sub>NH<sub>3</sub><sup>+</sup>"],["ethylamine","C<sub>2</sub>H<sub>5</sub>NH<sub>2</sub>",10.75,"C<sub>2</sub>H<sub>5</sub>NH<sub>3</sub><sup>+</sup>"],["dimethylamine","(CH<sub>3</sub>)<sub>2</sub>NH",10.73,"(CH<sub>3</sub>)<sub>2</sub>NH<sub>2</sub><sup>+</sup>"]];
+function genWeak(mode){
+  const m=mode==="rand"?pick(["acid","base"]):mode,c=pick([0.01,0.02,0.05,0.1,0.2,0.25,0.5,1.0]),lc=Math.log10(c);
+  if(m==="acid"){
+    const [n,f,pKa,cb]=pick(WA),pH=0.5*pKa-0.5*lc;
+    return {eqLabel:"Equilibrium (weak, partially ionised)",eq:`${f}(aq) ⇌ H<sup>+</sup>(aq) + ${cb}(aq)`,
+     q:`Calculate the <span class="unk">pH</span> of ${sf(c)} mol l<sup>−1</sup> ${n}.`,
+     data:[[f,`c = ${sf(c)} mol l<sup>−1</sup><br>pK<sub>a</sub> = ${pKa}`],["Relationship",`pH = ½pK<sub>a</sub> − ½log c`]],
+     steps:[["Find pKa",`pK<sub>a</sub> of ${n} = ${pKa} (data booklet)`],
+      ["Substitute",`pH = ½pK<sub>a</sub> − ½log c<br>pH = ½(${pKa}) − ½log(${sf(c)})<br>pH = ${dp(pKa/2,3)} − ½(${dp(lc,3)})`],
+      ["pH",`pH = ${dp(pKa/2,3)} + ${dp(-lc/2,3)}<br>pH = <span class="ans">${dp(pH)}</span>`]]};
+  }
+  const [n,f,pKa,ca]=pick(WB),pH=7+0.5*pKa+0.5*lc;
+  return {eqLabel:"Equilibrium (weak base)",eq:`${f}(aq) + H<sub>2</sub>O(l) ⇌ ${ca}(aq) + OH<sup>−</sup>(aq)`,
+   q:`Calculate the <span class="unk">pH</span> of ${sf(c)} mol l<sup>−1</sup> ${n}.`,
+   data:[[f,`c = ${sf(c)} mol l<sup>−1</sup><br>pK<sub>a</sub> of ${ca} = ${pKa}`],["Relationship",`pH = 7 + ½pK<sub>a</sub> + ½log c`]],
+   steps:[["Find pKa",`pK<sub>a</sub> of the conjugate acid ${ca} = ${pKa} (data booklet)`],
+    ["Substitute",`pH = 7 + ½pK<sub>a</sub> + ½log c<br>pH = 7 + ½(${pKa}) + ½log(${sf(c)})<br>pH = 7 + ${dp(pKa/2,3)} + ½(${dp(lc,3)})`],
+    ["pH",`pH = 7 + ${dp(pKa/2,3)} − ${dp(-lc/2,3)}<br>pH = <span class="ans">${dp(pH)}</span>`]]};
+}
+
+
+function make(){return genWeak(opt("m"));}
+
+return {id:'phweak',lvl:'AH',title:'pH of Weak Acids and Bases',sub:'Advanced Higher Chemistry · pH = ½pK<sub>a</sub> − ½log c (acids) · pH = 7 + ½pK<sub>a</sub> + ½log c (bases)',desc:'Using pK<sub>a</sub>',CONTROLS,ST,make,auto:true};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Buffer Solutions
+//@h1 Buffer Solutions
+//@sub Advanced Higher Chemistry · pH = pK<sub>a</sub> − log<sub>10</sub>([acid]/[salt]) · pK<sub>a</sub> values from the data booklet
+//@level AH
+//@libs chem
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Find",opts:[["ph","pH of the buffer"],["ratio","Acid : salt ratio"]]}];
+const AC=[["methanoic acid","sodium methanoate",3.75],["ethanoic acid","sodium ethanoate",4.76],["propanoic acid","sodium propanoate",4.87],["butanoic acid","sodium butanoate",4.83],["benzoic acid","sodium benzoate",4.20],["chloroethanoic acid","sodium chloroethanoate",2.86],["pentanoic acid","sodium pentanoate",4.84],["hydrofluoric acid","sodium fluoride",3.20]];
+function make(){const [a,s,pKa]=pick(AC);
+  if(opt("t")==="ph"){const ca=pick([0.05,0.1,0.2,0.25,0.4,0.5,1.0]),cs=pick([0.05,0.1,0.2,0.25,0.4,0.5,1.0]),pH=pKa-Math.log10(ca/cs);
+    return {intro:`A buffer solution contains ${ca} mol l<sup>−1</sup> ${a} and ${cs} mol l<sup>−1</sup> ${s}.`,q:`Calculate the <span class="unk">pH</span> of the buffer.`,
+      steps:[["pK<sub>a</sub> from the data booklet",`${a}: pK<sub>a</sub> = ${pKa}`],["Substitute",`pH = ${pKa} − log<sub>10</sub>(${ca} ÷ ${cs}) = ${pKa} − (${(Math.log10(ca/cs)).toFixed(3)})`],["Answer",`pH = <span class="ans">${pH.toFixed(2)}</span>`]]};}
+  const pH=Number((pKa+rint(-8,8)/10).toFixed(2)),r=10**(pKa-pH);
+  return {intro:`A buffer of pH ${pH} is to be made from ${a} and ${s}.`,q:`Calculate the <span class="unk">ratio of [acid] to [salt]</span> needed.`,
+    steps:[["pK<sub>a</sub> from the data booklet",`${a}: pK<sub>a</sub> = ${pKa}`],["Rearrange",`log<sub>10</sub>([acid]/[salt]) = pK<sub>a</sub> − pH = ${pKa} − ${pH} = ${(pKa-pH).toFixed(2)}`],["Answer",`[acid] : [salt] = <span class="ans">${sf(r)}</span> : 1`]]};}
+
+return {id:'buffers',lvl:'AH',title:'Buffer Solutions',sub:'Advanced Higher Chemistry · pH = pK<sub>a</sub> − log<sub>10</sub>([acid]/[salt]) · pK<sub>a</sub> values from the data booklet',desc:'pH and acid : salt ratio',CONTROLS,ST,make,auto:true};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Acid-base Indicators
+//@h1 Choosing Acid-base Indicators
+//@sub Advanced Higher Chemistry · pH = pK<sub>In</sub> ± 1 · indicator ranges from the data booklet
+//@level AH
+//@libs chem
+const CONTROLS=[{id:"t",label:"Question type",opts:[["choose","Choose an indicator"],["pkin","pK<sub>In</sub> from the range"]]}];
+const IND=[["bromophenol blue",3.0,4.6],["methyl orange",3.1,4.4],["methyl red",4.4,6.2],["phenolphthalein",8.3,10.0],["bromocresol green",3.8,5.4],["bromocresol purple",5.2,6.8],["bromothymol blue",6.0,7.6],["p-nitrophenol",5.4,6.6],["phenol red",6.8,8.4],["thymolphthalein",9.4,10.6],["screened methyl orange",2.9,4.4],["azolitmin (litmus)",4.5,8.3]];
+const TIT=[["hydrochloric acid","sodium hydroxide","strong acid with strong base",7.0],["ethanoic acid","sodium hydroxide","weak acid with strong base",8.8],["hydrochloric acid","ammonia solution","strong acid with weak base",5.3],["methanoic acid","potassium hydroxide","weak acid with strong base",8.3],["nitric acid","ammonia solution","strong acid with weak base",5.1],["sulfuric acid","sodium hydroxide","strong acid with strong base",7.0],["propanoic acid","sodium hydroxide","weak acid with strong base",8.9],["hydrochloric acid","methylamine solution","strong acid with weak base",5.9]];
+function make(){
+  if(opt("t")==="pkin"){const [n,lo,hi]=pick(IND);return {intro:`The data booklet gives the pH range of ${n} as ${lo}–${hi}.`,q:`Estimate the <span class="unk">pK<sub>In</sub></span> of ${n}.`,
+    steps:[["Relationship","The colour change happens over pH = pK<sub>In</sub> ± 1, so pK<sub>In</sub> is the middle of the range."],["Answer",`(${lo} + ${hi}) ÷ 2 = <span class="ans">${sf((lo+hi)/2,3)}</span>`]],ans:{num:(lo+hi)/2,tol:0.03}};}
+  const [a,b,type,eq]=pick(TIT),choices=shuffle(IND).slice(0,4);if(!choices.some(c=>c[1]<=eq&&eq<=c[2]))choices[0]=pick(IND.filter(c=>c[1]<=eq&&eq<=c[2]));
+  const good=choices.filter(c=>c[1]<=eq&&eq<=c[2]);
+  return {intro:`${cap1(a)} is titrated with ${b} (${type}). The pH at the equivalence point is ${eq}.`,display:`<div class="tw"><table class="tbl" style="margin:0 auto"><tr><th>Indicator</th><th>pH range</th></tr>${shuffle(choices).map(c=>`<tr><td style="text-align:left">${c[0]}</td><td>${c[1]}–${c[2]}</td></tr>`).join("")}</table></div>`,
+    q:`Which indicator(s) would be <span class="unk">suitable</span>? Explain.`,steps:[["Rule","A suitable indicator changes colour over a pH range that includes the pH at the equivalence point."],["Check each range",choices.map(c=>`${c[0]} (${c[1]}–${c[2]}): ${c[1]<=eq&&eq<=c[2]?"includes":"does not include"} ${eq}`).join("<br>")],["Answer",`<span class="ans">${good.map(c=>c[0]).join(" or ")}</span>`]]};}
+
+return {id:'indicators',lvl:'AH',title:'Acid-base Indicators',sub:'Advanced Higher Chemistry · pH = pK<sub>In</sub> ± 1 · indicator ranges from the data booklet',desc:'Choosing an indicator, pK<sub>In</sub>',CONTROLS,ST,make,auto:false};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Thermodynamics
+//@h1 Entropy and Free Energy
+//@sub Advanced Higher Chemistry · ΔS° = ΣS°(products) − ΣS°(reactants) · ΔG° = ΔH° − TΔS° · entropies from the data booklet
+//@level AH
+//@libs chem
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Find",opts:[["S","Entropy change"],["G","Free energy change"],["T","Temperature for feasibility"]]}];
+// standard entropies (J K−1 mol−1) from the Higher/AH data booklet
+const S0={"H<sub>2</sub>(g)":131,"O<sub>2</sub>(g)":205,"N<sub>2</sub>(g)":192,"Cl<sub>2</sub>(g)":223,"C(s)":5.7,"H<sub>2</sub>O(ℓ)":70,"H<sub>2</sub>O(g)":189,"CO<sub>2</sub>(g)":214,"Mg(s)":33,"MgO(s)":27,"Ca(s)":42,"CaO(s)":38,"Na(s)":51,"NaCl(s)":72,"Al(s)":28,"Al<sub>2</sub>O<sub>3</sub>(s)":51,"Ba(s)":63,"BaO(s)":72,"CaCl<sub>2</sub>(s)":108,"NH<sub>3</sub>(g)":193,"CaCO<sub>3</sub>(s)":93};
+// [reactants, products, ΔH (kJ), source of ΔH]
+const RX=[[[["C(s)",1],["O<sub>2</sub>(g)",1]],[["CO<sub>2</sub>(g)",1]],-394,"data booklet (enthalpy of combustion of carbon)"],[[["H<sub>2</sub>(g)",1],["O<sub>2</sub>(g)",0.5]],[["H<sub>2</sub>O(ℓ)",1]],-286,"data booklet (enthalpy of combustion of hydrogen)"],
+ [[["H<sub>2</sub>O(ℓ)",1]],[["H<sub>2</sub>O(g)",1]],44,"given"],[[["Mg(s)",2],["O<sub>2</sub>(g)",1]],[["MgO(s)",2]],-1202,"given"],[[["Ca(s)",2],["O<sub>2</sub>(g)",1]],[["CaO(s)",2]],-1270,"given"],
+ [[["Na(s)",2],["Cl<sub>2</sub>(g)",1]],[["NaCl(s)",2]],-822,"given"],[[["Ca(s)",1],["Cl<sub>2</sub>(g)",1]],[["CaCl<sub>2</sub>(s)",1]],-796,"given"],[[["Al(s)",4],["O<sub>2</sub>(g)",3]],[["Al<sub>2</sub>O<sub>3</sub>(s)",2]],-3352,"given"],[[["Ba(s)",2],["O<sub>2</sub>(g)",1]],[["BaO(s)",2]],-1107,"given"],[[["N<sub>2</sub>(g)",1],["H<sub>2</sub>(g)",3]],[["NH<sub>3</sub>(g)",2]],-92,"given"],[[["CaCO<sub>3</sub>(s)",1]],[["CaO(s)",1],["CO<sub>2</sub>(g)",1]],178,"given"]];
+const co=n=>n===0.5?"½":n>1?n:"";
+function make(){const [R,P,dH,src]=pick(RX),t=opt("t"),sum=L=>L.reduce((a,[s,n])=>a+n*S0[s],0),dS=sum(P)-sum(R),dSk=dS/1000;
+  const eqn=R.map(([s,n])=>`${co(n)}${s}`).join(" + ")+" → "+P.map(([s,n])=>`${co(n)}${s}`).join(" + ");
+  const Ssteps=[["Products",P.map(([s,n])=>`${n} × ${S0[s]}`).join(" + ")+` = ${sf(sum(P),5)} J K<sup>−1</sup>`,0],["Reactants",R.map(([s,n])=>`${n} × ${S0[s]}`).join(" + ")+` = ${sf(sum(R),5)} J K<sup>−1</sup>`,0]];
+  if(t==="S")return {eq:eqn,eqLabel:"Reaction",q:`Use standard entropy values from the data booklet to calculate <span class="unk">ΔS°</span> for this reaction, in J K<sup>−1</sup> mol<sup>−1</sup>.`,
+    steps:[...Ssteps,["ΔS°",`ΔS° = ${sf(sum(P),5)} − ${sf(sum(R),5)} = <span class="ans">${sf(dS,4)} J K<sup>−1</sup> mol<sup>−1</sup></span>`]]};
+  if(t==="G"){const C=pick([25,100,200,500,800,1000]),T=C+273,dG=dH-T*dSk;
+    return {eq:eqn,eqLabel:"Reaction",q:`ΔH° = ${dH} kJ mol<sup>−1</sup> (${src}). Calculate <span class="unk">ΔG°</span> at ${C} °C and state whether the reaction is feasible.`,
+      steps:[...Ssteps,["ΔS°",`ΔS° = ${sf(dS,4)} J K<sup>−1</sup> mol<sup>−1</sup> = ${sf(dSk,4)} kJ K<sup>−1</sup> mol<sup>−1</sup>`],["Temperature in kelvin",`${C} + 273 = ${T} K`],
+        ["ΔG°",`ΔG° = ΔH° − TΔS° = ${dH} − (${T} × ${sf(dSk,4)})<br>ΔG° = <span class="ans">${sf(dG,4)} kJ mol<sup>−1</sup></span>, so the reaction is ${dG<0?"feasible":"not feasible"} at ${C} °C.`]]};}
+  if(dH<0&&dS>0||dH>0&&dS<0)return null;const T=dH/dSk;
+  return {eq:eqn,eqLabel:"Reaction",q:`ΔH° = ${dH} kJ mol<sup>−1</sup> (${src}). Calculate the <span class="unk">temperature</span> at which the reaction ${dH>0?"becomes":"stops being"} feasible, in K.`,
+    steps:[...Ssteps,["ΔS°",`ΔS° = ${sf(dS,4)} J K<sup>−1</sup> mol<sup>−1</sup> = ${sf(dSk,4)} kJ K<sup>−1</sup> mol<sup>−1</sup>`],["Set ΔG° = 0","T = ΔH° ÷ ΔS°"],
+      ["Answer",`T = ${dH} ÷ ${sf(dSk,4)} = <span class="ans">${sf(T,4)} K</span>. ${dH>0?"Above":"Below"} this temperature the reaction is feasible.`]]};}
+
+return {id:'thermo',lvl:'AH',title:'Thermodynamics',sub:'Advanced Higher Chemistry · ΔS° = ΣS°(products) − ΣS°(reactants) · ΔG° = ΔH° − TΔS° · entropies from the data booklet',desc:'ΔS°, ΔG° and feasibility',CONTROLS,ST,make,auto:true};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Shapes and Hybridisation
+//@moduleonly 1
+//@sub Advanced Higher Chemistry · VSEPR shapes, bond angles and hybrid orbitals
+//@level AH
+//@libs chem
+const CONTROLS=[{id:"t",label:"Question type",opts:[["shape","VSEPR shape"],["hyb","Hybridisation"]]}];
+const M=[["CH<sub>4</sub>",4,0,"tetrahedral","109.5°"],["NH<sub>3</sub>",3,1,"trigonal pyramidal","107°"],["H<sub>2</sub>O",2,2,"bent (angular)","104.5°"],["BF<sub>3</sub>",3,0,"trigonal planar","120°"],["BeCl<sub>2</sub>",2,0,"linear","180°"],["PCl<sub>5</sub>",5,0,"trigonal bipyramidal","90° and 120°"],["SF<sub>6</sub>",6,0,"octahedral","90°"],["NH<sub>4</sub><sup>+</sup>",4,0,"tetrahedral","109.5°"],["XeF<sub>4</sub>",4,2,"square planar","90°"],["SF<sub>4</sub>",4,1,"see-saw","about 90° and 120°"],["ClF<sub>3</sub>",3,2,"T-shaped","about 90°"],["XeF<sub>2</sub>",2,3,"linear","180°"],["SiCl<sub>4</sub>",4,0,"tetrahedral","109.5°"],["PCl<sub>3</sub>",3,1,"trigonal pyramidal","about 107°"],["CO<sub>2</sub>",2,0,"linear","180°"],["BCl<sub>3</sub>",3,0,"trigonal planar","120°"],["PF<sub>5</sub>",5,0,"trigonal bipyramidal","90° and 120°"],["IF<sub>5</sub>",5,1,"square pyramidal","about 90°"],["ICl<sub>4</sub><sup>−</sup>",4,2,"square planar","90°"],["H<sub>3</sub>O<sup>+</sup>",3,1,"trigonal pyramidal","about 107°"],["BH<sub>4</sub><sup>−</sup>",4,0,"tetrahedral","109.5°"],["I<sub>3</sub><sup>−</sup>",2,3,"linear","180°"]];
+const HY=[["ethane (each C)","sp<sup>3</sup>","4 σ bonds, tetrahedral, no π bonds"],["ethene (each C)","sp<sup>2</sup>","3 σ bonds in a plane; the unhybridised p orbitals overlap side-on to make a π bond"],["ethyne (each C)","sp","2 σ bonds in a line; two π bonds from the two unhybridised p orbitals"],["benzene (each C)","sp<sup>2</sup>","3 σ bonds in a plane; the p orbitals overlap to form a delocalised π system"],["methane (C)","sp<sup>3</sup>","4 σ bonds, tetrahedral"],["methanal (C)","sp<sup>2</sup>","3 σ bonds in a plane; the unhybridised p orbital overlaps side-on with oxygen to form a π bond"],["hydrogen cyanide (C)","sp","2 σ bonds in a line; two π bonds to nitrogen"],["carbon dioxide (C)","sp","2 σ bonds in a line; two π bonds, one to each oxygen"]];
+function make(){if(opt("t")==="shape"){const [f,b,l,s,a]=pick(M);return {q:`Predict the <span class="unk">shape</span> and bond angle of ${f}.`,ans:{text:[s.split(" (")[0]]},
+  steps:[["Electron pairs",`Around the central atom: ${b} bonding pair${b>1?"s":""} and ${l} non-bonding (lone) pair${l===1?"":"s"}, so ${b+l} pairs in total.`],["Repulsion",`The pairs repel to get as far apart as possible; lone pairs repel more than bonding pairs.`],["Answer",`<span class="ans">${s}</span>, ${a}`]]};}
+  const [n,hy,why]=pick(HY);return {q:`State the <span class="unk">hybridisation</span> of the carbon atom in ${n}.`,ans:{text:[hy.replace(/<\/?sup>/g,"")]},steps:[["Answer",`<span class="ans">${hy}</span>`],["Reason",why]]};}
+
+return {id:'vsepr',lvl:'AH',title:'Shapes and Hybridisation',sub:'Advanced Higher Chemistry · VSEPR shapes, bond angles and hybrid orbitals',desc:'VSEPR shapes and hybridisation',CONTROLS,ST,make,auto:false};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Stereochemistry and Mechanisms
+//@moduleonly 1
+//@sub Advanced Higher Chemistry · geometric and optical isomers, and reaction mechanisms
+//@level AH
+//@libs chem
+const CONTROLS=[{id:"t",label:"Question type",opts:[["geo","Geometric isomerism"],["opt","Optical isomerism"],["mech","Mechanism type"]]}];
+const GEO=[["but-2-ene, CH<sub>3</sub>CH=CHCH<sub>3</sub>",1],["but-1-ene, CH<sub>2</sub>=CHCH<sub>2</sub>CH<sub>3</sub>",0],["1,2-dichloroethene, CHCl=CHCl",1],["1,1-dichloroethene, CCl<sub>2</sub>=CH<sub>2</sub>",0],["pent-2-ene, CH<sub>3</sub>CH=CHCH<sub>2</sub>CH<sub>3</sub>",1],["2-methylbut-2-ene, (CH<sub>3</sub>)<sub>2</sub>C=CHCH<sub>3</sub>",0],["but-2-enedioic acid, HOOCCH=CHCOOH",1],["propene, CH<sub>2</sub>=CHCH<sub>3</sub>",0],["hex-3-ene, CH<sub>3</sub>CH<sub>2</sub>CH=CHCH<sub>2</sub>CH<sub>3</sub>",1],["2-methylpropene, (CH<sub>3</sub>)<sub>2</sub>C=CH<sub>2</sub>",0],["1-bromopropene, BrCH=CHCH<sub>3</sub>",1],["ethene, CH<sub>2</sub>=CH<sub>2</sub>",0],["3-methylpent-2-ene, CH<sub>3</sub>CH=C(CH<sub>3</sub>)CH<sub>2</sub>CH<sub>3</sub>",1],["1,2-dibromoethene, CHBr=CHBr",1]];
+const OPT=[["butan-2-ol, CH<sub>3</sub>CH(OH)CH<sub>2</sub>CH<sub>3</sub>",1,"C2 (bonded to H, OH, CH<sub>3</sub> and C<sub>2</sub>H<sub>5</sub>)"],["2-hydroxypropanoic acid (lactic acid), CH<sub>3</sub>CH(OH)COOH",1,"C2 (bonded to H, OH, CH<sub>3</sub> and COOH)"],["propan-2-ol, CH<sub>3</sub>CH(OH)CH<sub>3</sub>",0,""],["2-chlorobutane, CH<sub>3</sub>CHClCH<sub>2</sub>CH<sub>3</sub>",1,"C2 (bonded to H, Cl, CH<sub>3</sub> and C<sub>2</sub>H<sub>5</sub>)"],["2-aminopropanoic acid (alanine), CH<sub>3</sub>CH(NH<sub>2</sub>)COOH",1,"C2 (bonded to H, NH<sub>2</sub>, CH<sub>3</sub> and COOH)"],["aminoethanoic acid (glycine), CH<sub>2</sub>(NH<sub>2</sub>)COOH",0,""],["1-chloropropane, CH<sub>2</sub>ClCH<sub>2</sub>CH<sub>3</sub>",0,""],["2-bromobutane, CH<sub>3</sub>CHBrCH<sub>2</sub>CH<sub>3</sub>",1,"C2 (bonded to H, Br, CH<sub>3</sub> and C<sub>2</sub>H<sub>5</sub>)"],["3-methylhexane, CH<sub>3</sub>CH<sub>2</sub>CH(CH<sub>3</sub>)CH<sub>2</sub>CH<sub>2</sub>CH<sub>3</sub>",1,"C3 (bonded to H, CH<sub>3</sub>, C<sub>2</sub>H<sub>5</sub> and C<sub>3</sub>H<sub>7</sub>)"],["2-chloropropane, CH<sub>3</sub>CHClCH<sub>3</sub>",0,""],["2-hydroxypropanenitrile, CH<sub>3</sub>CH(OH)CN",1,"C2 (bonded to H, OH, CH<sub>3</sub> and CN)"],["pentan-3-ol, CH<sub>3</sub>CH<sub>2</sub>CH(OH)CH<sub>2</sub>CH<sub>3</sub>",0,""],["2-aminobutanoic acid, CH<sub>3</sub>CH<sub>2</sub>CH(NH<sub>2</sub>)COOH",1,"C2 (bonded to H, NH<sub>2</sub>, C<sub>2</sub>H<sub>5</sub> and COOH)"]];
+const MECH=[["CH<sub>4</sub> + Cl<sub>2</sub> → CH<sub>3</sub>Cl + HCl (UV light)","free radical substitution"],["ethene + HBr → bromoethane","electrophilic addition"],["ethene + Br<sub>2</sub> → 1,2-dibromoethane","electrophilic addition"],["CH<sub>3</sub>Br + OH<sup>−</sup> → CH<sub>3</sub>OH + Br<sup>−</sup> (one step)","nucleophilic substitution (S<sub>N</sub>2)"],["(CH<sub>3</sub>)<sub>3</sub>CBr + OH<sup>−</sup> → (CH<sub>3</sub>)<sub>3</sub>COH + Br<sup>−</sup> (via a carbocation)","nucleophilic substitution (S<sub>N</sub>1)"],["benzene + Br<sub>2</sub> (FeBr<sub>3</sub>) → bromobenzene","electrophilic substitution"],["benzene + HNO<sub>3</sub> (H<sub>2</sub>SO<sub>4</sub>) → nitrobenzene","electrophilic substitution"],["bromoethane + ethanolic KOH → ethene","elimination"],["ethanal + HCN → 2-hydroxypropanenitrile","nucleophilic addition"],["propene + HBr → 2-bromopropane","electrophilic addition"],["bromoethane + CN<sup>−</sup> → propanenitrile + Br<sup>−</sup>","nucleophilic substitution"],["ethanol → ethene + H<sub>2</sub>O (hot concentrated H<sub>2</sub>SO<sub>4</sub>)","elimination (dehydration)"],["ethane + Br<sub>2</sub> → bromoethane + HBr (UV light)","free radical substitution"],["propanone + HCN → 2-hydroxy-2-methylpropanenitrile","nucleophilic addition"],["benzene + CH<sub>3</sub>Cl (AlCl<sub>3</sub>) → methylbenzene","electrophilic substitution"]];
+function make(){const t=opt("t");
+  if(t==="geo"){const [n,y]=pick(GEO);return {q:`Does ${n} show <span class="unk">geometric (cis/trans) isomerism</span>? Explain.`,ans:{text:[y?"yes":"no"]},
+    steps:[["Conditions","Restricted rotation about the C=C, and each carbon of the C=C must have two different groups attached."],["Answer",`<span class="ans">${y?"Yes":"No"}</span>: ${y?"both carbons of the double bond have two different groups, so cis and trans forms exist.":"one carbon of the double bond has two identical groups."}`]]};}
+  if(t==="opt"){const [n,y,c]=pick(OPT);return {q:`Does ${n} show <span class="unk">optical isomerism</span>? Explain.`,ans:{text:[y?"yes":"no"]},
+    steps:[["Condition","A chiral carbon: a carbon bonded to four different groups, giving non-superimposable mirror images (enantiomers)."],["Answer",`<span class="ans">${y?"Yes":"No"}</span>${y?`: the chiral centre is ${c}. The enantiomers rotate plane-polarised light in opposite directions.`:": no carbon has four different groups attached."}`]]};}
+  const [r,m]=pick(MECH);return {q:`Name the <span class="unk">type of mechanism</span> for: ${r}`,ans:{text:[m.replace(/ \(.*\)/,""),m.replace(/<\/?sub>/g,"")]},steps:[["Answer",`<span class="ans">${m}</span>`]]};}
+
+return {id:'stereo',lvl:'AH',title:'Stereochemistry and Mechanisms',sub:'Advanced Higher Chemistry · geometric and optical isomers, and reaction mechanisms',desc:'Isomerism and mechanism types',CONTROLS,ST,make,auto:false};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Infrared Spectroscopy
+//@h1 Infrared Spectroscopy
+//@sub Advanced Higher Chemistry · using the infrared correlation table in the data booklet
+//@level AH
+//@libs chem
+const CONTROLS=[{id:"t",label:"Question type",opts:[["id","Identify the compound"],["pred","Predict the absorptions"]]}];
+// absorptions from the data booklet: [range, bond and type]
+const BANDS={OHal:["3600–3200","hydrogen-bonded O–H stretch (alcohol)",3350],OHac:["3000–2500","hydrogen-bonded O–H stretch in –COOH (carboxylic acid)",2900],NH:["3500–3300","N–H stretch (amine)",3400],CHalkyne:["3300","C–H stretch in C≡C–H (alkyne)",3300],CHalkene:["3095–3010","C–H stretch in C=C–H (alkene)",3050],
+ CHalkane:["2962–2853","C–H stretch (alkane)",2900],CHO1:["2900–2820","C–H stretch in –CHO (aldehyde)",2850],CHO2:["2775–2700","C–H stretch in –CHO (aldehyde)",2730],CN:["2260–2215","C≡N stretch (nitrile)",2240],CC3:["2260–2100","C≡C stretch (alkyne)",2150],
+ COest:["1750–1735","C=O stretch (ester)",1740],COak:["1740–1700","C=O stretch (aldehyde, ketone)",1715],COac:["1725–1700","C=O stretch (carboxylic acid)",1710],CCdbl:["1680–1620","C=C stretch (alkene)",1650]};
+const CMP=[["ethanol","alcohol",["OHal","CHalkane"]],["propanal","aldehyde",["CHO1","CHO2","COak","CHalkane"]],["propanone","ketone",["COak","CHalkane"]],["ethanoic acid","carboxylic acid",["OHac","COac"]],["ethyl ethanoate","ester",["COest","CHalkane"]],["propene","alkene",["CHalkene","CCdbl","CHalkane"]],
+ ["hexane","alkane",["CHalkane"]],["ethylamine","amine",["NH","CHalkane"]],["ethanenitrile","nitrile",["CN","CHalkane"]],["propyne","alkyne",["CHalkyne","CC3","CHalkane"]],["butan-1-ol","alcohol",["OHal","CHalkane"]],["butanal","aldehyde",["CHO1","CHO2","COak","CHalkane"]],["butanone","ketone",["COak","CHalkane"]],["propanoic acid","carboxylic acid",["OHac","COac"]],["methyl propanoate","ester",["COest","CHalkane"]],["but-1-ene","alkene",["CHalkene","CCdbl","CHalkane"]],["propylamine","amine",["NH","CHalkane"]],["propanenitrile","nitrile",["CN","CHalkane"]]];
+function make(){const [n,cls,bs]=pick(CMP);
+  if(opt("t")==="id"){const opts=shuffle([CMP.find(c=>c[0]===n),...shuffle(CMP.filter(c=>c[0]!==n)).slice(0,3)]);
+    return {intro:`An infrared spectrum of an organic compound has strong absorptions at: <b>${bs.map(b=>BANDS[b][2]).join(", ")} cm<sup>−1</sup></b>.`,display:`<div class="cap">Possible compounds: ${opts.map(c=>c[0]).join(" · ")}</div>`,
+      q:`Which compound produced the spectrum? Explain using the <span class="unk">data booklet</span>.`,steps:[["Match each absorption",bs.map(b=>`${BANDS[b][2]} cm<sup>−1</sup> is in the range ${BANDS[b][0]}: ${BANDS[b][1]}`).join("<br>")],["Answer",`It is a${/^[aeiou]/.test(cls)?"n":""} ${cls}: <span class="ans">${n}</span>`]],ans:{text:[n]}};}
+  return {display:`<div class="name">${n}</div>`,q:`Use the data booklet to predict the <span class="unk">infrared absorptions</span> you would expect for ${n}, and the bonds that cause them.`,
+    steps:[["Functional group",`${cap1(n)} is a${/^[aeiou]/.test(cls)?"n":""} ${cls}.`],["Expected absorptions",bs.map(b=>`<span class="ans">${BANDS[b][0]} cm<sup>−1</sup></span>: ${BANDS[b][1]}`).join("<br>")]]};}
+
+return {id:'ir',lvl:'AH',title:'Infrared Spectroscopy',sub:'Advanced Higher Chemistry · using the infrared correlation table in the data booklet',desc:'Identify compounds from IR absorptions',CONTROLS,ST,make,auto:false};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Volumetric and Gravimetric Analysis
+//@moduleonly 1
+//@sub Advanced Higher Chemistry · back titration, complexometric (EDTA) titration and gravimetric analysis
+//@level AH
+//@libs chem
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Question type",opts:[["back","Back titration"],["edta","EDTA titration"],["grav","Water of crystallisation"]]}];
+const HY=[["copper(II) sulfate","CuSO<sub>4</sub>",159.6],["magnesium sulfate","MgSO<sub>4</sub>",120.4],["sodium carbonate","Na<sub>2</sub>CO<sub>3</sub>",106.0],["zinc sulfate","ZnSO<sub>4</sub>",161.5],["barium chloride","BaCl<sub>2</sub>",208.3],["iron(II) sulfate","FeSO<sub>4</sub>",151.9],["cobalt(II) chloride","CoCl<sub>2</sub>",129.9],["calcium chloride","CaCl<sub>2</sub>",111.1],["sodium sulfate","Na<sub>2</sub>SO<sub>4</sub>",142.1],["nickel(II) sulfate","NiSO<sub>4</sub>",154.8]];
+const HYN={"CuSO<sub>4</sub>":5,"MgSO<sub>4</sub>":7,"Na<sub>2</sub>CO<sub>3</sub>":10,"ZnSO<sub>4</sub>":7,"BaCl<sub>2</sub>":2,"FeSO<sub>4</sub>":7,"CoCl<sub>2</sub>":6,"CaCl<sub>2</sub>":6,"Na<sub>2</sub>SO<sub>4</sub>":10,"NiSO<sub>4</sub>":6};
+function make(){const t=opt("t");
+  if(t==="back"){const m=rint(80,200)/100,pur=rint(70,98),nC=m*pur/100/100.1,nHCl=2*nC,vAdd=pick([30,40,50]),add=1.00*vAdd/1000,exc=add-nHCl,V=exc/0.100*1000;if(V>45||V<5)return null;
+    return {intro:`${m.toFixed(2)} g of impure calcium carbonate was added to ${vAdd.toFixed(1)} cm<sup>3</sup> of 1.00 mol l<sup>−1</sup> HCl (excess). The excess acid needed ${V.toFixed(1)} cm<sup>3</sup> of 0.100 mol l<sup>−1</sup> NaOH. CaCO<sub>3</sub> + 2HCl → CaCl<sub>2</sub> + H<sub>2</sub>O + CO<sub>2</sub>. GFM CaCO<sub>3</sub> = 100.1 g mol<sup>−1</sup>.`,
+      q:`Calculate the <span class="unk">percentage purity</span> of the calcium carbonate.`,
+      steps:[["Total HCl",`n = 1.00 × ${(vAdd/1000).toFixed(4)} = ${sf(add,4)} mol`],["Excess HCl (= moles NaOH)",`0.100 × ${(V/1000).toFixed(4)} = ${sf(exc,4)} mol`],["HCl that reacted",`${sf(add,4)} − ${sf(exc,4)} = ${sf(nHCl,4)} mol`],["CaCO<sub>3</sub>",`${sf(nHCl,4)} ÷ 2 = ${sf(nC,4)} mol; × 100.1 = ${sf(nC*100.1,4)} g`],["Answer",`purity = ${sf(nC*100.1,4)} ÷ ${m.toFixed(2)} × 100 = <span class="ans">${sf(pur,3)}%</span>`]]};}
+  if(t==="edta"){const c=pick([0.0100,0.0200,0.0500]),V=rint(100,250)/10,va=pick([25.0,20.0,50.0]),n=c*V/1000,M=pick([["Ni<sup>2+</sup>",58.7],["Zn<sup>2+</sup>",65.4],["Ca<sup>2+</sup>",40.1],["Mg<sup>2+</sup>",24.3]]);
+    return {intro:`${va.toFixed(1)} cm<sup>3</sup> of a solution of ${M[0]} ions needed ${V.toFixed(1)} cm<sup>3</sup> of ${c.toFixed(4)} mol l<sup>−1</sup> EDTA. Metal ions react with EDTA in a 1 : 1 ratio.`,q:`Calculate the <span class="unk">concentration of ${M[0]}</span>, in mol l<sup>−1</sup>.`,
+      steps:[["Moles EDTA",`${c.toFixed(4)} × ${(V/1000).toFixed(4)} = ${sf(n,3)} mol`],["Moles metal (1 : 1)",`${sf(n,3)} mol`],["Answer",`c = ${sf(n,3)} ÷ ${(va/1000).toFixed(4)} = <span class="ans">${sf(n/(va/1000),3)} mol l<sup>−1</sup></span>`]]};}
+  const [nm,f,gfm]=pick(HY),x=HYN[f],mol=rint(5,20)/1000,mh=Number((mol*(gfm+18*x)).toFixed(2)),ma=Number((mol*gfm).toFixed(2)),w=Number((mh-ma).toFixed(2)),nA=ma/gfm,nW=w/18.0;
+  return {intro:`${mh.toFixed(2)} g of hydrated ${nm}, ${f}.xH<sub>2</sub>O, was heated to constant mass. The anhydrous solid had a mass of ${ma.toFixed(2)} g. GFM ${f} = ${gfm} g mol<sup>−1</sup>, H<sub>2</sub>O = 18.0 g mol<sup>−1</sup>.`,
+    q:`Calculate the <span class="unk">value of x</span>.`,steps:[["Mass of water",`${mh.toFixed(2)} − ${ma.toFixed(2)} = ${w.toFixed(2)} g`],["Moles",`${f}: ${ma.toFixed(2)} ÷ ${gfm} = ${sf(nA,3)} mol<br>H<sub>2</sub>O: ${w.toFixed(2)} ÷ 18.0 = ${sf(nW,3)} mol`],["Ratio",`${sf(nW,3)} ÷ ${sf(nA,3)} = ${sf(nW/nA,3)}`],["Answer",`x = <span class="ans">${Math.round(nW/nA)}</span>`]]};}
+
+return {id:'volgrav',lvl:'AH',title:'Volumetric and Gravimetric Analysis',sub:'Advanced Higher Chemistry · back titration, complexometric (EDTA) titration and gravimetric analysis',desc:'Back, EDTA and gravimetric',CONTROLS,ST,make,auto:true};})());
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Elemental Microanalysis
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Question type",opts:[["ef","Empirical formula"],["mf","Molecular formula"]]}];
+// [name, C, H, O, empirical formula, empirical formula mass]
+const CM=[["ethanol",2,6,1,"C<sub>2</sub>H<sub>6</sub>O",46.0],["propan-1-ol",3,8,1,"C<sub>3</sub>H<sub>8</sub>O",60.0],["propanone",3,6,1,"C<sub>3</sub>H<sub>6</sub>O",58.0],["ethanoic acid",2,4,2,"CH<sub>2</sub>O",30.0],["butanoic acid",4,8,2,"C<sub>2</sub>H<sub>4</sub>O",44.0],["glucose",6,12,6,"CH<sub>2</sub>O",30.0],["butan-1-ol",4,10,1,"C<sub>4</sub>H<sub>10</sub>O",74.0],["methyl propanoate",4,8,2,"C<sub>2</sub>H<sub>4</sub>O",44.0],["hexane",6,14,0,"C<sub>3</sub>H<sub>7</sub>",43.0],["cyclohexane",6,12,0,"CH<sub>2</sub>",14.0],["methanoic acid",1,2,2,"CH<sub>2</sub>O<sub>2</sub>",46.0],["propanoic acid",3,6,2,"C<sub>3</sub>H<sub>6</sub>O<sub>2</sub>",74.0],["butanone",4,8,1,"C<sub>4</sub>H<sub>8</sub>O",72.0],["ethyl ethanoate",4,8,2,"C<sub>2</sub>H<sub>4</sub>O",44.0],["pentane",5,12,0,"C<sub>5</sub>H<sub>12</sub>",72.0],["ethanal",2,4,1,"C<sub>2</sub>H<sub>4</sub>O",44.0],["benzene",6,6,0,"CH",13.0]];
+const MF=(c,h,o)=>`C${c>1?`<sub>${c}</sub>`:""}H<sub>${h}</sub>${o?`O${o>1?`<sub>${o}</sub>`:""}`:""}`;
+function make(){const [nm,c,h,o,ef,efm]=pick(CM),M=12.0*c+1.0*h+16.0*o,m=rint(150,400)/1000,n=m/M;
+  const mCO2=Number((n*c*44.0).toFixed(3)),mH2O=Number((n*h/2*18.0).toFixed(3));
+  const mC=mCO2*12.0/44.0,mH=mH2O*2.0/18.0,mO=m-mC-mH,nC=mC/12.0,nH=mH/1.0,nO=mO/16.0,lo=o?Math.min(nC,nH,nO):Math.min(nC,nH);
+  const intro=`${m.toFixed(3)} g of an organic compound containing carbon, hydrogen${o?" and oxygen":" only"} was burned completely, producing ${mCO2.toFixed(3)} g of CO<sub>2</sub> and ${mH2O.toFixed(3)} g of H<sub>2</sub>O.`;
+  const st=[["Mass of C",`${mCO2.toFixed(3)} × 12.0 ÷ 44.0 = ${mC.toFixed(4)} g`],["Mass of H",`${mH2O.toFixed(3)} × 2.0 ÷ 18.0 = ${mH.toFixed(4)} g`]];
+  if(o)st.push(["Mass of O (by difference)",`${m.toFixed(3)} − ${mC.toFixed(4)} − ${mH.toFixed(4)} = ${mO.toFixed(4)} g`]);
+  st.push(["Moles",`C: ${sf(nC,3)} · H: ${sf(nH,3)}${o?` · O: ${sf(nO,3)}`:""}`],["Simplest ratio",`C : H${o?" : O":""} = ${sf(nC/lo,3)} : ${sf(nH/lo,3)}${o?` : ${sf(nO/lo,3)}`:""}${Math.abs(nH/lo-Math.round(nH/lo))>0.2?" (multiply to get whole numbers)":""}`]);
+  if(opt("t")==="ef")return {intro,q:`Calculate the <span class="unk">empirical formula</span> of the compound.`,ans:{text:[ef.replace(/<\/?sub>/g,"")]},steps:[...st,["Answer",`Empirical formula: <span class="ans">${ef}</span>`]]};
+  const k=Math.round(M/efm);return {intro:intro+` Mass spectrometry shows the molecular ion at m/z = ${M.toFixed(0)}.`,q:`Calculate the empirical formula, then the <span class="unk">molecular formula</span>.`,ans:{text:[MF(c,h,o).replace(/<\/?sub>/g,"")]},
+    steps:[...st,["Empirical formula",`${ef}, mass ${efm.toFixed(1)}`],["Scale up",`${M.toFixed(1)} ÷ ${efm.toFixed(1)} = ${k}`],["Answer",`Molecular formula: <span class="ans">${MF(c,h,o)}</span>`]]};}
+return {id:'micro',lvl:'AH',title:'Elemental Microanalysis',sub:'Advanced Higher Chemistry · empirical formula from combustion data · relative atomic masses from the data booklet',desc:'Empirical and molecular formulae',CONTROLS,ST,make,auto:false};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Mass Spectrometry
+const CONTROLS=[{id:"t",label:"Question type",opts:[["frag","Identify a fragment"],["lost","Mass lost"],["id","Identify the compound"]]}];
+// [name, M, [[m/z, ion]]]
+const MS=[["propanone, CH<sub>3</sub>COCH<sub>3</sub>",58,[[43,"CH<sub>3</sub>CO<sup>+</sup>"],[15,"CH<sub>3</sub><sup>+</sup>"]]],["ethanol, CH<sub>3</sub>CH<sub>2</sub>OH",46,[[31,"CH<sub>2</sub>OH<sup>+</sup>"],[29,"C<sub>2</sub>H<sub>5</sub><sup>+</sup>"],[15,"CH<sub>3</sub><sup>+</sup>"]]],["butane, CH<sub>3</sub>CH<sub>2</sub>CH<sub>2</sub>CH<sub>3</sub>",58,[[43,"C<sub>3</sub>H<sub>7</sub><sup>+</sup>"],[29,"C<sub>2</sub>H<sub>5</sub><sup>+</sup>"],[15,"CH<sub>3</sub><sup>+</sup>"]]],
+ ["propanoic acid, CH<sub>3</sub>CH<sub>2</sub>COOH",74,[[57,"C<sub>2</sub>H<sub>5</sub>CO<sup>+</sup>"],[45,"COOH<sup>+</sup>"],[29,"C<sub>2</sub>H<sub>5</sub><sup>+</sup>"]]],["ethyl ethanoate, CH<sub>3</sub>COOCH<sub>2</sub>CH<sub>3</sub>",88,[[73,"CH<sub>3</sub>COOCH<sub>2</sub><sup>+</sup>"],[45,"OC<sub>2</sub>H<sub>5</sub><sup>+</sup>"],[43,"CH<sub>3</sub>CO<sup>+</sup>"],[29,"C<sub>2</sub>H<sub>5</sub><sup>+</sup>"]]],
+ ["propanal, CH<sub>3</sub>CH<sub>2</sub>CHO",58,[[57,"C<sub>2</sub>H<sub>5</sub>CO<sup>+</sup>"],[29,"C<sub>2</sub>H<sub>5</sub><sup>+</sup> or CHO<sup>+</sup>"]]],["ethanoic acid, CH<sub>3</sub>COOH",60,[[45,"COOH<sup>+</sup>"],[43,"CH<sub>3</sub>CO<sup>+</sup>"],[15,"CH<sub>3</sub><sup>+</sup>"]]],["chloromethane, CH<sub>3</sub>Cl",50,[[52,"CH<sub>3</sub><sup>37</sup>Cl<sup>+</sup>"],[15,"CH<sub>3</sub><sup>+</sup>"]]],["butanone, CH<sub>3</sub>COCH<sub>2</sub>CH<sub>3</sub>",72,[[57,"C<sub>2</sub>H<sub>5</sub>CO<sup>+</sup>"],[43,"CH<sub>3</sub>CO<sup>+</sup>"],[29,"C<sub>2</sub>H<sub>5</sub><sup>+</sup>"]]],["methanol, CH<sub>3</sub>OH",32,[[31,"CH<sub>2</sub>OH<sup>+</sup>"],[15,"CH<sub>3</sub><sup>+</sup>"]]],["propan-1-ol, CH<sub>3</sub>CH<sub>2</sub>CH<sub>2</sub>OH",60,[[43,"C<sub>3</sub>H<sub>7</sub><sup>+</sup>"],[31,"CH<sub>2</sub>OH<sup>+</sup>"],[29,"C<sub>2</sub>H<sub>5</sub><sup>+</sup>"]]],["methyl ethanoate, CH<sub>3</sub>COOCH<sub>3</sub>",74,[[59,"COOCH<sub>3</sub><sup>+</sup>"],[43,"CH<sub>3</sub>CO<sup>+</sup>"],[15,"CH<sub>3</sub><sup>+</sup>"]]],["pentane, CH<sub>3</sub>(CH<sub>2</sub>)<sub>3</sub>CH<sub>3</sub>",72,[[57,"C<sub>4</sub>H<sub>9</sub><sup>+</sup>"],[43,"C<sub>3</sub>H<sub>7</sub><sup>+</sup>"],[29,"C<sub>2</sub>H<sub>5</sub><sup>+</sup>"]]]];
+const LOST={15:"CH<sub>3</sub>",29:"C<sub>2</sub>H<sub>5</sub> or CHO",43:"C<sub>3</sub>H<sub>7</sub> or CH<sub>3</sub>CO",45:"COOH or OC<sub>2</sub>H<sub>5</sub>",17:"OH",31:"CH<sub>2</sub>OH or OCH<sub>3</sub>",1:"H",28:"CO",35:"Cl"};
+const spec=(M,fr)=>`<table class="dt"><tr><th>m/z</th><th>Peak</th></tr><tr><td>${M}</td><td>molecular ion</td></tr>${fr.filter(f=>f[0]!==M).map(f=>`<tr><td>${f[0]}</td><td>fragment</td></tr>`).join("")}</table>`;
+function make(){const t=opt("t"),[n,M,fr]=pick(MS);
+  if(t==="frag"){const [z,ion]=pick(fr.filter(f=>f[0]<M));return {display:`<div class="name">${n}</div>`,q:`The mass spectrum of ${n.split(",")[0]} has a peak at m/z = ${z}. Suggest the <span class="unk">formula of the ion</span> responsible.`,noAns:true,
+    steps:[["Molecular ion",`M<sup>+</sup> = ${M}`],["Fragment",`m/z ${z} matches <span class="ans">${ion}</span>`]]};}
+  if(t==="lost"){const opts=fr.filter(f=>LOST[M-f[0]]);if(!opts.length)return null;const [z]=pick(opts),d=M-z;return {display:`<div class="name">${n}</div>`,q:`The molecular ion of ${n.split(",")[0]} is at m/z = ${M} and a fragment appears at m/z = ${z}. What <span class="unk">group has been lost</span>?`,noAns:true,
+    steps:[["Mass lost",`${M} − ${z} = ${d}`],["Answer",`Loss of ${d} corresponds to <span class="ans">${LOST[d]}</span>`]]};}
+  const opts=shuffle([n,...shuffle(MS.filter(x=>x[0]!==n&&x[1]!==M)).slice(0,2).map(x=>x[0])]);
+  return {display:spec(M,fr)+`<div class="cap">Possible compounds: ${opts.join(" · ")}</div>`,q:`Use the mass spectrum data to <span class="unk">identify the compound</span>.`,ans:{text:[n.split(",")[0]]},
+    steps:[["Molecular ion",`The highest significant peak is at m/z = ${M}, so the relative formula mass is ${M}.`],["Fragments",fr.filter(f=>f[0]!==M).map(f=>`${f[0]}: ${f[1]}`).join("<br>")],["Answer",`<span class="ans">${n}</span>`]]};}
+return {id:'massspec',lvl:'AH',title:'Mass Spectrometry',sub:'Advanced Higher Chemistry · molecular ion and fragmentation',desc:'Molecular ions and fragments',CONTROLS,ST,make,auto:false};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Proton NMR and Combined Spectra
+const CONTROLS=[{id:"t",label:"Question type",opts:[["nmr","Interpret an NMR spectrum"],["comb","Combined spectra"]]}];
+// [name, formula, M, empirical formula, IR bands, NMR peaks [shift, H, splitting, group]]
+const C=[["ethanol","C<sub>2</sub>H<sub>6</sub>O",46,"C<sub>2</sub>H<sub>6</sub>O",["3350 (broad, O–H)","2900 (C–H)"],[[1.2,3,"triplet","CH<sub>3</sub>"],[3.7,2,"quartet","CH<sub>2</sub>–O"],[2.6,1,"singlet","O–H"]]],
+ ["propanone","C<sub>3</sub>H<sub>6</sub>O",58,"C<sub>3</sub>H<sub>6</sub>O",["1715 (C=O)","2900 (C–H)"],[[2.2,6,"singlet","CH<sub>3</sub>CO"]]],
+ ["propanal","C<sub>3</sub>H<sub>6</sub>O",58,"C<sub>3</sub>H<sub>6</sub>O",["2730 and 2850 (C–H of CHO)","1720 (C=O)"],[[1.1,3,"triplet","CH<sub>3</sub>"],[2.5,2,"multiplet","CH<sub>2</sub>"],[9.8,1,"triplet","CHO"]]],
+ ["ethanoic acid","C<sub>2</sub>H<sub>4</sub>O<sub>2</sub>",60,"CH<sub>2</sub>O",["3000–2500 (broad, O–H of COOH)","1710 (C=O)"],[[2.1,3,"singlet","CH<sub>3</sub>CO"],[11.5,1,"singlet","COOH"]]],
+ ["methyl ethanoate","C<sub>3</sub>H<sub>6</sub>O<sub>2</sub>",74,"C<sub>3</sub>H<sub>6</sub>O<sub>2</sub>",["1740 (C=O, ester)","2900 (C–H)"],[[2.0,3,"singlet","CH<sub>3</sub>CO"],[3.7,3,"singlet","OCH<sub>3</sub>"]]],
+ ["ethyl ethanoate","C<sub>4</sub>H<sub>8</sub>O<sub>2</sub>",88,"C<sub>2</sub>H<sub>4</sub>O",["1740 (C=O, ester)","2900 (C–H)"],[[2.0,3,"singlet","CH<sub>3</sub>CO"],[4.1,2,"quartet","OCH<sub>2</sub>"],[1.3,3,"triplet","CH<sub>3</sub>"]]],
+ ["propanoic acid","C<sub>3</sub>H<sub>6</sub>O<sub>2</sub>",74,"C<sub>3</sub>H<sub>6</sub>O<sub>2</sub>",["3000–2500 (broad, O–H of COOH)","1710 (C=O)"],[[1.2,3,"triplet","CH<sub>3</sub>"],[2.4,2,"quartet","CH<sub>2</sub>CO"],[11.7,1,"singlet","COOH"]]],
+ ["propan-2-ol","C<sub>3</sub>H<sub>8</sub>O",60,"C<sub>3</sub>H<sub>8</sub>O",["3350 (broad, O–H)","2900 (C–H)"],[[1.2,6,"doublet","(CH<sub>3</sub>)<sub>2</sub>"],[4.0,1,"multiplet","CH–O"],[2.2,1,"singlet","O–H"]]],
+ ["methylbenzene","C<sub>7</sub>H<sub>8</sub>",92,"C<sub>7</sub>H<sub>8</sub>",["3030 (aromatic C–H)","2900 (C–H)"],[[7.2,5,"multiplet","aromatic H"],[2.3,3,"singlet","CH<sub>3</sub> on ring"]]]];
+const tbl=p=>`<table class="dt"><tr><th>Chemical shift / ppm</th><th>Relative area</th><th>Splitting</th></tr>${p.map(x=>`<tr><td>${x[0].toFixed(1)}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join("")}</table>`;
+function make(){const x=pick(C),[n,f,M,ef,ir,nm]=x,others=shuffle(C.filter(y=>y[0]!==n)).slice(0,3).map(y=>y[0]),opts=shuffle([n,...others]);
+  const nst=["Assign peaks (data booklet NMR table)",nm.map(p=>`${p[0].toFixed(1)} ppm, ${p[1]}H, ${p[2]}: ${p[3]}`).join("<br>")];
+  if(opt("t")==="nmr")return {intro:`A compound with molecular formula ${f} gives this proton NMR spectrum.`,display:tbl(nm)+`<div class="cap">Possible compounds: ${opts.join(" · ")}</div>`,q:`<span class="unk">Identify the compound</span>, explaining each peak.`,ans:{text:[n]},
+    steps:[["Environments",`${nm.length} peak${nm.length>1?"s":""}, so ${nm.length} hydrogen environment${nm.length>1?"s":""}; areas ${nm.map(p=>p[1]).join(" : ")}`],nst,["Splitting (n + 1)","Each peak is split by the H atoms on the neighbouring carbon(s): n neighbours give n + 1 lines."],["Answer",`<span class="ans">${n}</span>`]]};
+  return {intro:`An unknown compound was analysed. Elemental microanalysis: empirical formula <b>${ef}</b>. Mass spectrum: molecular ion at m/z = <b>${M}</b>. Infrared: absorptions at <b>${ir.map(s=>s.split(" (")[0]).join(", ")} cm<sup>−1</sup></b>.`,display:tbl(nm),
+    q:`Use all the evidence to <span class="unk">identify the compound</span>.`,ans:{text:[n]},
+    steps:[["Molecular formula",`Molecular ion ${M} with empirical formula ${ef}, so the molecular formula is ${f}.`],["Infrared",ir.join("<br>")],nst,["Answer",`<span class="ans">${n}</span>`]]};}
+return {id:'nmrid',lvl:'AH',title:'Proton NMR and Combined Spectra',sub:'Advanced Higher Chemistry · interpreting proton NMR, and combining microanalysis, mass spectrometry, IR and NMR',desc:'Interpret NMR; identify unknowns',CONTROLS,ST,make,auto:false};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Colorimetry
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Find",opts:[["c","Concentration from calibration"],["m","Mass of metal in a sample"]]}];
+const ION=[["Cu<sup>2+</sup>","copper",63.5,"orange (the complementary colour of blue)"],["Ni<sup>2+</sup>","nickel",58.7,"red (the complementary colour of green)"],["Co<sup>2+</sup>","cobalt",58.9,"green (the complementary colour of pink/red)"],["MnO<sub>4</sub><sup>−</sup>","manganese",54.9,"green (the complementary colour of purple)"],["Cr<sub>2</sub>O<sub>7</sub><sup>2−</sup>","chromium",52.0,"blue (the complementary colour of orange)"],["[FeSCN]<sup>2+</sup>","iron",55.8,"blue-green (the complementary colour of red)"]];
+function make(){const [ion,nm,A,filt]=pick(ION),k=rint(20,60)/10*(ion.includes("Mn")?100:1),stds=[0.02,0.04,0.06,0.08,0.10].map(x=>ion.includes("Mn")?x/100:x),cx=rint(25,95)/1000*(ion.includes("Mn")?0.01:1),Ax=k*cx;
+  const fmt=v=>ion.includes("Mn")?sf(v,3):v.toFixed(3);
+  const tbl=`<table class="dt"><tr><th>[${ion}] / mol l<sup>−1</sup></th>${stds.map(s=>`<td>${fmt(s)}</td>`).join("")}</tr><tr><th>Absorbance</th>${stds.map(s=>`<td>${(k*s).toFixed(2)}</td>`).join("")}</tr></table>`;
+  const st=[["Filter","Use a filter of the colour absorbed most: "+filt+"."],["Calibration","Absorbance is directly proportional to concentration (straight line through the origin)."],["Read off",`gradient = ${(k*stds[4]).toFixed(2)} ÷ ${fmt(stds[4])} = ${sf(k,3)} l mol<sup>−1</sup>; c = ${Ax.toFixed(2)} ÷ ${sf(k,3)} = ${sf(Ax.toFixed(2)/k,3)} mol l<sup>−1</sup>`]];
+  const c=Ax.toFixed(2)/k;
+  if(opt("t")==="c")return {intro:`Standard solutions of ${ion} gave these absorbances.`,display:tbl,q:`An unknown solution has an absorbance of ${Ax.toFixed(2)}. Calculate its <span class="unk">concentration</span>, in mol l<sup>−1</sup>.`,steps:[...st,["Answer",`[${ion}] = <span class="ans">${sf(c,3)} mol l<sup>−1</sup></span>`]]};
+  const V=pick([100,250,500]),ms=rint(50,300)/100,mm=c*V/1000*A;if(mm>ms)return null;
+  return {intro:`Standard solutions of ${ion} gave these absorbances. A ${ms.toFixed(2)} g sample of an alloy was dissolved and made up to ${V} cm<sup>3</sup>; the solution had an absorbance of ${Ax.toFixed(2)}.`,display:tbl,
+    q:`Calculate the <span class="unk">percentage by mass of ${nm}</span> in the sample.`,steps:[...st,["Moles",`${sf(c,3)} × ${(V/1000).toFixed(3)} = ${sf(c*V/1000,3)} mol`],["Mass",`${sf(c*V/1000,3)} × ${A} = ${sf(mm,3)} g`],["Answer",`${sf(mm,3)} ÷ ${ms.toFixed(2)} × 100 = <span class="ans">${sf(mm/ms*100,3)}%</span>`]]};}
+return {id:'colour',lvl:'AH',title:'Colorimetry',sub:'Advanced Higher Chemistry · calibration graphs and concentration from absorbance',desc:'Calibration and concentration',CONTROLS,ST,make,auto:true};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Partition Coefficient
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Find",opts:[["K","Partition coefficient"],["one","Mass extracted"],["two","One vs two extractions"]]}];
+const SOL=[["iodine","hexane"],["caffeine","dichloromethane"],["ammonia","trichloromethane"],["butanoic acid","ether"],["bromine","cyclohexane"],["caffeine","ethyl ethanoate"],["aspirin","ethyl ethanoate"]];
+function make(){const t=opt("t"),[s,org]=pick(SOL),K=rint(20,120)/10,Va=pick([50,100]),Vo=pick([20,30,40,50]),m=rint(100,500)/100;
+  if(t==="K"){const co=rint(10,90)/1000,ca=co/K;return {intro:`At equilibrium, a mixture of ${org} and water contained ${s} at ${sf(co,3)} mol l<sup>−1</sup> in the ${org} layer and ${sf(ca,3)} mol l<sup>−1</sup> in the water layer.`,
+    q:`Calculate the <span class="unk">partition coefficient</span>, K = [${s}]<sub>${org}</sub> ÷ [${s}]<sub>water</sub>.`,steps:[["Expression",`K = [${s}]<sub>${org}</sub> ÷ [${s}]<sub>water</sub>`],["Answer",`K = ${sf(co,3)} ÷ ${sf(ca,3)} = <span class="ans">${sf(K,3)}</span>`]]};}
+  const intro=`${m.toFixed(2)} g of ${s} is dissolved in ${Va} cm<sup>3</sup> of water. The partition coefficient between ${org} and water is ${K.toFixed(1)}.`;
+  const f1=K*Vo/(K*Vo+Va),one=m*f1;
+  if(t==="one")return {intro,q:`Calculate the <span class="unk">mass of ${s} extracted</span> by shaking with ${Vo} cm<sup>3</sup> of ${org}.`,
+    steps:[["Let x g go into the organic layer",`K = (x ÷ ${Vo}) ÷ ((${m.toFixed(2)} − x) ÷ ${Va})`],["Rearrange",`${K.toFixed(1)} × (${m.toFixed(2)} − x) ÷ ${Va} = x ÷ ${Vo}`],["Answer",`x = <span class="ans">${sf(one,3)} g</span>`]]};
+  const h=Vo/2,f2=K*h/(K*h+Va),r1=m*(1-f2),two=m-r1*(1-f2);
+  return {intro,q:`Compare the mass extracted using one ${Vo} cm<sup>3</sup> portion of ${org} with two ${h} cm<sup>3</sup> portions. Give the <span class="unk">total mass extracted using two portions</span>.`,
+    steps:[["One portion",`x = ${sf(one,3)} g extracted`],["First of two portions",`fraction extracted = ${K.toFixed(1)} × ${h} ÷ (${K.toFixed(1)} × ${h} + ${Va}) = ${sf(f2,3)}; ${sf(m*f2,3)} g extracted, ${sf(r1,3)} g left`],["Second portion",`${sf(r1,3)} × ${sf(f2,3)} = ${sf(r1*f2,3)} g extracted`],["Answer",`two portions extract <span class="ans">${sf(two,3)} g</span>, more than one portion (${sf(one,3)} g). Several small extractions are more efficient.`]]};}
+return {id:'partition',lvl:'AH',title:'Partition Coefficient',sub:'Advanced Higher Chemistry · K = [solute]<sub>solvent 1</sub> ÷ [solute]<sub>solvent 2</sub> · solvent extraction',desc:'Partition and solvent extraction',CONTROLS,ST,make,auto:true};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Rate Equations and Mechanisms
+const CONTROLS=[{id:"t",label:"Question type",opts:[["slow","Which step is rate-determining?"],["rate","Rate equation from mechanism"]]}];
+// [overall, steps, slow step index, rate equation]
+const RM=[["NO<sub>2</sub> + CO → NO + CO<sub>2</sub>",["2NO<sub>2</sub> → NO<sub>3</sub> + NO","NO<sub>3</sub> + CO → NO<sub>2</sub> + CO<sub>2</sub>"],0,"rate = k[NO<sub>2</sub>]<sup>2</sup>"],
+ ["2NO<sub>2</sub> + F<sub>2</sub> → 2NO<sub>2</sub>F",["NO<sub>2</sub> + F<sub>2</sub> → NO<sub>2</sub>F + F","NO<sub>2</sub> + F → NO<sub>2</sub>F"],0,"rate = k[NO<sub>2</sub>][F<sub>2</sub>]"],
+ ["(CH<sub>3</sub>)<sub>3</sub>CBr + OH<sup>−</sup> → (CH<sub>3</sub>)<sub>3</sub>COH + Br<sup>−</sup>",["(CH<sub>3</sub>)<sub>3</sub>CBr → (CH<sub>3</sub>)<sub>3</sub>C<sup>+</sup> + Br<sup>−</sup>","(CH<sub>3</sub>)<sub>3</sub>C<sup>+</sup> + OH<sup>−</sup> → (CH<sub>3</sub>)<sub>3</sub>COH"],0,"rate = k[(CH<sub>3</sub>)<sub>3</sub>CBr]"],
+ ["H<sub>2</sub> + 2ICl → I<sub>2</sub> + 2HCl",["H<sub>2</sub> + ICl → HI + HCl","HI + ICl → I<sub>2</sub> + HCl"],0,"rate = k[H<sub>2</sub>][ICl]"],
+ ["2NO + Br<sub>2</sub> → 2NOBr",["NO + Br<sub>2</sub> → NOBr<sub>2</sub>","NOBr<sub>2</sub> + NO → 2NOBr"],1,"rate = k[NOBr<sub>2</sub>][NO], i.e. k[NO]<sup>2</sup>[Br<sub>2</sub>] in terms of reactants"],
+ ["2H<sub>2</sub> + 2NO → N<sub>2</sub> + 2H<sub>2</sub>O",["2NO + H<sub>2</sub> → N<sub>2</sub>O + H<sub>2</sub>O","N<sub>2</sub>O + H<sub>2</sub> → N<sub>2</sub> + H<sub>2</sub>O"],0,"rate = k[NO]<sup>2</sup>[H<sub>2</sub>]"],["2NO + O<sub>2</sub> → 2NO<sub>2</sub>",["2NO → N<sub>2</sub>O<sub>2</sub>","N<sub>2</sub>O<sub>2</sub> + O<sub>2</sub> → 2NO<sub>2</sub>"],1,"rate = k[N<sub>2</sub>O<sub>2</sub>][O<sub>2</sub>], i.e. k[NO]<sup>2</sup>[O<sub>2</sub>] in terms of reactants"],["2NO<sub>2</sub>Cl → 2NO<sub>2</sub> + Cl<sub>2</sub>",["NO<sub>2</sub>Cl → NO<sub>2</sub> + Cl","NO<sub>2</sub>Cl + Cl → NO<sub>2</sub> + Cl<sub>2</sub>"],0,"rate = k[NO<sub>2</sub>Cl]"]];
+const strip=s=>s.replace(/<[^>]+>/g,"");
+function make(){const [ov,st,sl,rq]=pick(RM),mech=`<div class="eq">${st.map((s,i)=>`Step ${i+1}: ${s}`).join("<br>")}</div>`;
+  if(opt("t")==="slow")return {eq:ov,eqLabel:"Overall reaction",display:mech,q:`The rate equation is <b>${rq.split(",")[0]}</b>. Which <span class="unk">step is rate-determining</span>? Explain.`,ans:{text:[String(sl+1),"step "+(sl+1),"step"+(sl+1)]},
+    steps:[["Rule","The rate equation contains the species (and numbers of them) that react in or before the slow step."],["Answer",`<span class="ans">Step ${sl+1}</span>: its reactants match the rate equation${sl===1?" (NOBr<sub>2</sub> forms from NO and Br<sub>2</sub> in step 1)":""}.`]]};
+  return {eq:ov,eqLabel:"Overall reaction",display:mech,q:`Step ${sl+1} is the slow step. Write the <span class="unk">rate equation</span>.`,noAns:true,
+    steps:[["Rule","The orders come from the number of each species reacting in (or before) the rate-determining step, not from the overall equation."],["Answer",`<span class="ans">${rq}</span>`]]};}
+return {id:'ratemech',lvl:'AH',title:'Rate Equations and Mechanisms',sub:'Advanced Higher Chemistry · linking the rate equation to the rate-determining step',desc:'Rate-determining step',CONTROLS,ST,make,auto:false};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Enthalpy of Formation
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Find",opts:[["r","ΔH° of reaction"],["f","ΔH°<sub>f</sub> of a compound"]]}];
+const HF={"CH<sub>4</sub>(g)":-75,"CO<sub>2</sub>(g)":-394,"H<sub>2</sub>O(ℓ)":-286,"C<sub>2</sub>H<sub>5</sub>OH(ℓ)":-277,"C<sub>2</sub>H<sub>6</sub>(g)":-85,"C<sub>2</sub>H<sub>4</sub>(g)":52,"NH<sub>3</sub>(g)":-46,"NO(g)":90,"CaCO<sub>3</sub>(s)":-1207,"CaO(s)":-635,"Fe<sub>2</sub>O<sub>3</sub>(s)":-824,"Al<sub>2</sub>O<sub>3</sub>(s)":-1676,"SO<sub>2</sub>(g)":-297,"SO<sub>3</sub>(g)":-396,"O<sub>2</sub>(g)":0,"H<sub>2</sub>(g)":0,"Fe(s)":0,"Al(s)":0,"C<sub>3</sub>H<sub>8</sub>(g)":-104,"CH<sub>3</sub>OH(ℓ)":-239,"NO<sub>2</sub>(g)":33,"HCl(g)":-92,"Cl<sub>2</sub>(g)":0};
+const RX=[[[["CH<sub>4</sub>(g)",1],["O<sub>2</sub>(g)",2]],[["CO<sub>2</sub>(g)",1],["H<sub>2</sub>O(ℓ)",2]]],[[["C<sub>2</sub>H<sub>5</sub>OH(ℓ)",1],["O<sub>2</sub>(g)",3]],[["CO<sub>2</sub>(g)",2],["H<sub>2</sub>O(ℓ)",3]]],[[["C<sub>2</sub>H<sub>4</sub>(g)",1],["H<sub>2</sub>(g)",1]],[["C<sub>2</sub>H<sub>6</sub>(g)",1]]],
+ [[["CaCO<sub>3</sub>(s)",1]],[["CaO(s)",1],["CO<sub>2</sub>(g)",1]]],[[["Fe<sub>2</sub>O<sub>3</sub>(s)",1],["Al(s)",2]],[["Al<sub>2</sub>O<sub>3</sub>(s)",1],["Fe(s)",2]]],[[["NH<sub>3</sub>(g)",4],["O<sub>2</sub>(g)",5]],[["NO(g)",4],["H<sub>2</sub>O(ℓ)",6]]],[[["SO<sub>2</sub>(g)",2],["O<sub>2</sub>(g)",1]],[["SO<sub>3</sub>(g)",2]]],[[["C<sub>2</sub>H<sub>4</sub>(g)",1],["H<sub>2</sub>O(ℓ)",1]],[["C<sub>2</sub>H<sub>5</sub>OH(ℓ)",1]]],[[["C<sub>3</sub>H<sub>8</sub>(g)",1],["O<sub>2</sub>(g)",5]],[["CO<sub>2</sub>(g)",3],["H<sub>2</sub>O(ℓ)",4]]],[[["CH<sub>3</sub>OH(ℓ)",1],["O<sub>2</sub>(g)",1.5]],[["CO<sub>2</sub>(g)",1],["H<sub>2</sub>O(ℓ)",2]]],[[["NO(g)",2],["O<sub>2</sub>(g)",1]],[["NO<sub>2</sub>(g)",2]]],[[["H<sub>2</sub>(g)",1],["Cl<sub>2</sub>(g)",1]],[["HCl(g)",2]]]];
+const co=n=>n>1?n:"";
+function make(){const [R,P]=pick(RX),sum=L=>L.reduce((a,[s,n])=>a+n*HF[s],0),dH=sum(P)-sum(R),eqn=R.map(([s,n])=>co(n)+s).join(" + ")+" → "+P.map(([s,n])=>co(n)+s).join(" + ");
+  const all=[...R,...P].map(x=>x[0]).filter(s=>HF[s]!==0),data=`<table class="dt"><tr><th>Substance</th><th>ΔH°<sub>f</sub> / kJ mol<sup>−1</sup></th></tr>${all.map(s=>`<tr><td>${s}</td><td>${HF[s]}</td></tr>`).join("")}</table>`;
+  const line=L=>L.map(([s,n])=>`${n} × (${HF[s]})`).join(" + ");
+  if(opt("t")==="r")return {eq:eqn,eqLabel:"Reaction",display:data,q:`Use the standard enthalpies of formation to calculate <span class="unk">ΔH°</span> for the reaction, in kJ mol<sup>−1</sup>.`,
+    steps:[["Rule","ΔH° = ΣΔH°<sub>f</sub>(products) − ΣΔH°<sub>f</sub>(reactants); elements in their standard states are 0."],["Products",`${line(P)} = ${sum(P)}`],["Reactants",`${line(R)} = ${sum(R)}`],["Answer",`ΔH° = ${sum(P)} − (${sum(R)}) = <span class="ans">${dH} kJ mol<sup>−1</sup></span>`]]};
+  const cand=all.filter(s=>[...R,...P].find(x=>x[0]===s));const tgt=pick(cand),inP=P.find(x=>x[0]===tgt),n=(inP||R.find(x=>x[0]===tgt))[1],shown=all.filter(s=>s!==tgt);
+  const d2=`<table class="dt"><tr><th>Substance</th><th>ΔH°<sub>f</sub> / kJ mol<sup>−1</sup></th></tr>${shown.map(s=>`<tr><td>${s}</td><td>${HF[s]}</td></tr>`).join("")}</table>`;
+  return {eq:eqn,eqLabel:"Reaction",display:d2,q:`ΔH° for this reaction is ${dH} kJ mol<sup>−1</sup>. Calculate the <span class="unk">standard enthalpy of formation of ${tgt}</span>.`,
+    steps:[["Rule","ΔH° = ΣΔH°<sub>f</sub>(products) − ΣΔH°<sub>f</sub>(reactants)"],["Substitute",`${dH} = [${P.map(([s,k])=>s===tgt?`${k}x`:`${k} × (${HF[s]})`).join(" + ")}] − [${R.map(([s,k])=>s===tgt?`${k}x`:`${k} × (${HF[s]})`).join(" + ")}]`],["Answer",`ΔH°<sub>f</sub> = <span class="ans">${HF[tgt]} kJ mol<sup>−1</sup></span>`]]};}
+return {id:'hess',lvl:'AH',title:'Enthalpy of Formation',sub:'Advanced Higher Chemistry · ΔH° = ΣΔH°<sub>f</sub>(products) − ΣΔH°<sub>f</sub>(reactants)',desc:'ΔH° from enthalpies of formation',CONTROLS,ST,make,auto:true};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Synthetic Routes
+const CONTROLS=[{id:"t",label:"Route length",opts:[["1","One step"],["2","Two steps"]]}];
+// [from, to, reagents and conditions, reaction type]
+const E=[["ethene","ethanol","steam with a phosphoric acid catalyst","addition (hydration)"],["ethanol","ethanoic acid","acidified potassium dichromate, heat under reflux","oxidation"],["ethanol","ethene","heat with concentrated sulfuric acid or aluminium oxide","elimination (dehydration)"],
+ ["bromoethane","ethanol","aqueous sodium hydroxide, heat under reflux","nucleophilic substitution"],["bromoethane","ethene","ethanolic potassium hydroxide, heat under reflux","elimination"],["bromoethane","propanenitrile","ethanolic potassium cyanide, heat under reflux","nucleophilic substitution"],
+ ["propanenitrile","propanoic acid","heat under reflux with dilute acid","hydrolysis"],["ethanal","ethanol","lithium aluminium hydride in ether","reduction"],["ethanol","ethanal","acidified potassium dichromate, distil off as it forms","oxidation"],["ethene","bromoethane","hydrogen bromide","electrophilic addition"],
+ ["ethanoic acid","ethyl ethanoate","ethanol with a concentrated sulfuric acid catalyst, heat","condensation (esterification)"],["benzene","nitrobenzene","concentrated nitric and sulfuric acids","electrophilic substitution (nitration)"],["benzene","methylbenzene","chloromethane with an aluminium chloride catalyst","electrophilic substitution (alkylation)"],
+ ["bromoethane","ethoxyethane","sodium ethoxide in ethanol","nucleophilic substitution"],["ethanoic acid","ethanol","lithium aluminium hydride in ether","reduction"],["propan-2-ol","propanone","acidified potassium dichromate, heat","oxidation"],["propanone","propan-2-ol","lithium aluminium hydride in ether","reduction"],["ethanoic acid","sodium ethanoate","sodium hydroxide solution","neutralisation"],["ethyl ethanoate","ethanoic acid and ethanol","heat under reflux with dilute acid","hydrolysis"],["benzene","bromobenzene","bromine with an iron(III) bromide catalyst","electrophilic substitution (halogenation)"],["propene","propan-2-ol","steam with a phosphoric acid catalyst","addition (hydration)"],["1-bromopropane","propylamine","ammonia in ethanol, heat in a sealed tube","nucleophilic substitution"]];
+function make(){let path;if(opt("t")==="1")path=[pick(E)];else{const a=pick(E),nx=E.filter(e=>e[0]===a[1]&&e[1]!==a[0]);if(!nx.length)return null;path=[a,pick(nx)];}
+  const s=path[0][0],t=path[path.length-1][1];
+  return {q:`Describe ${path.length>1?"a two-step":"a one-step"} synthesis of <span class="unk">${t}</span> from ${s}. For each step give the reagents and conditions, and the type of reaction.${path.length>1?" Name the intermediate.":""}`,noAns:true,
+    steps:path.map((e,i)=>[`Step ${i+1}: ${e[0]} → ${e[1]}`,`Reagents and conditions: <span class="ans">${e[2]}</span><br>Type of reaction: ${e[3]}`])};}
+return {id:'synth',lvl:'AH',title:'Synthetic Routes',sub:'Advanced Higher Chemistry · reagents, conditions and reaction types in one- and two-step syntheses',desc:'Reagents, conditions, reaction types',CONTROLS,ST,make,auto:false};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Yield and Atom Economy
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Find",opts:[["ae","Atom economy"],["multi","Overall yield"],["mass","Mass of product (multi-step)"]]}];
+const AE=[["C<sub>2</sub>H<sub>4</sub> + H<sub>2</sub>O → C<sub>2</sub>H<sub>5</sub>OH",[["C<sub>2</sub>H<sub>4</sub>",28.0],["H<sub>2</sub>O",18.0]],["C<sub>2</sub>H<sub>5</sub>OH",46.0]],["C<sub>2</sub>H<sub>5</sub>Br + NaOH → C<sub>2</sub>H<sub>5</sub>OH + NaBr",[["C<sub>2</sub>H<sub>5</sub>Br",108.9],["NaOH",40.0]],["C<sub>2</sub>H<sub>5</sub>OH",46.0]],
+ ["CH<sub>3</sub>COOH + C<sub>2</sub>H<sub>5</sub>OH → CH<sub>3</sub>COOC<sub>2</sub>H<sub>5</sub> + H<sub>2</sub>O",[["CH<sub>3</sub>COOH",60.0],["C<sub>2</sub>H<sub>5</sub>OH",46.0]],["CH<sub>3</sub>COOC<sub>2</sub>H<sub>5</sub>",88.0]],["C<sub>2</sub>H<sub>5</sub>OH → C<sub>2</sub>H<sub>4</sub> + H<sub>2</sub>O",[["C<sub>2</sub>H<sub>5</sub>OH",46.0]],["C<sub>2</sub>H<sub>4</sub>",28.0]],
+ ["CaCO<sub>3</sub> → CaO + CO<sub>2</sub>",[["CaCO<sub>3</sub>",100.1]],["CaO",56.1]],["C<sub>6</sub>H<sub>6</sub> + HNO<sub>3</sub> → C<sub>6</sub>H<sub>5</sub>NO<sub>2</sub> + H<sub>2</sub>O",[["C<sub>6</sub>H<sub>6</sub>",78.0],["HNO<sub>3</sub>",63.0]],["C<sub>6</sub>H<sub>5</sub>NO<sub>2</sub>",123.0]],["CH<sub>3</sub>COOH + CH<sub>3</sub>OH → CH<sub>3</sub>COOCH<sub>3</sub> + H<sub>2</sub>O",[["CH<sub>3</sub>COOH",60.0],["CH<sub>3</sub>OH",32.0]],["CH<sub>3</sub>COOCH<sub>3</sub>",74.0]],["C<sub>2</sub>H<sub>4</sub> + Br<sub>2</sub> → C<sub>2</sub>H<sub>4</sub>Br<sub>2</sub>",[["C<sub>2</sub>H<sub>4</sub>",28.0],["Br<sub>2</sub>",159.8]],["C<sub>2</sub>H<sub>4</sub>Br<sub>2</sub>",187.8]],["C<sub>2</sub>H<sub>5</sub>Br + KCN → C<sub>2</sub>H<sub>5</sub>CN + KBr",[["C<sub>2</sub>H<sub>5</sub>Br",108.9],["KCN",65.1]],["C<sub>2</sub>H<sub>5</sub>CN",55.0]]];
+const RT=[["benzene",78.0,"nitrobenzene",123.0,"phenylamine",93.0],["ethene",28.0,"bromoethane",108.9,"ethanol",46.0],["bromoethane",108.9,"propanenitrile",55.0,"propanoic acid",74.0],["ethanol",46.0,"ethanoic acid",60.0,"ethyl ethanoate",88.0],["propene",42.0,"2-bromopropane",123.0,"propan-2-ol",60.0],["ethanol",46.0,"ethanal",44.0,"ethanoic acid",60.0],["bromoethane",108.9,"ethanol",46.0,"ethyl ethanoate",88.0]];
+function make(){const t=opt("t");
+  if(t==="ae"){const [eq,R,[p,pm]]=pick(AE),tot=R.reduce((a,r)=>a+r[1],0);return {eq,eqLabel:"Reaction",q:`Calculate the <span class="unk">atom economy</span> for making ${p}.`,
+    steps:[["Rule","atom economy = mass of desired product ÷ total mass of reactants × 100"],["Masses",`desired: ${pm}; reactants: ${R.map(r=>r[1]).join(" + ")} = ${sf(tot,4)}`],["Answer",`${pm} ÷ ${sf(tot,4)} × 100 = <span class="ans">${sf(pm/tot*100,3)}%</span>`]]};}
+  const [a,am,b,bm,c,cm]=pick(RT),y1=rint(50,95),y2=rint(50,95),ov=y1*y2/100;
+  if(t==="multi")return {intro:`${c} is made from ${a} in two steps: ${a} → ${b} (${y1}% yield), then ${b} → ${c} (${y2}% yield).`,q:`Calculate the <span class="unk">overall percentage yield</span>.`,
+    steps:[["Rule","Multiply the yields of each step, as fractions."],["Answer",`${(y1/100).toFixed(2)} × ${(y2/100).toFixed(2)} × 100 = <span class="ans">${sf(ov,3)}%</span>`]]};
+  const m=rint(50,500)/10,n=m/am,mp=n*ov/100*cm;
+  return {intro:`${c} (GFM ${cm}) is made from ${a} (GFM ${am}) in two steps with 1 : 1 mole ratios: ${a} → ${b} (${y1}% yield), then ${b} → ${c} (${y2}% yield).`,q:`Calculate the <span class="unk">mass of ${c}</span> obtained from ${m.toFixed(1)} g of ${a}.`,
+    steps:[["Moles of starting material",`${m.toFixed(1)} ÷ ${am} = ${sf(n,3)} mol`],["Overall yield",`${(y1/100).toFixed(2)} × ${(y2/100).toFixed(2)} = ${sf(ov/100,3)}`],["Moles of product",`${sf(n,3)} × ${sf(ov/100,3)} = ${sf(n*ov/100,3)} mol`],["Answer",`${sf(n*ov/100,3)} × ${cm} = <span class="ans">${sf(mp,3)} g</span>`]]};}
+return {id:'yield',lvl:'AH',title:'Yield and Atom Economy',sub:'Advanced Higher Chemistry · multi-step percentage yield and atom economy',desc:'Multi-step yield, atom economy',CONTROLS,ST,make,auto:true};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Molecular Orbitals
+const CONTROLS=[{id:"t",label:"Question type",opts:[["sp","σ and π bonds"],["hyb","Hybridisation"],["conj","Colour and conjugation"]]}];
+const SP=[["ethene, CH<sub>2</sub>=CH<sub>2</sub>",5,1],["ethyne, HC≡CH",3,2],["propene, CH<sub>2</sub>=CHCH<sub>3</sub>",8,1],["buta-1,3-diene, CH<sub>2</sub>=CHCH=CH<sub>2</sub>",9,2],["ethanal, CH<sub>3</sub>CHO",6,1],["propanone, CH<sub>3</sub>COCH<sub>3</sub>",9,1],["hydrogen cyanide, HCN",2,2],["carbon dioxide, O=C=O",2,2],["nitrogen, N≡N",1,2],["propyne, HC≡CCH<sub>3</sub>",6,2],["methanal, H<sub>2</sub>C=O",3,1],["but-1-yne, HC≡CCH<sub>2</sub>CH<sub>3</sub>",9,2],["ethanoic acid, CH<sub>3</sub>COOH",7,1],["propenal, CH<sub>2</sub>=CHCHO",7,2],["ethanenitrile, CH<sub>3</sub>CN",5,2]];
+const HY=[["each carbon in ethane","sp<sup>3</sup>","4 σ bonds, tetrahedral"],["each carbon in ethene","sp<sup>2</sup>","3 σ bonds and 1 π bond, trigonal planar"],["each carbon in ethyne","sp","2 σ bonds and 2 π bonds, linear"],["each carbon in benzene","sp<sup>2</sup>","3 σ bonds; the unhybridised p orbitals overlap to form a delocalised π system"],["the carbon of the C=O group in propanone","sp<sup>2</sup>","3 σ bonds and 1 π bond"],["the carbon in carbon dioxide","sp","2 σ bonds and 2 π bonds, linear"],["the carbon of the CH<sub>3</sub> group in ethanoic acid","sp<sup>3</sup>","4 σ bonds"]];
+const CJ=[["Why is β-carotene (11 conjugated C=C bonds) coloured, while ethene is colourless?","The large conjugated (delocalised) π system brings the HOMO and LUMO closer together. The energy gap falls in the visible region, so visible light is absorbed; ethene's gap is larger and it absorbs only in the UV."],
+ ["How does increasing the length of a conjugated system affect the wavelength of light absorbed?","More conjugation → smaller HOMO–LUMO gap → lower energy, so a longer wavelength is absorbed."],["What is a chromophore?","The group of atoms in a molecule responsible for absorbing light; the colour seen is the complementary colour of the light absorbed."],
+ ["What happens to an electron when a compound absorbs UV or visible light?","An electron is promoted from the highest occupied molecular orbital (HOMO) to the lowest unoccupied molecular orbital (LUMO)."],["Describe how a σ bond and a π bond form.","σ: end-on (axial) overlap of orbitals along the line between the nuclei. π: side-on overlap of parallel p orbitals, above and below the line between the nuclei."],["Why are most organic compounds colourless, while some are coloured?","Most have a large HOMO–LUMO gap and absorb only UV. Coloured compounds have extended conjugated systems, so the gap is small enough for visible light to be absorbed."],["What is meant by a conjugated system?","A system of alternating single and double bonds, in which p orbitals overlap so that the π electrons are delocalised."],["What is a bonding molecular orbital?","A molecular orbital formed by in-phase overlap of atomic orbitals. It is lower in energy than the atomic orbitals, and electrons in it hold the nuclei together."],["What is an antibonding molecular orbital?","A higher-energy molecular orbital formed by out-of-phase overlap of atomic orbitals; electrons in it weaken the bond."]];
+function make(){const t=opt("t");
+  if(t==="sp"){const [n,s,p]=pick(SP);return {q:`How many <span class="unk">σ and π bonds</span> are there in ${n}?`,noAns:true,steps:[["Rule","Every single bond is 1 σ. A double bond is 1 σ + 1 π. A triple bond is 1 σ + 2 π."],["Answer",`<span class="ans">${s} σ and ${p} π</span>`]]};}
+  if(t==="hyb"){const [w,h,why]=pick(HY);return {q:`State the <span class="unk">hybridisation</span> of ${w}.`,ans:{text:[h.replace(/<\/?sup>/g,"")]},steps:[["Bonding",why],["Answer",`<span class="ans">${h}</span>`]]};}
+  const [q,a]=pick(CJ);return {q:`<span class="unk">${q}</span>`,noAns:true,steps:[["Answer",a]]};}
+return {id:'mo',lvl:'AH',title:'Molecular Orbitals',sub:'Advanced Higher Chemistry · σ and π bonding, hybridisation, conjugation and colour',desc:'σ/π bonds, hybridisation, colour',CONTROLS,ST,make,auto:false};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Pharmaceutical Chemistry
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Question type",opts:[["ag","Agonist or antagonist"],["int","Drug–receptor interactions"],["dose","Dosage calculation"]]}];
+const AG=[["Salbutamol binds to β<sub>2</sub> receptors in the lungs and triggers the same response as adrenaline, relaxing the airways.","agonist"],["Propranolol binds to β receptors in the heart and blocks the action of adrenaline.","antagonist"],["Morphine binds to opioid receptors and produces a pain-relieving response.","agonist"],["Naloxone binds to opioid receptors without producing a response and reverses an opioid overdose.","antagonist"],["Atropine binds to acetylcholine receptors but does not activate them, preventing acetylcholine binding.","antagonist"],["Nicotine binds to some acetylcholine receptors and mimics acetylcholine.","agonist"],["Cetirizine binds to histamine H<sub>1</sub> receptors without activating them, reducing hay fever symptoms.","antagonist"],["Ranitidine binds to histamine H<sub>2</sub> receptors in the stomach and blocks histamine, reducing acid production.","antagonist"],["Methadone binds to opioid receptors and produces a pain-relieving response.","agonist"],["Tamoxifen binds to oestrogen receptors in breast tissue and prevents oestrogen from binding.","antagonist"]];
+const IN=[["a hydroxyl group (–OH)","hydrogen bonding"],["an amino group (–NH<sub>2</sub>)","hydrogen bonding"],["a protonated amine (–NH<sub>3</sub><sup>+</sup>)","ionic bonding (with a –COO<sup>−</sup> group on the receptor)"],["a carboxylate group (–COO<sup>−</sup>)","ionic bonding (with a –NH<sub>3</sub><sup>+</sup> group on the receptor)"],["a benzene ring","London dispersion forces"],["a carbonyl group (C=O)","hydrogen bonding (as an acceptor) and permanent dipole interactions"],["an ester group (–COO–)","permanent dipole interactions and hydrogen bonding (as an acceptor)"],["a halogen atom (e.g. –Cl)","permanent dipole interactions"],["an alkyl chain (–CH<sub>2</sub>CH<sub>2</sub>CH<sub>3</sub>)","London dispersion forces"],["an amide group (–CONH–)","hydrogen bonding"]];
+function make(){const t=opt("t");
+  if(t==="ag"){const [s,a]=pick(AG);return {intro:s,q:`Is the drug an <span class="unk">agonist or an antagonist</span>?`,ans:{text:[a]},steps:[["Definitions","An agonist binds to a receptor and produces a response like the natural molecule. An antagonist binds but produces no response, blocking the natural molecule."],["Answer",`<span class="ans">${a}</span>`]]};}
+  if(t==="int"){const [g,i]=pick(IN);return {q:`A drug molecule contains ${g}. What <span class="unk">type of interaction</span> could this group form with a receptor?`,noAns:true,steps:[["Answer",`<span class="ans">${i}</span>`],["Note","The groups involved in binding, and their shape, make up the pharmacophore."]]};}
+  const d=pick([5,10,15,20,25]),kg=rint(20,90),c=pick([50,100,125,250]),mg=d*kg;
+  return {intro:`A drug is prescribed at ${d} mg per kg of body mass. It is supplied as a solution containing ${c} mg per 5 cm<sup>3</sup>.`,q:`Calculate the <span class="unk">volume of solution</span> needed for a ${kg} kg patient, in cm<sup>3</sup>.`,
+    steps:[["Dose",`${d} × ${kg} = ${mg} mg`],["Volume",`${mg} ÷ ${c} × 5`],["Answer",`<span class="ans">${sf(mg/c*5,3)} cm<sup>3</sup></span>`]]};}
+return {id:'pharma',lvl:'AH',title:'Pharmaceutical Chemistry',sub:'Advanced Higher Chemistry · agonists and antagonists, drug–receptor binding and dosage',desc:'Agonists, binding, dosage',CONTROLS,ST,make,auto:true};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title d-Orbital Splitting
+const CONTROLS=[{id:"t",label:"Question type",opts:[["dn","d electrons and colour"],["lig","Ligand strength"]]}];
+const IONS=[["Sc<sup>3+</sup>",0],["Ti<sup>3+</sup>",1],["V<sup>3+</sup>",2],["Cr<sup>3+</sup>",3],["Mn<sup>2+</sup>",5],["Fe<sup>2+</sup>",6],["Fe<sup>3+</sup>",5],["Co<sup>2+</sup>",7],["Ni<sup>2+</sup>",8],["Cu<sup>2+</sup>",9],["Cu<sup>+</sup>",10],["Zn<sup>2+</sup>",10],["Mn<sup>3+</sup>",4],["Cr<sup>2+</sup>",4],["Co<sup>3+</sup>",6],["Ti<sup>4+</sup>",0],["V<sup>2+</sup>",3]];
+const SER=["I<sup>−</sup>","Br<sup>−</sup>","Cl<sup>−</sup>","F<sup>−</sup>","OH<sup>−</sup>","H<sub>2</sub>O","NH<sub>3</sub>","CN<sup>−</sup>"];
+function make(){if(opt("t")==="dn"){const [i,d]=pick(IONS),col=d>0&&d<10;return {q:`How many <span class="unk">d electrons</span> does ${i} have, and would its aqueous complex be coloured?`,ans:{text:[String(d)]},
+    steps:[["d electrons",`${i}: 3d<sup>${d}</sup> (4s electrons are lost first)`],["Colour",col?"The d subshell is partly filled, so d–d transitions can absorb visible light: coloured.":`The d subshell is ${d?"full":"empty"}, so no d–d transitions are possible: colourless.`],["Answer",`<span class="ans">${d}</span> d electron${d===1?"":"s"}; ${col?"coloured":"colourless"}`]]};}
+  const a=rint(0,SER.length-1);let b=rint(0,SER.length-1);if(a===b)return null;const hi=a>b?SER[a]:SER[b],lo=a>b?SER[b]:SER[a];
+  return {q:`A complex ion has ${SER[a]} ligands. They are replaced by ${SER[b]} ligands. How does the <span class="unk">d-orbital splitting</span> change, and how does the wavelength of light absorbed change?`,noAns:true,
+    steps:[["Spectrochemical series",SER.join(" < ")+" (weak field → strong field)"],["Splitting",`${hi} is a stronger-field ligand than ${lo}.`],["Answer",`The splitting ${b>a?"<span class=\"ans\">increases</span>, so higher-energy, <b>shorter</b>-wavelength light is absorbed":"<span class=\"ans\">decreases</span>, so lower-energy, <b>longer</b>-wavelength light is absorbed"}.`]]};}
+return {id:'dsplit',lvl:'AH',title:'d-Orbital Splitting',sub:'Advanced Higher Chemistry · d electron counts, colour and the spectrochemical series',desc:'d electrons, ligand field strength',CONTROLS,ST,make,auto:false};})());
+
+MODS.push((function(){const ST={};function opt(k){const c=CONTROLS.find(x=>x.id===k);const v=ST[k]||c.def||"rand";return v==="rand"?pick(c.opts.map(o=>o[0])):v;}
+//@title Uncertainties
+const AUTO_ANS=1;
+const CONTROLS=[{id:"t",label:"Find",opts:[["pc","Percentage uncertainty"],["big","Most significant uncertainty"]]}];
+function make(){const m=rint(100,300)/100,pv=pick([[25.0,0.06],[20.0,0.03],[10.0,0.02]]),tv=rint(150,280)/10,fl=[250,0.3];
+  const L=[["mass of solid",`${m.toFixed(2)} g`,"± 0.01 g",0.01/m*100],["pipette",`${pv[0].toFixed(1)} cm<sup>3</sup>`,`± ${pv[1]} cm<sup>3</sup>`,pv[1]/pv[0]*100],["standard flask","250 cm<sup>3</sup>","± 0.3 cm<sup>3</sup>",0.3/250*100],["burette titre",`${tv.toFixed(1)} cm<sup>3</sup>`,"± 0.1 cm<sup>3</sup> (two readings of ± 0.05)",0.1/tv*100]];
+  const tbl=`<table class="dt"><tr><th>Measurement</th><th>Value</th><th>Uncertainty</th></tr>${L.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join("")}</table>`;
+  if(opt("t")==="pc"){const x=pick(L);return {display:tbl,q:`Calculate the <span class="unk">percentage uncertainty</span> in the ${x[0]}.`,steps:[["Rule","percentage uncertainty = absolute uncertainty ÷ measured value × 100"],["Answer",`<span class="ans">${sf(x[3],2)}%</span>`]]};}
+  const big=L.reduce((a,b)=>b[3]>a[3]?b:a),res=rint(500,999)/10000;
+  return {display:tbl,intro:`These measurements were used to find the concentration of a solution, ${sf(res,3)} mol l<sup>−1</sup>.`,q:`Identify the <span class="unk">most significant source of uncertainty</span> and use it to give the absolute uncertainty in the concentration.`,noAns:true,
+    steps:[["Percentage uncertainties",L.map(x=>`${x[0]}: ${sf(x[3],2)}%`).join("<br>")],["Most significant",`<span class="ans">${big[0]}</span> (${sf(big[3],2)}%)`],["Absolute uncertainty",`${sf(res,3)} × ${sf(big[3],2)} ÷ 100 = ± ${sf(res*big[3]/100,1)} mol l<sup>−1</sup>`]]};}
+return {id:'uncert',lvl:'AH',title:'Uncertainties',sub:'Advanced Higher Chemistry · absolute and percentage uncertainties in practical work',desc:'Percentage uncertainty',CONTROLS,ST,make,auto:true};})());
+MODS.push((function(){const ST={};
+//@title Experimental Determination: Mixed
+const SRC=[["micro","Elemental microanalysis"],["massspec","Mass spectrometry"],["ir","Infrared spectroscopy"],["nmrid","Proton NMR and combined spectra"]];
+const CONTROLS=[{id:"t",label:"Include",opts:SRC}];
+function make(){const v=ST.t||"rand",ids=v==="rand"?SRC.map(s=>s[0]):[v],id=pick(ids),m=MODS.find(x=>x.id===id),q=m.make();if(!q)return null;
+  if(m.auto&&!q.ans&&!q.noAns)autoAns(q,true);q.intro=`<span class="mk" style="margin-left:0">${m.title}</span> `+(q.intro||"");return q;}
+return {id:'structmix',lvl:'AH',title:'Experimental Determination: Mixed',sub:'Advanced Higher Chemistry · microanalysis, mass spectrometry, infrared and proton NMR together',desc:'All structure determination types',CONTROLS,ST,make,auto:false};})());
+const APP={"title": "Advanced Higher Chemistry"};
+const UNITS=[{"id": "phys", "title": "Inorganic and physical chemistry", "groups": [{"title": "Electronic structure", "topics": ["econfig", "spectro"]}, {"title": "Transition metals", "topics": ["tmetals", "dsplit"]}, {"title": "Chemical kinetics", "topics": ["kinetics", "ratemech"]}, {"title": "Chemical equilibrium", "topics": ["kc", "partition", "phstrong", "phweak", "buffers", "indicators"]}, {"title": "Thermodynamics", "topics": ["hess", "thermo"]}]}, {"id": "org", "title": "Organic chemistry and instrumental analysis", "groups": [{"title": "Molecular orbitals and structure", "topics": ["mo", "vsepr"]}, {"title": "Stereochemistry and mechanisms", "topics": ["stereo"]}, {"title": "Synthesis", "topics": ["synth", "yield"]}, {"title": "Experimental determination of structure", "topics": ["micro", "massspec", "ir", "nmrid", "structmix"]}, {"title": "Medicines", "topics": ["pharma"]}]}, {"id": "res", "title": "Researching chemistry", "groups": [{"title": "Volumetric and gravimetric analysis", "topics": ["volgrav"]}, {"title": "Colorimetry", "topics": ["colour"]}, {"title": "Uncertainties", "topics": ["uncert"]}]}];
+/* ---------- app shell: units → topics → generator ---------- */
+const $=id=>document.getElementById(id);
+let M=null,CUR=null,SHEET=null,MARKS=false,MIX=null;const HIST={};
+const hkey=()=>MIX?(MIX==="all"?"__all":"__"+MIX.id):M.id;
+function H(){return HIST[hkey()]=HIST[hkey()]||{list:[],i:-1};}
+function showAt(i){const h=H();h.i=i;CUR=h.list[i];SHEET=null;$("sheet").hidden=true;$("qcard").hidden=false;render();$("work").hidden=true;$("show").hidden=false;$("show").textContent="Show worked answer";navState();selfState();}
+function navState(){const h=H();$("prev").disabled=h.i<=0;$("nextq").disabled=h.i>=h.list.length-1;$("qnum").textContent=h.list.length?`Question ${h.i+1} of ${h.list.length}`:"";}
+const byId=id=>MODS.find(m=>m.id===id);
+function view(v){["home","unit","gen"].forEach(x=>$("v-"+x).hidden=x!==v);window.scrollTo(0,0);}
+function crumbs(parts){$("crumbs").innerHTML=parts.map((p,i)=>i<parts.length-1?`<button class="crumb" data-go="${p[1]}">${p[0]}</button><span aria-hidden="true">›</span>`:`<span class="here">${p[0]}</span>`).join("");
+  $("crumbs").querySelectorAll("button").forEach(b=>b.onclick=()=>go(b.dataset.go));}
+function go(where){if(where==="home")return showHome();if(where.startsWith("unit:"))return showUnit(where.slice(5));return openTopic(where);}
+function setHash(h){try{history.replaceState(null,"",h?"#"+h:location.pathname+location.search);}catch(e){}}
+function showHome(){view("home");$("crumbs").innerHTML="";setHash("");
+  $("units").innerHTML=UNITS.map(u=>{const n=u.groups.reduce((a,g)=>a+g.topics.length,0);return `<button class="ucard" data-u="${u.id}"><b>${u.title}</b><span>${n} topic${n>1?"s":""}</span></button>`;}).join("")+
+    `<button class="ucard mix" data-u="__mix"><b>Mixed revision</b><span>Questions from every topic in the course</span></button>`;
+  $("units").querySelectorAll("button").forEach(b=>b.onclick=()=>b.dataset.u==="__mix"?openMixed(null):showUnit(b.dataset.u));}
+function showUnit(id){const u=UNITS.find(x=>x.id===id);view("unit");crumbs([[APP.title,"home"],[u.title,"unit:"+id]]);setHash(id);
+  $("unit-title").textContent=u.title;
+  $("groups").innerHTML=u.groups.map(g=>`<section class="grp"><h2>${g.title}</h2><div class="tgrid">${g.topics.map(t=>{const m=byId(t);return `<button class="tcard" data-t="${t}"><b>${m.title}</b><span>${m.desc}</span>${scoreTxt(t)}</button>`;}).join("")}</div></section>`).join("")+
+    `<section class="grp"><h2>Revision</h2><div class="tgrid"><button class="tcard mix" data-mix="${id}"><b>Mixed questions from this unit</b><span>A random topic each time</span></button></div></section>`;
+  $("groups").querySelectorAll("button").forEach(b=>b.onclick=()=>b.dataset.mix?openMixed(b.dataset.mix):openTopic(b.dataset.t));}
+function unitOf(t){return UNITS.find(u=>u.groups.some(g=>g.topics.includes(t)));}
+function openTopic(id){const m=byId(id);if(!m)return showHome();M=m;MIX=null;const u=unitOf(id);view("gen");crumbs([[APP.title,"home"],[u.title,"unit:"+u.id],[m.title,id]]);setHash(id);
+  $("gen-title").textContent=m.title;$("gen-sub").innerHTML=m.sub;buildControls();resume();}
+function openMixed(uid){MIX=uid?UNITS.find(u=>u.id===uid):"all";M=null;view("gen");
+  const title=uid?`Mixed: ${MIX.title}`:"Mixed revision";crumbs(uid?[[APP.title,"home"],[MIX.title,"unit:"+uid],["Mixed questions",""]]:[[APP.title,"home"],["Mixed revision",""]]);
+  $("gen-title").textContent=title;$("gen-sub").textContent=uid?"A random topic from this unit each time.":"A random topic from the whole course each time.";mixPicker();resume();}
+function buildControls(){const c=$("ctrls");c.innerHTML="";c.hidden=!M.CONTROLS.length;
+  M.CONTROLS.forEach(k=>{const d=document.createElement("div");d.className="seg";d.setAttribute("role","group");d.setAttribute("aria-label",k.label);
+    const opts=k.noRand?k.opts:[...k.opts,["rand","Random"]],cur=M.ST[k.id]||k.def||"rand";
+    opts.forEach(([v,l])=>{const b=document.createElement("button");b.innerHTML=l;b.setAttribute("aria-pressed",v===cur);b.onclick=()=>{M.ST[k.id]=v;[...d.children].forEach(x=>x.setAttribute("aria-pressed",x===b));SHEET?makeSheet():newQ();};d.appendChild(b);});
+    c.appendChild(d);});}
+const SEL={};
+function mixUnits(){return MIX==="all"?UNITS:[MIX];}
+function mixAll(){return mixUnits().flatMap(u=>u.groups.flatMap(g=>g.topics));}
+function mixSel(){const k=hkey();if(!SEL[k])SEL[k]=new Set(mixAll());return SEL[k];}
+function mixPicker(){const c=$("ctrls"),sel=mixSel();c.hidden=false;
+  c.innerHTML=`<details class="mixpick" style="width:100%"><summary><b>Choose topics</b> <span id="mixcount"></span></summary>
+   <div class="controls" style="margin:8px 0"><button class="btn alt" data-all="1">Select all</button><button class="btn alt" data-all="0">Clear all</button></div>
+   ${mixUnits().map(u=>`<fieldset style="border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:6px 0"><legend><b>${u.title}</b></legend>${u.groups.map(g=>`<div style="margin:4px 0"><label style="font-weight:600"><input type="checkbox" data-grp="${g.topics.join(",")}"> ${g.title}</label><div style="display:flex;flex-wrap:wrap;gap:4px 16px;margin:2px 0 0 22px">${g.topics.map(t=>`<label><input type="checkbox" data-t="${t}" ${sel.has(t)?"checked":""}> ${byId(t).title}</label>`).join("")}</div></div>`).join("")}</fieldset>`).join("")}</details>`;
+  const sync=()=>{c.querySelectorAll("[data-grp]").forEach(g=>{const ts=g.dataset.grp.split(","),n=ts.filter(t=>sel.has(t)).length;g.checked=n===ts.length;g.indeterminate=n>0&&n<ts.length;});
+    c.querySelectorAll("[data-t]").forEach(x=>x.checked=sel.has(x.dataset.t));$("mixcount").textContent=`(${sel.size} of ${mixAll().length} selected)`;};
+  c.querySelectorAll("[data-t]").forEach(x=>x.onchange=()=>{x.checked?sel.add(x.dataset.t):sel.delete(x.dataset.t);sync();});
+  c.querySelectorAll("[data-grp]").forEach(g=>g.onchange=()=>{g.dataset.grp.split(",").forEach(t=>g.checked?sel.add(t):sel.delete(t));sync();});
+  c.querySelectorAll("[data-all]").forEach(b=>b.onclick=()=>{mixAll().forEach(t=>b.dataset.all==="1"?sel.add(t):sel.delete(t));sync();});sync();}
+function pickMod(){if(!MIX)return M;const sel=mixSel(),ids=sel.size?[...sel]:mixAll();return byId(pick(ids));}
+const totalMarks=Q=>Q.marks??Q.steps.reduce((a,s)=>a+(s[2]??1),0);
+const mchip=n=>`<span class="mk">${n} mark${n>1?"s":""}</span>`;
+const stepsHTML=st=>st.map((s,i)=>{const mk=s[2]??1;return `<div class="step"><div class="num">${i+1}</div><div style="min-width:0;display:grid;gap:6px"><h3>${s[0]}${MARKS&&mk?" "+mchip(mk):""}</h3><div class="m">${s[1]}</div></div></div>`;}).join("");
+function qHTML(Q,full){return (Q._topic?`<span class="mk" style="margin-left:0;justify-self:start">${Q._topic}</span>`:"")+(Q.intro?`<div class="q">${Q.intro}</div>`:"")+(Q.eq?`<div><div class="label">${Q.eqLabel||"Equation"}</div><div class="eq">${Q.eq}</div></div>`:"")+(Q.display||"")+
+  (Q.q?`<div class="q">${Q.q}${MARKS&&totalMarks(Q)?" "+mchip(totalMarks(Q)):""}</div>`:"")+
+  (full&&Q.data?`<div class="data" id="data" hidden>${Q.data.map(([t,h])=>`<div><b>${t}</b><span>${h}</span></div>`).join("")}</div>`:"")+
+  (full&&Q.ans?`<div class="ansbox"><label for="pa"><b>Your answer</b></label><input id="pa" autocomplete="off" ${Q.ans.num!==undefined?'inputmode="decimal"':""}>${Q.ans.unit?`<span class="unit">${Q.ans.unit}</span>`:""}<button class="btn alt" id="pcheck">Check</button><span class="fbk" id="pfb" aria-live="polite"></span></div>`:"");}
+function autoAns(Q,auto){if(Q.ans||Q.noAns||!auto)return;const last=Q.steps[Q.steps.length-1][1],ms=[...last.matchAll(/class="ans"[^>]*>(.*?)<\/span>/g)];
+  if(ms.length!==1||ms[0][1].includes("nuc"))return;const inner=ms[0][1],txt=inner.replace(/<[^>]+>/g,"").trim(),m=txt.match(/^([−-]?\d+(?:\.\d+)?)\s*(.*)$/);
+  if(!m||/^[×\/\d:]/.test(m[2]))return;Q.ans={num:parseFloat(m[1].replace("−","-")),unit:inner.replace(/^\s*[−-]?\d+(?:\.\d+)?\s*/,"")};}
+function gen1(){for(let t=0;t<60;t++){const m=pickMod();if(typeof RAM!=="undefined")RAM=(m.lvl==="N5")?RAM_N5:RAM_H;let Q=null;try{Q=m.make();}catch(e){console.error(m.id,e);}
+  if(Q){autoAns(Q,m.auto);Q._id=m.id;if(!MIX)Q._topic=Q._topic;if(MIX)Q._topic=m.title;return Q;}}return {q:"Something went wrong. Try New question.",steps:[]};}
+function render(){const Q=CUR;$("qcard").innerHTML=qHTML(Q,true);$("steps").innerHTML=stepsHTML(Q.steps);
+  $("showdata").hidden=!Q.data;$("showdata").textContent="Show data";if(Q.bind)Q.bind($("qcard"));
+  if(Q.ans){const go=()=>check(Q);$("pcheck").onclick=go;$("pa").onkeydown=e=>{if(e.key==="Enter")go();};}}
+function check(Q){const a=Q.ans,raw=$("pa").value.trim(),fb=$("pfb");fb.className="fbk";
+  if(!raw){fb.textContent="Type an answer first.";return;}
+  let ok;if(a.num!==undefined){const x=parseFloat(raw.replace(/,/g,"").replace(/[−–]/g,"-"));if(!isFinite(x)){fb.textContent="Enter a number.";return;}ok=Math.abs(x-a.num)<=Math.abs(a.num)*(a.tol??0.02)+1e-9;}
+  else{const n=s=>s.toLowerCase().replace(/[\s\-–()]/g,"");ok=a.text.some(t=>n(t)===n(raw));}
+  fb.classList.add(ok?"ok":"no");if(!Q._scored){Q._scored=1;score(Q,ok);}fb.textContent=ok?"Correct. Well done.":"Not quite. Check your working, or show the worked answer.";}
+function newQ(){const h=H();h.list.push(gen1());showAt(h.list.length-1);}
+function resume(){const h=H();if(h.list.length)showAt(h.i);else newQ();}
+function makeSheet(){if(typeof stopQuiz==="function"&&TIMER)stopQuiz();const qt=document.getElementById("quiztot");if(qt)qt.remove();SHEET=[];for(let i=0;i<10;i++)SHEET.push(gen1());renderSheet();$("sheeta").hidden=true;$("sheetans").textContent="Show answers";}
+function renderSheet(){$("qcard").hidden=true;$("work").hidden=true;$("show").hidden=true;$("showdata").hidden=true;$("sheet").hidden=false;
+  $("sheetq").innerHTML=SHEET.map((Q,i)=>`<li><div class="label">Question ${i+1}</div>${qHTML(Q,false)}</li>`).join("");
+  SHEET.forEach(Q=>{if(Q.bind)Q.bind($("sheetq"));});
+  $("sheeta").innerHTML=SHEET.map((Q,i)=>`<li><div class="label">Answer ${i+1}</div><div class="steps">${stepsHTML(Q.steps)}</div></li>`).join("");}
+$("new").onclick=newQ;
+$("prev").onclick=()=>{const h=H();if(h.i>0)showAt(h.i-1);};
+$("nextq").onclick=()=>{const h=H();if(h.i<h.list.length-1)showAt(h.i+1);};
+$("showdata").onclick=()=>{const d=$("data");d.hidden=!d.hidden;$("showdata").textContent=d.hidden?"Show data":"Hide data";};
+$("show").onclick=()=>{const w=$("work");w.hidden=!w.hidden;$("show").textContent=w.hidden?"Show worked answer":"Hide worked answer";};
+$("sheet-btn").onclick=makeSheet;
+$("sheetans").onclick=()=>{const a=$("sheeta");a.hidden=!a.hidden;$("sheetans").textContent=a.hidden?"Show answers":"Hide answers";};
+$("marks-btn").onclick=()=>{MARKS=!MARKS;$("marks-btn").setAttribute("aria-pressed",MARKS);$("marks-btn").textContent=MARKS?"Hide marks":"Show marks";
+  if(SHEET)renderSheet();else{const open=!$("work").hidden;render();$("work").hidden=!open;}};
+$("home-btn").onclick=showHome;
+/* ---------- score tracking ---------- */
+const SKEY="chemscore:"+APP.title;let SC={};try{SC=JSON.parse(localStorage.getItem(SKEY)||"{}")||{};}catch(e){SC={};}
+function saveSC(){try{localStorage.setItem(SKEY,JSON.stringify(SC));}catch(e){}}
+function score(Q,ok){const id=Q._id;if(!id)return;const r=SC[id]=SC[id]||{c:0,a:0};r.a++;if(ok)r.c++;saveSC();showScore();selfState();}
+function scoreTxt(id){const r=SC[id];return r&&r.a?`<span class="sc">Score: ${r.c} / ${r.a}</span>`:"";}
+function showScore(){const id=CUR&&CUR._id,r=id&&SC[id];$("score").textContent=r&&r.a?`${MIX?CUR._topic+": ":""}${r.c} / ${r.a} correct`:"";}
+function selfState(){const done=CUR&&CUR._scored;$("selfmark").hidden=!CUR||!CUR.steps.length||done;showScore();}
+$("sm-ok").onclick=()=>{if(!CUR._scored){CUR._scored=1;score(CUR,true);}};
+$("sm-no").onclick=()=>{if(!CUR._scored){CUR._scored=1;score(CUR,false);}};
+/* ---------- presentation mode ---------- */
+$("pres-btn").onclick=()=>{const on=document.body.classList.toggle("present");$("pres-btn").setAttribute("aria-pressed",on);$("pres-btn").textContent=on?"Exit presentation":"Presentation mode";};
+/* ---------- timed quiz ---------- */
+let TIMER=null;
+function stopQuiz(){if(TIMER){clearInterval(TIMER);TIMER=null;}$("timer").hidden=true;$("quiz-btn").textContent="Start quiz";}
+$("quiz-btn").onclick=()=>{if(TIMER){finishQuiz();return;}makeSheet();let left=Number($("quizmin").value)*60;$("timer").hidden=false;$("quiz-btn").textContent="Finish now";$("sheetans").hidden=true;
+  const tick=()=>{$("timer").textContent=`Time left ${Math.floor(left/60)}:${String(left%60).padStart(2,"0")}`;if(left--<=0)finishQuiz();};tick();TIMER=setInterval(tick,1000);};
+function finishQuiz(){stopQuiz();$("sheetans").hidden=false;$("sheeta").hidden=false;$("sheetans").textContent="Hide answers";
+  $("sheeta").querySelectorAll("li").forEach((li,i)=>{const d=document.createElement("label");d.className="qnum";d.innerHTML=`<input type="checkbox" data-i="${i}"> I got this right`;li.appendChild(d);});
+  const tot=document.createElement("p");tot.id="quiztot";tot.className="qnum";$("sheeta").after(tot);
+  const upd=()=>{const n=$("sheeta").querySelectorAll("input:checked").length;tot.textContent=`Quiz score: ${n} / ${SHEET.length}`;};
+  $("sheeta").querySelectorAll("input").forEach(c=>c.onchange=()=>{const Q=SHEET[c.dataset.i];if(!Q._scored){Q._scored=1;score(Q,c.checked);}else if(Q._id&&SC[Q._id]){SC[Q._id].c+=c.checked?1:-1;saveSC();}upd();});upd();
+  $("sheeta").scrollIntoView({behavior:"smooth"});}
+/* ---------- data booklet drawer ---------- */
+const BT=(rows,head)=>`<table>${head?`<tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr>`:""}${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table>`;
+function bookTabs(){const ram=LEVEL==="N5"?RAM_N5:RAM_H,t={};
+  t["Relationships"]=LEVEL==="N5"?BT([["n = m ÷ GFM"],["n = c × V"],["% by mass = (m of element ÷ GFM) × 100"],["average rate = Δquantity ÷ Δtime"],["E<sub>h</sub> = c m ΔT  (c = 4.18 kJ kg<sup>−1</sup> °C<sup>−1</sup>)"]]):
+    BT([["n = m ÷ GFM, n = c × V, V = n × V<sub>m</sub>"],["E<sub>h</sub> = c m ΔT  (c = 4.18 kJ kg<sup>−1</sup> °C<sup>−1</sup>)"],["% yield = actual ÷ theoretical × 100"],["atom economy = mass of desired product ÷ total mass of reactants × 100"],["rate ∝ 1 ÷ t"],["pH = −log[H<sup>+</sup>], K<sub>w</sub> = [H<sup>+</sup>][OH<sup>−</sup>] = 1.01 × 10<sup>−14</sup> at 25 °C"],["E = Lhc ÷ λ, c = fλ"],["ΔG° = ΔH° − TΔS°"]]);
+  t["Relative atomic masses"]=BT(Object.entries(ram).map(([k,v])=>[k,v]),["Element","RAM"]);
+  if(LEVEL==="N5"){t["Solubility"]=BT(Object.entries(SOLTAB).map(([k,v])=>[k,...v.split(" ").map(x=>x==="-"?"−":x)]),["",...SOL_AN]);
+    t["Flame colours"]=BT([["barium","green"],["calcium","orange-red"],["copper","blue-green"],["lithium","red"],["potassium","lilac"],["sodium","yellow"],["strontium","red"]],["Ion","Colour"]);
+    t["Electrochemical series"]=BT(["lithium","potassium","calcium","sodium","magnesium","aluminium","zinc","iron","nickel","tin","lead","copper","silver","mercury","gold"].map((x,i)=>[i+1,x]),["","Most reactive at the top"]);}
+  else{t["Radius, IE, EN"]=BT([["Li",130,520,"1.0"],["Be",99,900,"1.6"],["B",84,801,"2.0"],["C",75,1086,"2.6"],["N",71,1402,"3.0"],["O",64,1314,"3.4"],["F",60,1681,"4.0"],["Na",160,496,"0.9"],["Mg",140,738,"1.3"],["Al",124,578,"1.6"],["Si",114,787,"1.9"],["P",109,1012,"2.2"],["S",104,1000,"2.6"],["Cl",100,1251,"3.2"],["K",200,419,"0.8"],["Ca",174,590,"1.0"],["Br",117,1140,"3.0"],["Rb",215,403,"0.8"],["I",136,1008,"2.7"]],["Element","Covalent radius / pm","1st IE / kJ mol<sup>−1</sup>","Electronegativity"]);
+  t["Colour wheel"]=BT([["purple","green"],["violet","yellow-green"],["blue","yellow"],["green-blue","orange"],["blue-green","red"]],["Colour","Opposite (complementary)"])+'<p class="qnum">Booklet wavelengths: 380, 400, 435, 480, 490, 500, 560, 580, 595, 605, 750 nm around the wheel.</p>';}
+  if(LEVEL!=="N5")t["Constants"]=BT([["Avogadro constant, L","6.02 × 10<sup>23</sup> mol<sup>−1</sup>"],["Planck constant, h","6.63 × 10<sup>−34</sup> J s"],["Speed of light, c","3.00 × 10<sup>8</sup> m s<sup>−1</sup>"],["Specific heat capacity of water","4.18 kJ kg<sup>−1</sup> °C<sup>−1</sup>"],["K<sub>w</sub> (25 °C)","1.01 × 10<sup>−14</sup>"]]);
+  return t;}
+$("book-btn").onclick=()=>{const t=bookTabs(),k=Object.keys(t);$("booktabs").innerHTML=k.map((x,i)=>`<button class="btn alt" aria-pressed="${i===0}" data-k="${x}">${x}</button>`).join("");
+  const sh=x=>{$("bookbody").innerHTML=t[x];$("booktabs").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===x));};
+  $("booktabs").querySelectorAll("button").forEach(b=>b.onclick=()=>sh(b.dataset.k));sh(k[0]);$("book").hidden=false;};
+$("book-close").onclick=()=>$("book").hidden=true;
+(function(){const h=location.hash.slice(1);if(h&&byId(h))openTopic(h);else if(h&&UNITS.find(u=>u.id===h))showUnit(h);else showHome();})();
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(h&&byId(h))openTopic(h);});
+
+</script>
+
+<script src="../../shared/support.js" data-read-each="#qcard, #work, #sheetq > li, #sheeta > li" data-focus="#timer, #score"></script>
+</body></html>

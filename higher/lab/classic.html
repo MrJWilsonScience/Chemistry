@@ -1,0 +1,739 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="stylesheet" href="../../shared/lk.css"><script src="../../shared/meta.js"></script><script src="../../shared/labdata.js"></script><script src="../../shared/lk.js"></script><style>:root{--panel:var(--surface)}.stage svg.kst{display:block;width:100%;height:auto}.stage canvas[id^="cv-"]{display:none!important}nav.tabs{display:none!important}header.top .brand p{display:none}</style></head><body>
+<title>Higher Chemistry Virtual Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: each practical is a lab bench (apparatus, instruments, controls) beside a lab notebook (results, graph, observations); stacks on phones */
+:root{
+  --bg:#E9EEF1; --surface:#FFFFFF; --sunk:#F3F6F8; --ink:#12202A; --muted:#55646F; --line:#CBD5DB;
+  --accent:#1E58C8; --accent-soft:#E1EAFA; --accent-ink:#FFFFFF;
+  --bench:#DCE4E9; --benchline:#BFCBD3; --glass:#6A8494; --metal:#7C8A94;
+  --good:#16805A; --good-soft:#DCF1E7; --warn:#A64F0B; --warn-soft:#FAE9DA; --warn-ink:#FFFFFF;
+  --calc:#F1F5FD;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E151A; --surface:#162027; --sunk:#1B262E; --ink:#E5ECF0; --muted:#94A4AF; --line:#2B3943;
+  --accent:#78A2FF; --accent-soft:#1D2B48; --accent-ink:#0B1220;
+  --bench:#1A252C; --benchline:#25333C; --glass:#8FA9B8; --metal:#6C7B85;
+  --good:#52C792; --good-soft:#163428; --warn:#F0A060; --warn-soft:#3A2614; --warn-ink:#1A0E04;
+  --calc:#18233A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E151A; --surface:#162027; --sunk:#1B262E; --ink:#E5ECF0; --muted:#94A4AF; --line:#2B3943;
+  --accent:#78A2FF; --accent-soft:#1D2B48; --accent-ink:#0B1220;
+  --bench:#1A252C; --benchline:#25333C; --glass:#8FA9B8; --metal:#6C7B85;
+  --good:#52C792; --good-soft:#163428; --warn:#F0A060; --warn-soft:#3A2614; --warn-ink:#1A0E04;
+  --calc:#18233A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1260px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--surface);border-bottom:1px solid var(--line)}
+header.top .wrap{padding-block:18px 0}
+.brand{display:flex;gap:14px;align-items:center}
+.brand svg{flex:none}
+h1{font-family:var(--f-display);font-weight:700;font-size:1.7rem;line-height:1.1;margin:0;letter-spacing:-.01em}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:14px;max-width:70ch}
+.tabs{display:flex;gap:2px;margin-top:14px;overflow-x:auto}
+.tab{font:inherit;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:10px 16px 10px 0;margin-right:18px;cursor:pointer;text-align:left;display:flex;flex-direction:column;white-space:nowrap}
+.tab .t-name{font-weight:700;font-size:15px}
+.tab .t-sub{font-size:12px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab:hover{color:var(--ink)}
+.tab:focus-visible,.btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{padding-block:22px 48px}
+.lead{display:grid;gap:8px;max-width:900px}
+.eyebrow{margin:0;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:700;color:var(--accent)}
+h2{font-family:var(--f-display);font-weight:700;font-size:1.5rem;line-height:1.15;margin:0;text-wrap:balance}
+.aim{margin:0;max-width:72ch}
+.eq{font-family:var(--f-mono);font-size:13px;background:var(--surface);border:1px solid var(--line);padding:6px 10px;border-radius:6px;justify-self:start;max-width:100%;overflow-x:auto;white-space:nowrap}
+details.method{max-width:78ch}
+details.method summary{cursor:pointer;font-weight:700;color:var(--accent);width:max-content}
+details.method ol{margin:8px 0;padding-left:22px}
+details.method li{margin-bottom:3px}
+.safety{margin:6px 0 0;padding:8px 12px;border-radius:6px;background:var(--warn-soft);color:var(--ink);font-size:14px}
+.safety b{color:var(--warn)}
+.grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:20px;margin-top:18px;align-items:start}
+@media (max-width:920px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stage{background:var(--bench);position:relative}
+.stage canvas{display:block;width:100%}
+.readouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--line);border-block:1px solid var(--line)}
+.ro{background:var(--sunk);padding:9px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.ro-l{text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:700;color:var(--muted)}
+.ro-v{font-family:var(--f-mono);font-size:1.3rem;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ro-v.sm{font-size:.95rem;font-family:var(--f-body);white-space:normal}
+.controls{padding:16px;display:grid;gap:14px}
+.field{display:grid;gap:4px;min-width:0}
+.field>label,.flabel{font-weight:700;font-size:14px}
+.rangerow{display:flex;gap:12px;align-items:center}
+.rangerow input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
+output{font-family:var(--f-mono);font-variant-numeric:tabular-nums;min-width:74px;text-align:right;font-weight:600}
+.hint{font-size:13px;color:var(--muted);margin:0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+select{font:inherit;font-size:14px;padding:7px 9px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%}
+.check{display:flex;gap:8px;align-items:center;font-size:14px;cursor:pointer}
+.check input{accent-color:var(--accent);width:16px;height:16px}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:inherit;font-size:14px;font-weight:700;padding:9px 14px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.2}
+.btn:hover:not(:disabled){border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.stop{background:var(--warn);border-color:var(--warn);color:var(--warn-ink)}
+.btn.small{padding:6px 10px;font-size:13px}
+.btn.ghost{background:transparent}
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.btn:disabled{opacity:.42;cursor:not-allowed}
+.chip{display:inline-flex;align-items:center;font-family:var(--f-body);font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--muted);width:max-content}
+.chip.run{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.chip.ok{background:var(--good-soft);color:var(--good);border-color:transparent}
+.chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.notebook{padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.nb-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+h3{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:0}
+h4{font-size:14px;margin:0}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table.tbl{border-collapse:collapse;width:100%;font-size:13px}
+.tbl th{background:var(--sunk);text-align:right;font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.25;vertical-align:bottom}
+.tbl td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .txt{text-align:left}
+.tbl td.txt{font-family:var(--f-body)}
+.tbl .calc{background:var(--calc)}
+.tbl th.calc{color:var(--accent)}
+.tbl td.empty{text-align:center;color:var(--muted);font-family:var(--f-body);padding:22px 12px;white-space:normal}
+.tbl .del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:16px;padding:0 4px;line-height:1}
+.tbl .del:hover{color:var(--warn)}
+.nb-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.toast{font-size:13px;color:var(--good);font-weight:700}
+.graph{border:1px solid var(--line);border-radius:8px;padding:10px 10px 6px}
+.g-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.graph canvas{display:block;width:100%}
+textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit;font-size:14px;background:var(--surface);color:var(--ink);resize:vertical}
+.sheet{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.slot{border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:grid;gap:4px;background:var(--sunk)}
+.slot .s-l{font-size:12px;color:var(--muted);font-weight:700}
+.slot .s-v{font-family:var(--f-mono);font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums}
+.slot.filled{border-color:var(--good)}
+.calcpanel{background:var(--calc);border-radius:8px;padding:12px 14px;font-size:14px;display:grid;gap:5px}
+.calcpanel .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.calcpanel p{margin:0}
+.msg{font-size:13px;color:var(--warn);font-weight:700;min-height:1.2em;margin:0}
+footer{color:var(--muted);font-size:13px;padding-block:0 32px}
+@media (max-width:520px){h1{font-size:1.35rem}.ro-v{font-size:1.1rem}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M15 5h10M17 5v10L7 33a2 2 0 0 0 1.8 3h22.4a2 2 0 0 0 1.8-3L23 15V5" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M10.5 27h19l2.2 6.3H8.3z" fill="var(--accent)" opacity=".28"/></svg>
+      <div>
+        <h1>Higher Chemistry Virtual Lab</h1>
+        <p>Change the variables, watch what happens, and record your results. Results and notes stay in this browser.</p>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Experiments">
+      <button class="tab" role="tab" id="t-rates" data-tab="rates" aria-controls="p-rates"><span class="t-name">Rates of reaction</span><span class="t-sub">Thiosulfate and acid</span></button>
+      <button class="tab" role="tab" id="t-enthalpy" data-tab="enthalpy" aria-controls="p-enthalpy"><span class="t-name">Enthalpy of combustion</span><span class="t-sub">Burning alcohols</span></button>
+      <button class="tab" role="tab" id="t-titration" data-tab="titration" aria-controls="p-titration"><span class="t-name">Redox titration</span><span class="t-sub">Vitamin C and iodine</span></button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= RATES ================= -->
+<section class="panel" id="p-rates" role="tabpanel" aria-labelledby="t-rates">
+  <div class="lead">
+    <p class="eyebrow">Reaction rates</p>
+    <h2>Sodium thiosulfate and hydrochloric acid</h2>
+    <p class="aim"><b>Aim:</b> find out how the concentration of sodium thiosulfate, and the temperature, affect the rate of reaction.</p>
+    <div class="eq">Na₂S₂O₃(aq) + 2HCl(aq) → 2NaCl(aq) + S(s) + SO₂(g) + H₂O(ℓ)</div>
+    <details class="method">
+      <summary>Method and safety</summary>
+      <ol>
+        <li>Measure the chosen volume of 0.15 mol l⁻¹ sodium thiosulfate and make it up to 50 cm³ with water.</li>
+        <li>Warm the beaker in a water bath if you are testing temperature.</li>
+        <li>Stand the beaker on the paper cross. Add 5 cm³ of 2.0 mol l⁻¹ hydrochloric acid and start the clock.</li>
+        <li>Look down through the beaker. Stop the clock when you can no longer see the cross.</li>
+        <li>Record the time. Relative rate = 1/time.</li>
+      </ol>
+      <p class="safety"><b>Safety:</b> sulfur dioxide is toxic and irritates the lungs. Use a well-ventilated lab and pour the mixture into the sink with plenty of water, or into a fume cupboard waste container.</p>
+    </details>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="stage"><svg class="kst" id="sv-rates" viewBox="0 0 460 260" role="img" aria-label="Beaker standing on a paper cross, with a view from above showing the cross fading as sulfur forms"></svg><canvas id="cv-rates" role="img" aria-label="Beaker standing on a paper cross, with a view from above showing the cross fading as sulfur forms"></canvas></div>
+      <div class="readouts">
+        <div class="ro"><span class="ro-l">Stopwatch</span><span class="ro-v" id="r-clock">0.0 s</span></div>
+        <div class="ro"><span class="ro-l">Thermometer</span><span class="ro-v" id="r-temp">20.0 °C</span></div>
+        <div class="ro"><span class="ro-l">Status</span><span class="chip" id="r-status">Ready</span></div>
+      </div>
+      <div class="controls">
+        <div class="field">
+          <label for="r-v">Volume of 0.15 mol l⁻¹ sodium thiosulfate</label>
+          <div class="rangerow"><input type="range" id="r-v" min="10" max="50" step="5" value="30"><output id="r-v-o" for="r-v">30 cm³</output></div>
+          <p class="hint" id="r-v-h">Made up to 50 cm³ with 20 cm³ of water</p>
+        </div>
+        <div class="field">
+          <label for="r-t">Water bath temperature</label>
+          <div class="rangerow"><input type="range" id="r-t" min="15" max="60" step="5" value="20"><output id="r-t-o" for="r-t">20 °C</output></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="r-speed">Clock speed</label>
+            <select id="r-speed"><option value="1">Real time</option><option value="4" selected>4 × faster</option><option value="10">10 × faster</option></select></div>
+          <div class="field"><span class="flabel">Help</span>
+            <label class="check"><input type="checkbox" id="r-auto"> Stop the clock for me</label></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="r-go">Add acid and start clock</button>
+          <button class="btn stop" id="r-stop">Stop clock</button>
+          <button class="btn" id="r-rec">Record result</button>
+          <button class="btn ghost" id="r-reset">Wash out beaker</button>
+        </div>
+      </div>
+    </div>
+    <div class="card notebook">
+      <div class="nb-head"><h3>Results</h3><label class="check"><input type="checkbox" id="r-calc" checked> Show calculated values and graph</label></div>
+      <div class="tblwrap"><table class="tbl" id="r-tbl"></table></div>
+      <div class="nb-actions"><button class="btn small" data-copy="rates">Copy table</button><button class="btn small ghost" data-clear="rates">Clear results</button><span class="toast" id="toast-rates" aria-live="polite"></span></div>
+      <div class="graph" id="r-graph">
+        <div class="g-head"><h4>Rate against</h4>
+          <select id="r-x" aria-label="Plot rate against"><option value="c">concentration</option><option value="T">temperature</option></select></div>
+        <canvas id="g-rates" role="img" aria-label="Graph of your results"></canvas>
+      </div>
+      <div class="field"><label for="n-rates">Observations and notes</label>
+        <textarea id="n-rates" rows="4" placeholder="What did you see when the acid was added? What does the cloudiness tell you? What did you smell?"></textarea></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ENTHALPY ================= -->
+<section class="panel" id="p-enthalpy" role="tabpanel" aria-labelledby="t-enthalpy" hidden>
+  <div class="lead">
+    <p class="eyebrow">Enthalpy</p>
+    <h2>Enthalpy of combustion of alcohols</h2>
+    <p class="aim"><b>Aim:</b> measure the enthalpy of combustion of the alcohols methanol to pentan-1-ol and compare your values with the data booklet.</p>
+    <div class="eq">E<sub>h</sub> = c m ΔT &nbsp;&nbsp; c = 4.18 kJ kg⁻¹ °C⁻¹ &nbsp;&nbsp; ΔH = −E<sub>h</sub> ÷ n</div>
+    <details class="method">
+      <summary>Method and safety</summary>
+      <ol>
+        <li>Put the chosen volume of water in the copper can. 1 cm³ of water has a mass of 1 g.</li>
+        <li>Weigh the spirit burner with its cap on. Note the starting temperature of the water.</li>
+        <li>Light the burner under the can. Watch the thermometer.</li>
+        <li>Put the flame out with the cap. Note the highest temperature reached.</li>
+        <li>Weigh the burner again. Calculate the mass of alcohol burned.</li>
+      </ol>
+      <p class="safety"><b>Safety:</b> alcohols are highly flammable. Keep burner caps on when not lit, never refill a lit or hot burner, and wear eye protection.</p>
+    </details>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="stage"><svg class="kst" id="sv-enthalpy" viewBox="0 0 460 260" role="img" aria-label="Spirit burner heating water in a copper can held by a clamp stand, with a thermometer in the water"></svg><canvas id="cv-enthalpy" role="img" aria-label="Spirit burner heating water in a copper can held by a clamp stand, with a thermometer in the water"></canvas></div>
+      <div class="readouts">
+        <div class="ro"><span class="ro-l">Thermometer</span><span class="ro-v" id="e-temp">18.0 °C</span></div>
+        <div class="ro"><span class="ro-l">Balance</span><span class="ro-v" id="e-bal">0.00 g</span></div>
+        <div class="ro"><span class="ro-l">Burning time</span><span class="ro-v" id="e-time">0 s</span></div>
+      </div>
+      <div class="controls">
+        <div class="two">
+          <div class="field"><label for="e-alc">Alcohol in burner</label>
+            <select id="e-alc"></select></div>
+          <div class="field"><label for="e-speed">Clock speed</label>
+            <select id="e-speed"><option value="1">Real time</option><option value="5" selected>5 × faster</option><option value="10">10 × faster</option></select></div>
+        </div>
+        <div class="field">
+          <label for="e-vol">Volume of water in can</label>
+          <div class="rangerow"><input type="range" id="e-vol" min="50" max="200" step="25" value="100"><output id="e-vol-o" for="e-vol">100 cm³</output></div>
+        </div>
+        <label class="check"><input type="checkbox" id="e-shield"> Use a draught shield around the burner and can</label>
+        <div>
+          <p class="flabel" style="margin:0 0 6px">Readings for this run</p>
+          <div class="sheet" id="e-sheet"></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="e-light">Light burner</button>
+          <button class="btn" id="e-rec">Record result</button>
+          <button class="btn ghost" id="e-new">Fresh water and clean can</button>
+        </div>
+        <p class="msg" id="e-msg" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="card notebook">
+      <div class="nb-head"><h3>Results</h3><label class="check"><input type="checkbox" id="e-calc" checked> Show calculated values and graph</label></div>
+      <div class="tblwrap"><table class="tbl" id="e-tbl"></table></div>
+      <div class="nb-actions"><button class="btn small" data-copy="enthalpy">Copy table</button><button class="btn small ghost" data-clear="enthalpy">Clear results</button><span class="toast" id="toast-enthalpy" aria-live="polite"></span></div>
+      <div class="graph" id="e-graph">
+        <div class="g-head"><h4>Heat released per mole against carbon atoms</h4></div>
+        <canvas id="g-enthalpy" role="img" aria-label="Graph of your enthalpy results compared with data booklet values"></canvas>
+      </div>
+      <div class="field"><label for="n-enthalpy">Observations and notes</label>
+        <textarea id="n-enthalpy" rows="4" placeholder="Describe each flame. What collects on the bottom of the can? Why are your values smaller than the data booklet?"></textarea></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TITRATION ================= -->
+<section class="panel" id="p-titration" role="tabpanel" aria-labelledby="t-titration" hidden>
+  <div class="lead">
+    <p class="eyebrow">Volumetric analysis</p>
+    <h2>Vitamin C content by redox titration</h2>
+    <p class="aim"><b>Aim:</b> find the mass of vitamin C (ascorbic acid, GFM 176 g) in a tablet or in orange juice by titrating against iodine solution.</p>
+    <div class="eq">C₆H₈O₆ + I₂ → C₆H₆O₆ + 2H⁺ + 2I⁻</div>
+    <details class="method">
+      <summary>Method and safety</summary>
+      <ol>
+        <li>Tablets have been dissolved and made up to 250 cm³ in a standard flask. Juice is used directly.</li>
+        <li>Fill the burette with iodine solution and note the initial reading.</li>
+        <li>Pipette a sample into the conical flask and add starch indicator.</li>
+        <li>Add iodine until one drop turns the whole solution permanently blue-black. Note the final reading.</li>
+        <li>Do a rough titration, then repeat until you have two concordant titres (within 0.20 cm³).</li>
+      </ol>
+      <p class="safety"><b>Safety:</b> iodine solution stains skin and clothing and is harmful if swallowed. Use a pipette filler and wear eye protection.</p>
+    </details>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="stage"><svg class="kst" id="sv-titration" viewBox="0 0 460 260" role="img" aria-label="Burette of iodine solution above a conical flask, with a magnified view of the burette scale"></svg><canvas id="cv-titration" role="img" aria-label="Burette of iodine solution above a conical flask, with a magnified view of the burette scale"></canvas></div>
+      <div class="readouts">
+        <div class="ro"><span class="ro-l">Burette reading</span><span class="ro-v" id="t-read">use scale</span></div>
+        <div class="ro"><span class="ro-l">Tap</span><span class="ro-v sm" id="t-tap">Closed</span></div>
+        <div class="ro"><span class="ro-l">In the flask</span><span class="ro-v sm" id="t-flask">—</span></div>
+      </div>
+      <div class="controls">
+        <div class="two">
+          <div class="field"><label for="t-sample">Sample</label><select id="t-sample"></select></div>
+          <div class="field"><label for="t-va">Pipette volume</label>
+            <select id="t-va"><option value="10">10.0 cm³</option><option value="25" selected>25.0 cm³</option></select></div>
+          <div class="field"><label for="t-c">Iodine concentration</label>
+            <select id="t-c"><option value="0.005">0.0050 mol l⁻¹</option><option value="0.01" selected>0.0100 mol l⁻¹</option><option value="0.02">0.0200 mol l⁻¹</option></select></div>
+          <div class="field"><span class="flabel">Help</span>
+            <label class="check"><input type="checkbox" id="t-digital"> Show digital burette reading</label></div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="t-fill">Refill burette</button>
+          <button class="btn" id="t-new">Pipette new sample</button>
+          <button class="btn" id="t-starch">Add starch indicator</button>
+        </div>
+        <div class="field"><span class="flabel">Burette tap</span>
+          <div class="actions" role="group" aria-label="Burette tap">
+            <button class="btn" data-flow="fast" aria-pressed="false">Run quickly</button>
+            <button class="btn" data-flow="slow" aria-pressed="false">Run slowly</button>
+            <button class="btn" data-flow="drop" aria-pressed="false">Dropwise</button>
+            <button class="btn" id="t-one">Add one drop</button>
+            <button class="btn" data-flow="closed" aria-pressed="true">Close tap</button>
+          </div>
+        </div>
+        <div class="actions"><button class="btn primary" id="t-rec">Record titre</button></div>
+        <p class="msg" id="t-msg" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="card notebook">
+      <div class="nb-head"><h3>Results</h3><label class="check"><input type="checkbox" id="t-calc" checked> Show concordance and calculation</label></div>
+      <div class="tblwrap"><table class="tbl" id="t-tbl"></table></div>
+      <div class="nb-actions"><button class="btn small" data-copy="titration">Copy table</button><button class="btn small ghost" data-clear="titration">Clear results</button><span class="toast" id="toast-titration" aria-live="polite"></span></div>
+      <div class="calcpanel" id="t-calcpanel"></div>
+      <div class="field"><label for="n-titration">Observations and notes</label>
+        <textarea id="n-titration" rows="4" placeholder="What happens to each drop of iodine as it lands? How did you know you had reached the end-point? What happens without starch?"></textarea></div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">Simulated data include realistic random error, heat loss and reading precision, so repeat runs will differ slightly.</footer>
+</main>
+
+<script src="../../shared/kit.js"></script>
+<script>
+(function(){
+"use strict";
+/* ---------- utilities ---------- */
+const store={get(k,d){try{const v=localStorage.getItem('hcvl:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('hcvl:'+k,JSON.stringify(v))}catch(e){}}};
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const gauss=()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const r05=x=>Math.round(x*20)/20;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const BODY='"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif';
+const MONO='"JetBrains Mono",ui-monospace,Menlo,monospace';
+
+let C={};
+function readColors(){const cs=getComputedStyle(document.documentElement);['surface','sunk','ink','muted','line','accent','bench','benchline','glass','metal','good','warn'].forEach(k=>C[k]=cs.getPropertyValue('--'+k).trim());}
+readColors();
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{readColors();renderAll()})}catch(e){}
+new MutationObserver(()=>{readColors();renderAll()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+/* ---------- canvas stage (virtual coordinates, width-fitted) ---------- */
+function Stage(canvas,VW,VH){
+  this.c=canvas;this.ctx=canvas.getContext('2d');this.VW=VW;this.VH=VH;this.w=0;this.h=0;
+  const fit=()=>{const w=canvas.parentElement.clientWidth;if(!w)return;const h=Math.round(w*VH/VW);const d=window.devicePixelRatio||1;
+    if(w===this.w&&h===this.h)return;this.w=w;this.h=h;canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);canvas.style.height=h+'px';};
+  new ResizeObserver(fit).observe(canvas.parentElement);fit();
+}
+Stage.prototype.begin=function(){const {ctx,w,h,VW}=this;const d=window.devicePixelRatio||1;
+  ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w,h);ctx.fillStyle=C.bench;ctx.fillRect(0,0,w,h);
+  const s=w/VW;ctx.setTransform(d*s,0,0,d*s,0,0);return ctx;};
+function worktop(ctx,VW,y){ctx.fillStyle=C.benchline;ctx.fillRect(0,y,VW,400);}
+function label(ctx,txt,x,y,align){ctx.font='600 13px '+BODY;ctx.fillStyle=C.muted;ctx.textAlign=align||'center';ctx.textBaseline='alphabetic';ctx.fillText(txt,x,y);}
+
+/* ---------- graph ---------- */
+function niceStep(r){const p=Math.pow(10,Math.floor(Math.log10(r)));const f=r/p;return (f<1.5?1:f<3?2:f<7?5:10)*p;}
+const tfmt=v=>String(parseFloat(v.toPrecision(6)));
+function plot(cv,o){
+  const box=cv.parentElement;const w=box.clientWidth-20;if(w<=0)return;const h=Math.round(clamp(w*0.58,200,300));const d=window.devicePixelRatio||1;
+  if(cv.width!==Math.round(w*d)||cv.height!==Math.round(h*d)){cv.width=Math.round(w*d);cv.height=Math.round(h*d);cv.style.height=h+'px';}
+  const ctx=cv.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w,h);
+  const L=62,R=14,T=14,B=44,pw=w-L-R,ph=h-T-B;
+  const pts=o.pts,ref=o.ref||[];const all=pts.concat(ref);
+  if(!pts.length&&!ref.length){ctx.fillStyle=C.muted;ctx.font='14px '+BODY;ctx.textAlign='center';ctx.fillText(o.empty||'Record results to plot a graph',w/2,h/2);return;}
+  let xmin=o.xmin!=null?o.xmin:0,ymin=o.ymin!=null?o.ymin:0;
+  let xmax=o.xmax!=null?o.xmax:Math.max(...all.map(p=>p.x))*1.1;
+  let ymax=Math.max(o.ymaxMin||0,Math.max(...all.map(p=>p.y))*1.12);
+  if(xmax<=xmin)xmax=xmin+1;if(ymax<=ymin)ymax=ymin+1;
+  const xs=niceStep((xmax-xmin)/5),ys=niceStep((ymax-ymin)/5);
+  if(o.xmax==null)xmax=Math.ceil(xmax/xs)*xs;ymax=Math.ceil(ymax/ys)*ys;
+  const X=v=>L+(v-xmin)/(xmax-xmin)*pw,Y=v=>T+ph-(v-ymin)/(ymax-ymin)*ph;
+  ctx.font='11px '+MONO;ctx.lineWidth=1;
+  ctx.textAlign='right';ctx.textBaseline='middle';
+  for(let v=Math.ceil(ymin/ys-1e-9)*ys;v<=ymax+1e-9;v+=ys){const y=Math.round(Y(v))+.5;ctx.strokeStyle=C.line;ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(L+pw,y);ctx.stroke();ctx.fillStyle=C.muted;ctx.fillText(tfmt(v),L-6,y);}
+  ctx.textAlign='center';ctx.textBaseline='top';
+  for(let v=Math.ceil(xmin/xs-1e-9)*xs;v<=xmax+1e-9;v+=xs){const x=Math.round(X(v))+.5;ctx.strokeStyle=C.line;ctx.beginPath();ctx.moveTo(x,T);ctx.lineTo(x,T+ph);ctx.stroke();ctx.fillStyle=C.muted;ctx.fillText(tfmt(v),x,T+ph+6);}
+  ctx.strokeStyle=C.muted;ctx.beginPath();ctx.moveTo(L+.5,T);ctx.lineTo(L+.5,T+ph+.5);ctx.lineTo(L+pw,T+ph+.5);ctx.stroke();
+  ctx.font='600 12px '+BODY;ctx.fillStyle=C.ink;ctx.textBaseline='alphabetic';ctx.fillText(o.xlabel,L+pw/2,h-6);
+  ctx.save();ctx.translate(14,T+ph/2);ctx.rotate(-Math.PI/2);ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(o.ylabel,0,0);ctx.restore();
+  ctx.save();ctx.beginPath();ctx.rect(L,T,pw,ph);ctx.clip();
+  if(ref.length){ctx.strokeStyle=C.muted;ctx.setLineDash([5,4]);ctx.lineWidth=1.5;ctx.beginPath();ref.forEach((p,i)=>i?ctx.lineTo(X(p.x),Y(p.y)):ctx.moveTo(X(p.x),Y(p.y)));ctx.stroke();ctx.setLineDash([]);
+    ref.forEach(p=>{ctx.fillStyle=C.surface;ctx.strokeStyle=C.muted;ctx.beginPath();ctx.arc(X(p.x),Y(p.y),3.5,0,7);ctx.fill();ctx.stroke();});}
+  if(o.fit&&pts.length>=2){const n=pts.length,sx=pts.reduce((a,p)=>a+p.x,0),sy=pts.reduce((a,p)=>a+p.y,0),sxx=pts.reduce((a,p)=>a+p.x*p.x,0),sxy=pts.reduce((a,p)=>a+p.x*p.y,0);const den=n*sxx-sx*sx;
+    if(Math.abs(den)>1e-12){const m=(n*sxy-sx*sy)/den,b=(sy-m*sx)/n;ctx.strokeStyle=C.accent;ctx.globalAlpha=.55;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(X(xmin),Y(m*xmin+b));ctx.lineTo(X(xmax),Y(m*xmax+b));ctx.stroke();ctx.globalAlpha=1;}}
+  if(o.join&&pts.length>=2){const s=pts.slice().sort((a,b)=>a.x-b.x);ctx.strokeStyle=C.accent;ctx.globalAlpha=.55;ctx.lineWidth=2;ctx.beginPath();s.forEach((p,i)=>i?ctx.lineTo(X(p.x),Y(p.y)):ctx.moveTo(X(p.x),Y(p.y)));ctx.stroke();ctx.globalAlpha=1;}
+  pts.forEach(p=>{ctx.fillStyle=C.accent;ctx.strokeStyle=C.surface;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(X(p.x),Y(p.y),4.5,0,7);ctx.fill();ctx.stroke();});
+  ctx.restore();
+  if(ref.length){ctx.font='12px '+BODY;ctx.textAlign='left';ctx.textBaseline='middle';const lx=L+10,ly=T+10;
+    ctx.fillStyle=C.accent;ctx.beginPath();ctx.arc(lx,ly,4,0,7);ctx.fill();ctx.fillStyle=C.ink;ctx.fillText('Your results',lx+9,ly);
+    ctx.strokeStyle=C.muted;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(lx-6,ly+18);ctx.lineTo(lx+6,ly+18);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=C.ink;ctx.fillText(o.refLabel||'Reference',lx+9,ly+18);}
+}
+
+/* ---------- table ---------- */
+function renderTable(tbl,cols,rows,showCalc,onDel,emptyMsg){
+  const vis=cols.filter(c=>!c.calc||showCalc);
+  let html='<thead><tr>'+vis.map(c=>`<th class="${c.txt?'txt ':''}${c.calc?'calc':''}" scope="col">${c.h}</th>`).join('')+'<th><span class="sr" aria-hidden="true"></span></th></tr></thead><tbody>';
+  if(!rows.length)html+=`<tr><td class="empty" colspan="${vis.length+1}">${emptyMsg}</td></tr>`;
+  rows.forEach((r,i)=>{html+='<tr>'+vis.map(c=>`<td class="${c.txt?'txt ':''}${c.calc?'calc':''}">${c.f(r,i)}</td>`).join('')+`<td><button class="del" data-i="${i}" aria-label="Delete row ${i+1}" title="Delete row">×</button></td></tr>`;});
+  tbl.innerHTML=html+'</tbody>';
+  $$('.del',tbl).forEach(b=>b.addEventListener('click',()=>onDel(+b.dataset.i)));
+}
+function tableTSV(cols,rows,showCalc){const vis=cols.filter(c=>!c.calc||showCalc);const strip=s=>String(s).replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ').trim();
+  return [vis.map(c=>strip(c.h)).join('\t')].concat(rows.map((r,i)=>vis.map(c=>strip(c.f(r,i))).join('\t'))).join('\n');}
+function toast(id,msg){const el=$('#toast-'+id);el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(()=>el.textContent='',2600);}
+function copyText(id,txt){
+  const done=()=>toast(id,'Copied. Paste into a spreadsheet.');
+  const fallback=()=>{const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();toast(id,ok?'Copied. Paste into a spreadsheet.':'Copy is blocked here. Select the table and copy it instead.');};
+  try{navigator.clipboard.writeText(txt).then(done,fallback)}catch(e){fallback()}
+}
+
+/* ---------- tabs ---------- */
+const TABS=['rates','enthalpy','titration'];let active='rates';
+function showTab(id,push){if(!TABS.includes(id))id='rates';active=id;
+  $$('.tab').forEach(b=>{const on=b.dataset.tab===id;b.setAttribute('aria-selected',on?'true':'false');b.tabIndex=on?0:-1;});
+  TABS.forEach(t=>{$('#p-'+t).hidden=t!==id});
+  try{history.replaceState(null,'','#'+id)}catch(e){}store.set('tab',id);
+  try{LK.attach(id,{root:$('#p-'+id)})}catch(e){console.error(e)}
+  requestAnimationFrame(renderAll);}
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(TABS.includes(h)&&h!==active)showTab(h,true)});
+$$('.tab').forEach(b=>{b.addEventListener('click',()=>showTab(b.dataset.tab,true));
+  b.addEventListener('keydown',e=>{if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;const i=TABS.indexOf(b.dataset.tab);const n=TABS[(i+(e.key==='ArrowRight'?1:2))%3];showTab(n,true);$('#t-'+n).focus();});});
+
+/* ===================================================== RATES */
+const RS={V:30,T:20,speed:4,auto:false,phase:'ready',t:0,tr:0,tEnd:1,Tm:20,autoAt:0};
+let rRows=store.get('rows-rates',[]);
+const rs=new Stage($('#cv-rates'),600,330);
+function rTm(){RS.Tm=Math.round((RS.T+gauss()*0.35)*10)/10;}
+rTm();
+function rUI(){
+  const ready=RS.phase==='ready';
+  $('#r-v-o').textContent=RS.V+' cm³';$('#r-v-h').textContent=RS.V===50?'No water added (total 50 cm³)':`Made up to 50 cm³ with ${50-RS.V} cm³ of water · ${(0.15*RS.V/50).toFixed(3)} mol l⁻¹ thiosulfate`;
+  $('#r-t-o').textContent=RS.T+' °C';
+  ['#r-v','#r-t'].forEach(s=>$(s).disabled=!ready);
+  $('#r-go').disabled=!ready;$('#r-stop').disabled=RS.phase!=='running';$('#r-rec').disabled=RS.phase!=='stopped';$('#r-reset').disabled=ready;
+  const st=$('#r-status');st.className='chip'+(RS.phase==='running'?' run':RS.phase==='stopped'?' ok':'');
+  st.textContent=RS.phase==='running'?'Reacting':RS.phase==='stopped'?'Clock stopped':'Ready';
+}
+$('#r-v').addEventListener('input',e=>{RS.V=+e.target.value;rUI();});
+$('#r-t').addEventListener('input',e=>{RS.T=+e.target.value;rTm();rUI();});
+$('#r-speed').addEventListener('change',e=>RS.speed=+e.target.value);
+$('#r-auto').addEventListener('change',e=>RS.auto=e.target.checked);
+$('#r-go').addEventListener('click',()=>{
+  RS.tEnd=45*(50/RS.V)*Math.exp(6000*(1/(RS.T+273)-1/293))*(1+0.05*gauss());
+  RS.autoAt=RS.tEnd+0.2+Math.abs(gauss())*0.25;RS.t=0;RS.tr=0;RS.phase='running';rUI();});
+function rStop(){if(RS.phase!=='running')return;RS.phase='stopped';RS.t=Math.round(RS.t*10)/10;rUI();}
+$('#r-stop').addEventListener('click',rStop);
+$('#r-rec').addEventListener('click',()=>{rRows.push({V:RS.V,T:RS.Tm,t:RS.t});store.set('rows-rates',rRows);RS.phase='ready';RS.t=0;RS.tr=0;rTm();rUI();rRender();});
+$('#r-reset').addEventListener('click',()=>{RS.phase='ready';RS.t=0;RS.tr=0;rTm();rUI();});
+$('#r-x').addEventListener('change',rRender);
+$('#r-calc').checked=store.get('calc-rates',true);
+$('#r-calc').addEventListener('change',e=>{store.set('calc-rates',e.target.checked);rRender();});
+function stepRates(dt){if(RS.phase==='running'){RS.t+=dt*RS.speed;if(RS.auto&&RS.t>=RS.autoAt)rStop();}if(RS.phase!=='ready')RS.tr+=dt*RS.speed;}
+const rCols=[
+  {h:'Thiosulfate<br>/ cm³',f:r=>r.V},
+  {h:'Water<br>/ cm³',f:r=>50-r.V},
+  {h:'[S₂O₃²⁻]<br>/ mol l⁻¹',f:r=>(0.15*r.V/50).toFixed(3)},
+  {h:'Temp<br>/ °C',f:r=>r.T.toFixed(1)},
+  {h:'Time<br>/ s',f:r=>r.t.toFixed(1)},
+  {h:'Rate = 1/t<br>/ s⁻¹',calc:true,f:r=>r.t>0?(1/r.t).toPrecision(3):'—'}];
+function rRender(){const sc=$('#r-calc').checked;
+  renderTable($('#r-tbl'),rCols,rRows,sc,i=>{rRows.splice(i,1);store.set('rows-rates',rRows);rRender();},'No results yet. Run the experiment, stop the clock, then press Record result.');
+  $('#r-graph').hidden=!sc;if(!sc)return;
+  const byC=$('#r-x').value==='c';
+  plot($('#g-rates'),{pts:rRows.filter(r=>r.t>0).map(r=>({x:byC?0.15*r.V/50:r.T,y:1/r.t})),xlabel:byC?'Concentration of thiosulfate / mol l⁻¹':'Temperature / °C',ylabel:'Rate / s⁻¹',xmin:byC?0:10,xmax:byC?0.16:65,fit:byC,join:!byC});}
+function drawRates(){const B=K.BENCH,f=RS.phase==='ready'?0:RS.tr/RS.tEnd;
+  const cloud=clamp(Math.pow(f,2.2),0,1)*0.96,crossA=clamp(1-Math.pow(f,2.2),0,1),cc=`rgba(238,229,180,${cloud.toFixed(3)})`;
+  const vol=RS.phase==='ready'?50:55,bx=50,bw=124,by=92,bh=B-3-92,lvl=vol/100*1.15,ly=B-3-(bh-8)*lvl;
+  const inside=`<rect x="${bx+2}" y="${ly.toFixed(1)}" width="${bw-4}" height="${(B-5-ly).toFixed(1)}" rx="5" fill="${cc}"/>`;
+  let g=`<rect x="26" y="${B-3}" width="172" height="4" fill="#f5f4ee" stroke="#d8d4c6"/>${K.beaker(bx,by,bw,bh,'rgba(190,220,235,.4)',lvl,{inside,noShadow:1})}${K.thermo(bx+28,52,156,RS.Tm/80)}`;
+  if(RS.phase==='ready')g+=`${K.shadow(205,26)}<rect x="192" y="${B-6}" width="26" height="6" rx="2" fill="url(#kGlass)" stroke="${K.GL}"/>${K.tube(197,120,B-126,'rgba(200,225,235,.7)',.45,16)}${K.T(207,110,'5 cm³ HCl',{s:9.5})}`;
+  const cx=345,cy=116,R=88;
+  g+=`<rect x="${cx-R-12}" y="${cy-R-12}" width="${2*R+24}" height="${2*R+24}" rx="4" fill="#000" opacity=".18" filter="url(#kSoft)"/><rect x="${cx-R-14}" y="${cy-R-14}" width="${2*R+24}" height="${2*R+24}" rx="4" fill="#f5f4ee" stroke="#d8d4c6"/>
+    <defs><clipPath id="rTop"><circle cx="${cx}" cy="${cy}" r="${R}"/></clipPath></defs>
+    <g clip-path="url(#rTop)"><path d="M${cx-50} ${cy-50} L${cx+50} ${cy+50} M${cx+50} ${cy-50} L${cx-50} ${cy+50}" stroke="#161616" stroke-width="13" stroke-linecap="round" opacity="${crossA.toFixed(3)}"/>
+      <circle cx="${cx}" cy="${cy}" r="${R}" fill="rgba(190,220,235,.2)"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="${cc}"/></g>
+    <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${K.GL}" stroke-width="4"/><circle cx="${cx}" cy="${cy}" r="${R-5}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>
+    <path d="M${(cx-R*.62).toFixed(1)} ${(cy-R*.7).toFixed(1)} A${R-9} ${R-9} 0 0 1 ${(cx+R*.15).toFixed(1)} ${(cy-R+9).toFixed(1)}" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".6"/>
+    <rect x="${cx-R-2}" y="${cy-R-2}" width="10" height="${2*R+4}" fill="#000" opacity="0"/>`;
+  g+=K.TB(112,'side view: beaker on a paper cross')+K.TB(345,'looking down through the beaker');
+  $('#sv-rates').innerHTML=K.back()+g;
+}
+
+/* ===================================================== ENTHALPY */
+const ALC=[
+  {name:'Methanol',f:'CH₃OH',n:1,M:32,dH:-726,burn:0.0075,soot:0.02,L:0.06},
+  {name:'Ethanol',f:'C₂H₅OH',n:2,M:46,dH:-1367,burn:0.0065,soot:0.10,L:0.32},
+  {name:'Propan-1-ol',f:'C₃H₇OH',n:3,M:60,dH:-2021,burn:0.0058,soot:0.25,L:0.55},
+  {name:'Butan-1-ol',f:'C₄H₉OH',n:4,M:74,dH:-2676,burn:0.0052,soot:0.42,L:0.72},
+  {name:'Pentan-1-ol',f:'C₅H₁₁OH',n:5,M:88,dH:-3329,burn:0.0046,soot:0.60,L:0.88}];
+$('#e-alc').innerHTML=ALC.map((a,i)=>`<option value="${i}">${a.name} (${a.f})</option>`).join('');
+const E={alc:1,vol:100,shield:false,speed:5,lit:false,Tw:18,Tamb:18,buffer:0,soot:0,burnT:0,eff:0.4,masses:ALC.map(()=>Math.round(rnd(91,98)*100)/100),sheet:{}};
+$('#e-alc').value='1';
+let eRows=store.get('rows-enthalpy',[]);
+const es=new Stage($('#cv-enthalpy'),600,380);
+const SLOTS=[{k:'m1',l:'Burner mass before',u:'g',src:'bal'},{k:'T1',l:'Starting temperature',u:'°C',src:'th'},{k:'T2',l:'Highest temperature',u:'°C',src:'th'},{k:'m2',l:'Burner mass after',u:'g',src:'bal'}];
+$('#e-sheet').innerHTML=SLOTS.map(s=>`<div class="slot" id="slot-${s.k}"><span class="s-l">${s.l}</span><span class="s-v" id="sv-${s.k}">—</span><button class="btn small" data-take="${s.k}">${s.src==='bal'?'Weigh burner':'Read thermometer'}</button></div>`).join('');
+const eThermo=()=>Math.round(E.Tw*10)/10, eBal=()=>Math.round(E.masses[E.alc]*100)/100;
+function eNew(){E.Tamb=rnd(16.5,19.5);E.Tw=E.Tamb;E.buffer=0;E.soot=0;E.burnT=0;E.sheet={};E.lit=false;
+  E.eff=(E.shield?0.57:0.40)*(1+0.05*gauss());$('#e-msg').textContent='';eUI();}
+function eUI(){
+  $('#e-vol-o').textContent=E.vol+' cm³';
+  ['#e-alc','#e-vol','#e-shield','#e-new'].forEach(s=>$(s).disabled=E.lit);
+  const lb=$('#e-light');lb.textContent=E.lit?'Put flame out (cap on)':'Light burner';lb.className='btn '+(E.lit?'stop':'primary');
+  SLOTS.forEach(s=>{const v=E.sheet[s.k];$('#sv-'+s.k).textContent=v==null?'—':(s.u==='g'?v.toFixed(2):v.toFixed(1))+' '+s.u;$('#slot-'+s.k).classList.toggle('filled',v!=null);
+    $(`[data-take="${s.k}"]`).disabled=s.src==='bal'&&E.lit;});
+  $('#e-rec').disabled=!SLOTS.every(s=>E.sheet[s.k]!=null)||E.lit;
+}
+$('#e-alc').addEventListener('change',e=>{E.alc=+e.target.value;eNew();});
+$('#e-vol').addEventListener('input',e=>{E.vol=+e.target.value;eNew();});
+$('#e-shield').addEventListener('change',e=>{E.shield=e.target.checked;eNew();});
+$('#e-speed').addEventListener('change',e=>E.speed=+e.target.value);
+$('#e-new').addEventListener('click',eNew);
+$('#e-light').addEventListener('click',()=>{E.lit=!E.lit;$('#e-msg').textContent='';eUI();});
+$$('[data-take]').forEach(b=>b.addEventListener('click',()=>{const s=SLOTS.find(x=>x.k===b.dataset.take);E.sheet[s.k]=s.src==='bal'?eBal():eThermo();eUI();}));
+$('#e-rec').addEventListener('click',()=>{const s=E.sheet;
+  if(s.m2>=s.m1){$('#e-msg').textContent='The burner has not lost any mass. Weigh it before lighting and after putting it out.';return;}
+  if(s.T2<=s.T1){$('#e-msg').textContent='The highest temperature must be above the starting temperature.';return;}
+  eRows.push({alc:E.alc,vol:E.vol,shield:E.shield,m1:s.m1,m2:s.m2,T1:s.T1,T2:s.T2});store.set('rows-enthalpy',eRows);
+  $('#e-msg').textContent='';eNew();eRender();});
+$('#e-calc').checked=store.get('calc-enthalpy',true);
+$('#e-calc').addEventListener('change',e=>{store.set('calc-enthalpy',e.target.checked);eRender();});
+function eCalc(r){const dm=r.m1-r.m2,dT=r.T2-r.T1,Eh=4.18*(r.vol/1000)*dT,n=dm/ALC[r.alc].M;return {dm,dT,Eh,n,dH:(dm>0&&dT>0)?-Eh/n:null};}
+const eCols=[
+  {h:'Alcohol',txt:true,f:r=>ALC[r.alc].name},
+  {h:'Draught<br>shield',txt:true,f:r=>r.shield?'Yes':'No'},
+  {h:'Water<br>/ g',f:r=>r.vol},
+  {h:'Burner<br>before / g',f:r=>r.m1.toFixed(2)},
+  {h:'Burner<br>after / g',f:r=>r.m2.toFixed(2)},
+  {h:'Start<br>/ °C',f:r=>r.T1.toFixed(1)},
+  {h:'Highest<br>/ °C',f:r=>r.T2.toFixed(1)},
+  {h:'Mass burned<br>/ g',calc:true,f:r=>eCalc(r).dm.toFixed(2)},
+  {h:'ΔT<br>/ °C',calc:true,f:r=>eCalc(r).dT.toFixed(1)},
+  {h:'E<sub>h</sub><br>/ kJ',calc:true,f:r=>eCalc(r).Eh.toFixed(2)},
+  {h:'n<br>/ mol',calc:true,f:r=>eCalc(r).n.toPrecision(3)},
+  {h:'ΔH<br>/ kJ mol⁻¹',calc:true,f:r=>{const d=eCalc(r).dH;return d==null?'—':Math.round(d)}},
+  {h:'Data booklet<br>/ kJ mol⁻¹',calc:true,f:r=>ALC[r.alc].dH}];
+function eRender(){const sc=$('#e-calc').checked;
+  renderTable($('#e-tbl'),eCols,eRows,sc,i=>{eRows.splice(i,1);store.set('rows-enthalpy',eRows);eRender();},'No results yet. Weigh the burner, read the thermometer, heat the water, then take your final readings.');
+  $('#e-graph').hidden=!sc;if(!sc)return;
+  plot($('#g-enthalpy'),{pts:eRows.map(r=>({x:ALC[r.alc].n,d:eCalc(r).dH})).filter(p=>p.d!=null).map(p=>({x:p.x,y:-p.d})),
+    ref:ALC.map(a=>({x:a.n,y:-a.dH})),refLabel:'Data booklet',xmin:0.5,xmax:5.5,ymaxMin:3500,
+    xlabel:'Number of carbon atoms in the alcohol',ylabel:'Heat released, −ΔH / kJ mol⁻¹'});}
+function stepEnth(dt){const sdt=dt*E.speed,A=ALC[E.alc];
+  if(E.lit){const dm=A.burn*sdt;E.masses[E.alc]-=dm;E.burnT+=sdt;E.buffer+=dm*(-A.dH)/A.M*E.eff;E.soot+=dm*A.soot;}
+  const rel=E.buffer*(1-Math.exp(-sdt/5));E.buffer-=rel;
+  const Cap=4.18*E.vol/1000+0.04;E.Tw+=(rel-0.0010*(E.Tw-E.Tamb)*sdt)/Cap;if(E.Tw>99.5)E.Tw=99.5;}
+let tNow=0;
+function flame(ctx,x,base,H,L){
+  const fl=reduced?0:Math.sin(tNow*14)*2.2+Math.sin(tNow*23.7)*1.3;const h=H+fl,w=12;
+  ctx.beginPath();ctx.moveTo(x,base);ctx.bezierCurveTo(x+w*1.4,base-4,x+w,base-h*0.55,x+fl*0.4,base-h);ctx.bezierCurveTo(x-w,base-h*0.55,x-w*1.4,base-4,x,base);
+  const g=ctx.createLinearGradient(0,base,0,base-h);g.addColorStop(0,'rgba(80,130,255,.55)');g.addColorStop(0.35,`rgba(255,165,45,${0.12+L*0.72})`);g.addColorStop(1,`rgba(255,215,110,${0.05+L*0.6})`);
+  ctx.fillStyle=g;ctx.fill();
+  ctx.beginPath();ctx.moveTo(x,base);ctx.bezierCurveTo(x+6,base-3,x+5,base-h*0.3,x,base-h*0.45);ctx.bezierCurveTo(x-5,base-h*0.3,x-6,base-3,x,base);
+  ctx.fillStyle='rgba(60,105,255,.75)';ctx.fill();
+}
+function drawEnth(){const B=K.BENCH,A=ALC[E.alc],fl=reduced?0:Math.sin(tNow*14)*2.2+Math.sin(tNow*23.7)*1.3;
+  const frac=clamp((E.masses[E.alc]-70)/26,0,1),soot=clamp(E.soot*2.6,0,.92),wickTop=B-51,T=eThermo();
+  const fire=E.lit?(A.L<.2?K.flame(225,wickTop,'blue',{h:40+fl}):`<g opacity="${(.35+A.L*.65).toFixed(2)}">${K.flame(225,wickTop,'yellow',{h:44+fl})}</g>${K.flame(225,wickTop,'blue',{h:20})}`):'';
+  const lvl=60+(1-E.vol/250)*20;
+  let g=`${K.stand(110,18,[[86,180]])}${K.mat(225,110)}${fire}
+    <rect x="180" y="58" width="90" height="82" rx="3" fill="url(#kCopper)"/><rect x="180" y="58" width="90" height="5" fill="#f3b98a" opacity=".8"/><ellipse cx="225" cy="58" rx="45" ry="4" fill="#5e2c10"/><ellipse cx="225" cy="${Math.min(66,lvl/1.6+22).toFixed(1)}" rx="41" ry="3" fill="${K.WATER}"/>
+    <rect x="180" y="110" width="90" height="30" rx="2" fill="url(#kSootFade)" opacity="${soot.toFixed(2)}"/>
+    ${K.thermo(246,8,128,T/100)}${K.tag(300,24,T.toFixed(1)+' °C',{s:12,a:'start'})}
+    ${K.shadow(225,60,B-3)}<rect x="195" y="${B-41}" width="60" height="38" rx="9" fill="url(#kGlass)" stroke="${K.GL}" stroke-width="1.4"/><rect x="197" y="${(B-41+38*(1-Math.max(.12,frac*.8))).toFixed(1)}" width="56" height="${(38*Math.max(.12,frac*.8)-2).toFixed(1)}" rx="7" fill="rgba(200,220,240,.65)"/>
+    <rect x="216" y="${B-50}" width="18" height="10" fill="#c7cdd0" stroke="#7b8287"/><rect x="222" y="${wickTop}" width="6" height="10" fill="#efe7d0"/>
+    ${E.lit?`<path d="M330 ${B-3} h20 l-3 -12 h-14 z" fill="#3a4246"/>`:`<path d="M213 ${wickTop+9} h24 l-3 -14 h-18 z" fill="#3a4246"/>`}`;
+  if(E.shield)g+=`<rect x="160" y="112" width="6" height="${B-112}" fill="url(#kMetal)" opacity=".85"/><rect x="284" y="112" width="6" height="${B-112}" fill="url(#kMetal)" opacity=".85"/>${K.T(294,106,'draught shield',{s:9.5,a:'start'})}`;
+  g+=K.T(300,52,E.vol+' cm³ water',{s:10,a:'start'})+K.TB(225,A.name+' spirit burner');
+  $('#sv-enthalpy').innerHTML=K.back()+g;
+}
+
+/* ===================================================== TITRATION */
+const SAMPLES=[
+  {name:'Vitamin C tablet, labelled 1000 mg',type:'tablet',mg:968},
+  {name:'Effervescent tablet, labelled 500 mg',type:'tablet',mg:507},
+  {name:'Fresh orange juice',type:'juice',per100:48},
+  {name:'Orange juice, opened 7 days ago',type:'juice',per100:29}];
+$('#t-sample').innerHTML=SAMPLES.map((s,i)=>`<option value="${i}">${s.name}</option>`).join('');
+const TI={sample:0,Va:25,c:0.01,reading:0.5,initial:0.5,added:0,Veq:20,starch:false,flow:'closed',dropT:0,flash:0,drops:[],recorded:false,hasSample:true,digital:false};
+let tRows=store.get('rows-titration',[]);
+const ts=new Stage($('#cv-titration'),600,400);
+const IOD='rgb(116,54,16)';
+function tMolesVitC(){const s=SAMPLES[TI.sample];return s.type==='tablet'?(s.mg/1000/176)*(TI.Va/250):(s.per100/1000/176)*(TI.Va/100);}
+function tNewFlask(){TI.added=0;TI.starch=false;TI.recorded=false;TI.hasSample=true;TI.flash=0;TI.drops=[];
+  TI.Veq=tMolesVitC()/TI.c*1000*(1+0.0015*gauss());TI.initial=TI.reading;tMsg('');tUI();}
+function tFill(){TI.reading=rnd(0.15,1.6);TI.initial=TI.reading;tUI();}
+function tMsg(m){$('#t-msg').textContent=m;}
+function setFlow(f){if(f!=='closed'&&TI.reading>=50){tMsg('The burette is empty. Close the tap and refill it.');f='closed';}
+  if(f!=='closed'&&TI.recorded){tMsg('This titre is recorded. Pipette a new sample first.');f='closed';}
+  TI.flow=f;TI.dropT=0;tUI();}
+function tUI(){
+  const closed=TI.flow==='closed';
+  $$('[data-flow]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.flow===TI.flow?'true':'false'));
+  ['#t-sample','#t-va','#t-c'].forEach(s=>$(s).disabled=!closed);
+  $('#t-fill').disabled=!closed||(TI.added>0&&!TI.recorded);
+  $('#t-new').disabled=!closed;
+  $('#t-starch').disabled=TI.starch||TI.recorded;
+  $('#t-one').disabled=TI.recorded||TI.reading>=50;
+  $('#t-rec').disabled=!closed||TI.added<=0||TI.recorded||TI.drops.length>0;
+  $('#t-tap').textContent={closed:'Closed',fast:'Running quickly',slow:'Running slowly',drop:'Dropwise'}[TI.flow];
+  $('#t-flask').textContent=TI.recorded?'Titrated sample (recorded)':`${TI.Va.toFixed(1)} cm³ sample${TI.starch?' + starch':', no indicator'}`;
+}
+$('#t-sample').addEventListener('change',e=>{TI.sample=+e.target.value;tNewFlask();tRender();});
+$('#t-va').addEventListener('change',e=>{TI.Va=+e.target.value;tNewFlask();tRender();});
+$('#t-c').addEventListener('change',e=>{TI.c=+e.target.value;tFill();tNewFlask();tMsg('Burette emptied, rinsed and refilled with the new iodine solution.');tRender();});
+$('#t-digital').addEventListener('change',e=>TI.digital=e.target.checked);
+$('#t-fill').addEventListener('click',()=>{tFill();tMsg('Burette refilled. Read the new initial reading.');});
+$('#t-new').addEventListener('click',tNewFlask);
+$('#t-starch').addEventListener('click',()=>{TI.starch=true;tUI();});
+$$('[data-flow]').forEach(b=>b.addEventListener('click',()=>setFlow(b.dataset.flow)));
+$('#t-one').addEventListener('click',()=>{if(TI.reading<50&&!TI.recorded){TI.drops.push({y:316,v:0});tUI();}});
+$('#t-rec').addEventListener('click',()=>{
+  const ini=r05(TI.initial),fin=r05(TI.reading);
+  tRows.push({s:TI.sample,Va:TI.Va,c:TI.c,ini,fin,starch:TI.starch});store.set('rows-titration',tRows);
+  TI.recorded=true;TI.initial=TI.reading;tMsg('Titre recorded. Pipette a new sample for the next titration.');tUI();tRender();});
+function tAdd(v){v=Math.min(v,50-TI.reading);if(v<=0)return;TI.reading+=v;TI.added+=v;
+  const near=TI.Veq-TI.added;TI.flash=Math.max(TI.flash,near<1.2?clamp(1-near/1.2,0.25,1):0.18);
+  if(TI.reading>=50-1e-9){TI.reading=50;if(TI.flow!=='closed'){TI.flow='closed';tMsg('The burette has run empty. Refill it before carrying on.');}}}
+function stepTit(dt){
+  const rate=TI.flow==='fast'?1.3:TI.flow==='slow'?0.3:0;
+  if(rate)tAdd(rate*dt);
+  if(TI.flow==='drop'){TI.dropT-=dt;if(TI.dropT<=0){TI.dropT=0.42;if(TI.reading+TI.drops.length*0.05<50)TI.drops.push({y:316,v:0});}}
+  const surf=tSurface();
+  TI.drops.forEach(d=>{d.v+=900*dt;d.y+=d.v*dt;});
+  const landed=TI.drops.filter(d=>d.y>=surf);TI.drops=TI.drops.filter(d=>d.y<surf);
+  landed.forEach(()=>tAdd(0.05));
+  if(landed.length&&TI.drops.length===0)tUI();
+  TI.flash*=Math.exp(-dt/0.6);
+}
+function tSurface(){return 362-Math.min(TI.added+TI.Va,80)*0.14;}
+function drawTit(){const B=K.BENCH,smp=SAMPLES[TI.sample],cx=117,base=B-4,h=62,nh=20,sh=base-(h-nh),tip=191;
+  const vol=Math.min(80,TI.Va+TI.added),lvl=TI.hasSample?.22+vol/80*.4:0,surf=base-4-(base-4-sh)*lvl;
+  const P=c=>c.match(/[\d.]+/g).map(Number),mix=(b,o)=>{const a=o[3]+b[3]*(1-o[3]);return `rgba(${[0,1,2].map(i=>Math.round((o[i]*o[3]+b[i]*b[3]*(1-o[3]))/a)).join(',')},${a.toFixed(2)})`};
+  let fill=smp.type==='juice'?'rgba(240,155,35,.55)':'rgba(215,215,205,.5)';const ex=TI.added-TI.Veq;
+  if(TI.hasSample&&ex>0)fill=mix(P(fill),TI.starch?[24,28,72,clamp(0.3+ex/0.12,0,0.94)]:[185,115,20,clamp(ex*0.11,0,0.7)]);
+  const flash=TI.flash>0.02?`<ellipse cx="${cx}" cy="${(surf+5).toFixed(1)}" rx="${(8+TI.flash*18).toFixed(1)}" ry="${(3+TI.flash*5).toFixed(1)}" fill="rgba(${TI.starch?'24,28,72':'150,85,20'},${(0.85*TI.flash).toFixed(2)})" filter="url(#kSoft)"/>`:'';
+  const so=tSurface();let drops='';
+  if(TI.flow==='fast'||TI.flow==='slow')drops+=`<path d="M${cx} ${tip} V${surf.toFixed(1)}" stroke="${IOD}" stroke-width="${TI.flow==='fast'?2.2:1.1}"/>`;
+  TI.drops.forEach(d=>{const y=tip+clamp((d.y-316)/Math.max(1,so-316),0,1)*(surf-tip);drops+=`<ellipse cx="${cx}" cy="${y.toFixed(1)}" rx="1.8" ry="2.4" fill="${IOD}"/>`});
+  const g=`${K.stand(70,6,[[12,cx],[158,cx]])}${K.burette(cx-7,20,150,Math.min(50.5,TI.reading),IOD,{tap:TI.flow==='closed'?'closed':'open'})}
+    ${K.tile(cx,110)}${TI.hasSample?K.flask(cx,base,h,84,fill,lvl,{nw:24,nh,inside:flash}):K.flask(cx,base,h,84,'var(--acid)',0,{nw:24,nh})}${drops}
+    ${K.lens(330,106,86,Math.min(50,TI.reading),IOD)}${K.T(330,214,'magnified: read the bottom of the meniscus',{s:9.5})}${K.TB(cx,'conical flask on a white tile',{s:9.5})}`;
+  $('#sv-titration').innerHTML=K.back()+g;
+}
+const tCols=[
+  {h:'Titration',txt:true,f:r=>r._label},
+  {h:'Sample',txt:true,f:r=>SAMPLES[r.s].name},
+  {h:'Pipette<br>/ cm³',f:r=>r.Va.toFixed(1)},
+  {h:'[I₂]<br>/ mol l⁻¹',f:r=>r.c.toFixed(4)},
+  {h:'Starch',txt:true,f:r=>r.starch?'Yes':'No'},
+  {h:'Initial<br>/ cm³',f:r=>r.ini.toFixed(2)},
+  {h:'Final<br>/ cm³',f:r=>r.fin.toFixed(2)},
+  {h:'Titre<br>/ cm³',f:r=>(r.fin-r.ini).toFixed(2)},
+  {h:'Concordant',txt:true,calc:true,f:r=>r._conc?'<span class="chip ok">Yes</span>':''}];
+const gkey=r=>r.s+'|'+r.Va+'|'+r.c;
+function tAnnotate(){const groups={};tRows.forEach((r,i)=>{r._label='';r._conc=false;(groups[gkey(r)]=groups[gkey(r)]||[]).push(i);});
+  const best={};
+  Object.keys(groups).forEach(k=>{const idx=groups[k];idx.forEach((i,j)=>tRows[i]._label=j===0?'Rough':String(j));
+    const acc=idx.slice(1).map(i=>({i,t:tRows[i].fin-tRows[i].ini})).sort((a,b)=>a.t-b.t);
+    let bs=[];for(let a=0;a<acc.length;a++){let b=a;while(b+1<acc.length&&acc[b+1].t-acc[a].t<=0.2+1e-9)b++;const set=acc.slice(a,b+1);
+      if(set.length>bs.length||(set.length===bs.length&&set.length&&set[set.length-1].t-set[0].t<bs[bs.length-1].t-bs[0].t))bs=set;}
+    if(bs.length>=2)bs.forEach(o=>tRows[o.i]._conc=true);best[k]=bs.length>=2?bs:[];});
+  return best;}
+function tRender(){const sc=$('#t-calc').checked;const best=tAnnotate();
+  renderTable($('#t-tbl'),tCols,tRows,sc,i=>{tRows.splice(i,1);store.set('rows-titration',tRows.map(({_label,_conc,...r})=>r));tRender();},'No titres yet. Pipette a sample, add starch, titrate to the end-point, then press Record titre.');
+  const cp=$('#t-calcpanel');cp.hidden=!sc;if(!sc)return;
+  const k=TI.sample+'|'+TI.Va+'|'+TI.c,set=best[k]||[],s=SAMPLES[TI.sample];
+  if(set.length<2){cp.innerHTML=`<h4>Calculation for the current sample and conditions</h4><p>You need a rough titre and then two titres within 0.20 cm³ of each other. Concordant titres will be averaged here.</p>`;return;}
+  const mean=set.reduce((a,o)=>a+o.t,0)/set.length,nI=TI.c*mean/1000,mass=nI*176*1000;
+  const result=s.type==='tablet'?`${(mass*250/TI.Va).toFixed(0)} mg of vitamin C per tablet (label: ${s.name.match(/\d+ mg/)[0]})`:`${(mass*100/TI.Va).toFixed(1)} mg of vitamin C per 100 cm³ of juice`;
+  cp.innerHTML=`<h4>Calculation for the current sample and conditions</h4>
+   <p>Average of concordant titres = <span class="num">${set.map(o=>o.t.toFixed(2)).join(', ')}</span> → <span class="num">${mean.toFixed(2)} cm³</span></p>
+   <p>n(I₂) = c × V = <span class="num">${TI.c.toFixed(4)} × ${(mean/1000).toFixed(5)} = ${nI.toExponential(3)} mol</span></p>
+   <p>Mole ratio I₂ : vitamin C = 1 : 1, so n(vitamin C) = <span class="num">${nI.toExponential(3)} mol</span></p>
+   <p>Mass in ${TI.Va.toFixed(1)} cm³ = n × 176 = <span class="num">${mass.toFixed(2)} mg</span></p>
+   <p><b>${s.type==='tablet'?`Scale up × 250 ÷ ${TI.Va}: `:`Scale up × 100 ÷ ${TI.Va}: `}<span class="num">${result}</span></b></p>`;}
+$('#t-calc').checked=store.get('calc-titration',true);
+$('#t-calc').addEventListener('change',e=>{store.set('calc-titration',e.target.checked);tRender();});
+
+/* ---------- shared notebook actions ---------- */
+['rates','enthalpy','titration'].forEach(id=>{const ta=$('#n-'+id);ta.value=store.get('notes-'+id,'');ta.addEventListener('input',()=>store.set('notes-'+id,ta.value));});
+$$('[data-copy]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.copy;
+  const txt=id==='rates'?tableTSV(rCols,rRows,$('#r-calc').checked):id==='enthalpy'?tableTSV(eCols,eRows,$('#e-calc').checked):(tAnnotate(),tableTSV(tCols,tRows,$('#t-calc').checked));
+  copyText(id,txt);}));
+$$('[data-clear]').forEach(b=>{b.addEventListener('click',()=>{
+  if(!b._arm){b._arm=true;b.textContent='Tap again to clear all';clearTimeout(b._t);b._t=setTimeout(()=>{b._arm=false;b.textContent='Clear results';},3000);return;}
+  b._arm=false;b.textContent='Clear results';const id=b.dataset.clear;
+  if(id==='rates'){rRows=[];store.set('rows-rates',rRows);rRender();}
+  if(id==='enthalpy'){eRows=[];store.set('rows-enthalpy',eRows);eRender();}
+  if(id==='titration'){tRows=[];store.set('rows-titration',tRows);tRender();}
+  toast(id,'Results cleared.');});});
+
+function renderAll(){rRender();eRender();tRender();}
+['#r-graph','#e-graph'].forEach(s=>new ResizeObserver(()=>{if(active==='rates')rRender();else if(active==='enthalpy')eRender();}).observe($(s)));
+
+/* ---------- loop ---------- */
+let last=performance.now();
+function loop(now){const dt=Math.min(0.1,(now-last)/1000);last=now;tNow+=dt;
+  stepRates(dt);stepEnth(dt);stepTit(dt);
+  if(active==='rates'&&rs.w){drawRates();$('#r-clock').textContent=RS.t.toFixed(1)+' s';$('#r-temp').textContent=RS.Tm.toFixed(1)+' °C';}
+  if(active==='enthalpy'&&es.w){drawEnth();$('#e-temp').textContent=eThermo().toFixed(1)+' °C';$('#e-bal').textContent=E.lit?'in use':eBal().toFixed(2)+' g';$('#e-time').textContent=Math.round(E.burnT)+' s';}
+  if(active==='titration'&&ts.w){drawTit();$('#t-read').textContent=TI.digital?TI.reading.toFixed(2)+' cm³':'use scale';}
+  requestAnimationFrame(loop);}
+
+rUI();eNew();tFill();tNewFlask();
+LK.init('higher');const h0=(location.hash||'').slice(1);showTab(TABS.includes(h0)?h0:store.get('tab','rates'),false);
+renderAll();
+requestAnimationFrame(loop);
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,497 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AH Chemistry Summary Cloze</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f4ef;--panel:#fff;--ink:#1d2430;--muted:#5d6675;--line:#e2ddd2;--accent:#1f6f6b;--accent-soft:#e3f0ee;--ok:#1e7a3c;--ok-bg:#e4f4e8;--bad:#b3261e;--bad-bg:#fbe7e5;--sel:#fbfaf7}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171c;--panel:#1c2027;--ink:#e8e6e1;--muted:#9aa3b0;--line:#2e333c;--accent:#5fc2b9;--accent-soft:#1d3634;--ok:#6fd68f;--ok-bg:#183323;--bad:#ff8a80;--bad-bg:#3a1e1c;--sel:#232831}}
+:root[data-theme="dark"]{--bg:#14171c;--panel:#1c2027;--ink:#e8e6e1;--muted:#9aa3b0;--line:#2e333c;--accent:#5fc2b9;--accent-soft:#1d3634;--ok:#6fd68f;--ok-bg:#183323;--bad:#ff8a80;--bad-bg:#3a1e1c;--sel:#232831}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Inter,system-ui,sans-serif}
+header{padding:28px 16px 12px;max-width:1180px;margin:0 auto}
+h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 4px;line-height:1.2}
+header p{margin:0;color:var(--muted)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px 60px;display:grid;grid-template-columns:270px 1fr;gap:28px;align-items:start}
+nav{position:sticky;top:16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+nav h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:12px 8px 4px}
+nav h3:first-child{margin-top:4px}
+nav button{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:none;color:var(--ink);font:inherit;font-size:.92rem;padding:7px 10px;border-radius:8px;cursor:pointer;line-height:1.35}
+nav button:hover{background:var(--sel)}
+nav button.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+nav .sc{font-size:.75rem;color:var(--muted);white-space:nowrap}
+main{min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px clamp(16px,3vw,32px)}
+.area{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:600}
+h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:clamp(1.3rem,3vw,1.8rem);margin:2px 0 6px;line-height:1.25}
+.intro{color:var(--muted);margin:0 0 18px}
+ol{padding-left:1.6em;margin:0}
+li{margin:0 0 14px;padding-left:4px}
+li::marker{color:var(--muted);font-size:.9em}
+select{font:inherit;font-size:.92em;color:var(--ink);background:var(--sel);border:1.5px solid var(--line);border-radius:6px;padding:1px 4px;margin:2px 1px;max-width:100%;cursor:pointer}
+select:focus{outline:2px solid var(--accent);outline-offset:1px}
+select.ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+select.bad{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+.fix{display:inline-block;font-size:.8em;color:var(--ok);margin-left:2px;font-weight:600}
+.bar{position:sticky;bottom:12px;margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:0 6px 20px rgba(0,0,0,.08)}
+.bar button{font:inherit;font-weight:600;font-size:.92rem;border-radius:8px;padding:8px 14px;cursor:pointer;border:1.5px solid var(--accent);background:none;color:var(--accent)}
+.bar button.primary{background:var(--accent);color:var(--panel)}
+.result{margin-left:auto;font-weight:600}
+.prog{font-size:.85rem;color:var(--muted)}
+sub,sup{line-height:0}
+.topsel{display:none}
+.tmenu{position:absolute;right:16px;top:16px;z-index:5}
+#tbtn{font:inherit;font-size:.85rem;font-weight:600;background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer}
+#tdrop{position:absolute;right:0;top:40px;width:270px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.15)}
+#tdrop label{display:block;font-size:.8rem;color:var(--muted)}
+#tdrop select{width:100%;margin:4px 0 10px;padding:6px}
+#tdrop p{font-size:.78rem;color:var(--muted);margin:10px 0 0;line-height:1.5}
+.pgo{width:100%;font:inherit;font-weight:600;background:var(--accent);color:var(--panel);border:0;border-radius:8px;padding:9px;cursor:pointer}
+@media (max-width:820px){.tmenu{position:static;margin-bottom:10px}}
+#present{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;padding:2vh 4vw}
+#present[hidden]{display:none}
+.ptop{display:flex;justify-content:space-between;gap:16px;color:var(--muted);font-size:clamp(14px,1.6vw,22px);font-weight:600}
+.pstage{flex:1;display:flex;flex-direction:column;justify-content:center;overflow:auto}
+#pstmt{font-size:clamp(22px,3.6vw,56px);line-height:1.5;font-weight:500}
+.pb{display:inline-block;min-width:4em;border-bottom:.08em solid var(--accent);color:transparent;text-align:center;padding:0 .2em}
+.pb.show{color:var(--ok);background:var(--ok-bg);border-radius:.15em}
+.pb i{font-style:normal;font-size:.55em;vertical-align:super;color:var(--accent)}
+#popts{margin-top:3vh;display:grid;gap:1.2vh;font-size:clamp(15px,1.8vw,28px)}
+#popts div{color:var(--muted)}
+#popts b{color:var(--accent);margin-right:.4em}
+.pctrl{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.pctrl button{font:inherit;font-weight:600;border-radius:8px;padding:10px 18px;cursor:pointer;border:1.5px solid var(--accent);background:none;color:var(--accent)}
+.pctrl button.primary{background:var(--accent);color:var(--panel)}
+#home{max-width:1180px;margin:0 auto;padding:8px 16px 60px}
+.unit{margin:22px 0 0}
+.unit h2{margin:0 0 12px;font-size:1.35rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.tile{text-align:left;font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:92px;transition:border-color .15s,transform .15s}
+.tile:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tile b{font-weight:600;line-height:1.35}
+.tile span{font-size:.8rem;color:var(--muted);margin-top:auto}
+.back{font:inherit;font-weight:600;font-size:.9rem;background:none;border:0;color:var(--accent);cursor:pointer;padding:0;margin-bottom:10px}
+@media (max-width:820px){.wrap{grid-template-columns:1fr}nav{display:none}.topsel{display:block;width:100%;margin-bottom:14px;padding:8px;font-size:1rem}.result{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<header style="position:relative">
+<div class="tmenu"><button id="tbtn" aria-expanded="false">Teacher Menu ▾</button><div id="tdrop" hidden><label>Topic<select id="ptopic"></select></label><button id="pgo" class="pgo">▶ Present mode</button><p>Shows one statement at a time on a big screen. Keys: ← → move, Space reveal, O options, Esc exit.</p></div></div>
+<h1>Advanced Higher Chemistry — Summary Sheet Cloze</h1>
+<p>Pick the correct word or phrase for each blank, then check your answers.</p>
+</header>
+<div id="home"></div>
+<div id="present" hidden><div class="ptop"><span id="ptitle"></span><span id="pcount"></span></div><div class="pstage"><div id="pstmt"></div><div id="popts"></div></div><div class="pctrl"><button id="pprev">← Previous</button><button id="popt">Show options</button><button id="prev2" class="primary">Reveal answer</button><button id="pnext">Next →</button><button id="pfs">Full screen</button><button id="pexit">Exit</button></div></div>
+<div class="wrap" id="topicview" style="display:none">
+<nav id="nav"></nav>
+<main>
+<select class="topsel" id="topsel" aria-label="Choose topic"></select>
+<div class="card" id="card"></div>
+</main>
+</div>
+<script>
+// Blank syntax: [correct|distractor|distractor|...]
+const TOPICS=[
+{area:"Inorganic chemistry",title:"Electromagnetic Radiation & Atomic Spectra",pts:`
+Electromagnetic radiation can be described as [waves|particles only|vibrations|fields]. Different types of electromagnetic radiation have different [wavelengths|speeds|masses|charges] and frequencies.
+The different types of radiation arranged in order of wavelength is known as the [electromagnetic spectrum|emission spectrum|absorption spectrum|line spectrum].
+All waves of electromagnetic radiation travel at the [same speed|same frequency|same wavelength|same energy], c = 3 × 10<sup>8</sup> m s<sup>−1</sup>.
+The wavelength (λ) is the distance between two adjacent [crests|troughs and crests|nodes and crests|atoms] of a wave. It is commonly measured in nm, where 1 nm = [1 × 10<sup>−9</sup> m|1 × 10<sup>−6</sup> m|1 × 10<sup>−3</sup> m|1 × 10<sup>9</sup> m].
+The frequency (f) is the number of waves to pass a fixed point [per second|per metre|per mole|per centimetre], measured in s<sup>−1</sup> or Hertz (Hz).
+The wavenumber is the number of waves per metre and is equal to [1/λ|λ/c|c/λ|hf]. It is measured in [cm<sup>−1</sup>|nm|s<sup>−1</sup>|m s<sup>−1</sup>], so the wavelength must first be converted to cm.
+The relationship between wavelength, frequency and speed is given by [c = fλ|c = f/λ|E = fλ|f = cλ].
+Energy is transferred in small ‘bundles’ called [quanta|moles|orbitals|waves]. These behave like a stream of particles, known as [photons|electrons|protons|neutrons].
+Photons in [high|low|zero|constant] frequency radiation can transfer greater amounts of energy than photons in low frequency radiation.
+The energy associated with a single photon is given by E = hf or E = [hc/λ|hλ/c|Lhf|c/λ].
+The energy associated with one mole of photons is given by E = Lhf or E = [Lhc/λ|hc/λ|Lh/λ|Lcλ], where L is [Avogadro’s constant|Planck’s constant|the speed of light|the wavenumber].
+When energy is transferred to atoms, electrons may be [promoted to higher|dropped to lower|removed from inner|added to empty] energy levels.
+Atomic spectroscopy can be used to [quantify and identify|separate and purify|neutralise and dilute|ionise and fragment] elements.
+In [absorption|emission|mass|NMR] spectroscopy, radiation is directed at an atomised sample and is absorbed as electrons are promoted to higher energy levels.
+In emission spectroscopy, [high temperatures|low pressures|magnetic fields|radio waves] are used to excite electrons. As the electrons drop to lower energy levels, [photons are emitted|photons are absorbed|electrons are lost|ions are formed].
+Each element produces [characteristic|identical|continuous|random] absorption and emission spectra, which can be used to identify and quantify the element.`},
+
+{area:"Inorganic chemistry",title:"Atomic Orbitals, Electronic Configurations & the Periodic Table",pts:`
+Emission spectra give evidence for the existence of [subshells|nuclei|isotopes|ions] within an atom’s energy levels.
+The number of subshells an energy level has split into can be found using the [principal quantum number, n|angular momentum number, l|magnetic quantum number, m<sub>l</sub>|spin quantum number, m<sub>s</sub>]. For example, n = 3 has [three subshells: s, p and d|two subshells: s and p|four subshells: s, p, d and f|one subshell: s].
+Maximum electrons per subshell: s = 2, p = [6|3|8|10], d = [10|5|8|14], f = [14|7|10|18].
+Each subshell contains atomic [orbitals|nuclei|molecules|bonds]. Knowledge of the shape of [f|s|p|d] orbitals is not required.
+Orbitals within a subshell are said to be [degenerate|hybridised|excited|ionised]; they have equal energies.
+The [Aufbau principle|Pauli exclusion principle|Hund’s rule|Markovnikov’s rule] states that orbitals are filled in order of increasing energy.
+[Hund’s rule|The Aufbau principle|The Pauli exclusion principle|The n+1 rule] states that when degenerate orbitals are available, electrons fill each singly, with [parallel|opposite|random|paired] spins, before pairing occurs.
+The Pauli exclusion principle states that no two electrons can have the same set of [four|three|two|five] quantum numbers.
+Electronic configurations using spectroscopic notation and orbital box notation can be written for elements of atomic numbers 1 to [36|18|20|54].
+The periodic table is subdivided into four blocks ([s, p, d and f|1, 2, 3 and 4|K, L, M and N|σ, π, δ and φ]) corresponding to the outer electronic configurations of the elements.
+Quantum numbers describe the state of an electron, including distance from the nucleus, the orbital, its orientation and its [spin|mass|charge|speed].
+The principal quantum number, n, indicates the main [energy level|orbital shape|orbital orientation|spin direction].
+The angular momentum quantum number, l, indicates the [shape|orientation|spin|size] of the orbital: s = 0, p = [1|2|3|−1], d = 2, f = 3.
+The magnetic quantum number, m<sub>l</sub>, indicates the [orientation|shape|spin|energy level] of the orbital and can have values between [−l and +l|0 and n|−½ and +½|1 and n−1].
+The spin magnetic quantum number, m<sub>s</sub>, indicates the direction of spin and can be either [+½ or −½|+1 or −1|0 or 1|any whole number].
+Anomalies in the trends of ionisation energies can be explained by considering the [electronic configurations|atomic masses|numbers of neutrons|bond enthalpies].
+There is special stability associated with [half-filled and full|empty and quarter-filled|singly occupied|partly filled] subshells. The more stable the configuration, the [higher|lower|more variable|less important] the ionisation energy.`},
+
+{area:"Inorganic chemistry",title:"Shapes of Molecules",pts:`
+[VSEPR|Molecular orbital|Hybridisation|Brønsted–Lowry] theory (valence shell electron pair repulsion) can be used to predict the shapes of molecules and polyatomic ions.
+The number of electron pairs around a central atom = (number of outer electrons on the central atom + one electron for each atom bonded to it [± the ion’s charge|× the charge|+ the mass number|− the atomic number]) ÷ [2|3|4|1].
+Electron pairs are [negatively|positively|not] charged and repel each other. They are arranged to [minimise repulsion|maximise repulsion|minimise separation|maximise attraction] and maximise separation.
+Electron pair repulsions decrease in strength in the order: [non-bonding/non-bonding > non-bonding/bonding > bonding/bonding|bonding/bonding > non-bonding/bonding > non-bonding/non-bonding|non-bonding/bonding > bonding/bonding > non-bonding/non-bonding|they are all equal].
+2 electron pairs (2 bonding) give a [linear|bent|trigonal planar|tetrahedral] shape; 3 bonding pairs give a [trigonal planar|trigonal pyramidal|T-shaped|linear] shape.
+4 pairs: 4 bonding, 0 non-bonding = tetrahedral; 3 bonding, 1 non-bonding = [trigonal pyramidal|trigonal planar|bent|square planar]; 2 bonding, 2 non-bonding = [bent|linear|trigonal pyramidal|tetrahedral].
+5 bonding pairs give a [trigonal bipyramidal|octahedral|square planar|trigonal planar] shape.
+6 pairs: 6 bonding = [octahedral|hexagonal|trigonal bipyramidal|tetrahedral]; 4 bonding and 2 non-bonding = [square planar|tetrahedral|see-saw|octahedral].`},
+
+{area:"Inorganic chemistry",title:"Transition Metals",pts:`
+The d-block transition metals are metals with an [incomplete|empty|completely full|half-filled] d subshell in at least one of their ions.
+Filling of d orbitals follows the Aufbau principle except for [chromium and copper|iron and cobalt|scandium and zinc|nickel and manganese], due to the special stability of a half-filled or full d subshell.
+When first-row transition elements form ions, the [4s|3d|3p|4p] electrons are lost first.
+An element is in a particular oxidation state when it has a specific [oxidation number|mass number|coordination number|quantum number].
+Uncombined elements have an oxidation state of [0|+1|−1|+2]; a single-atom ion has an oxidation state equal to its [charge|mass|group number|period].
+In a neutral molecule the oxidation numbers add up to [zero|the overall charge|+1|the number of atoms]; in a polyatomic ion they add up to [the overall charge on the ion|zero|−1|the number of atoms].
+In most compounds oxygen is [−2|+2|−1|0], hydrogen is [+1|−1|0|+2], halogens are −1 and alkali metals are +1.
+A transition metal can have [different|only one|no|fixed] oxidation states in different compounds, and these may have different [colours|masses|nuclei|atomic numbers].
+Oxidation is an [increase|decrease|no change] in oxidation number; reduction is a [decrease|increase|no change] in oxidation number.
+Changes in oxidation number of transition metal ions show whether [oxidation or reduction|neutralisation|hydrolysis|condensation] has occurred.
+Compounds with metals in high oxidation states are often [oxidising|reducing|neutralising|dehydrating] agents; those in low oxidation states are often [reducing|oxidising|drying|buffering] agents.
+Transition metals commonly form complexes with substances called [ligands|catalysts|indicators|electrophiles]. A complex is a metal ion surrounded by these.
+Ligands may be negative ions or molecules with [non-bonding pairs of electrons|positive charges|unpaired protons|empty orbitals] that they donate to the metal, forming [dative covalent|ionic|metallic|hydrogen] bonds.
+Ligands can be classified as [monodentate, bidentate, up to hexadentate|primary, secondary and tertiary|strong and weak acids|cis and trans].
+The classification of a ligand can be deduced from the [formula or structure|colour|mass|melting point] of the ligand or complex.
+The total number of bonds from the ligands to the central metal is the [coordination number|oxidation number|denticity|atomic number].
+Transition metal complexes are named according to [IUPAC|Markovnikov|Hund’s|VSEPR] rules.
+In a transition metal complex the d orbitals are [no longer degenerate|still degenerate|empty|hybridised to sp³].
+Splitting of the d orbitals occurs when electrons in approaching ligands repel the electrons in the orbitals lying [along the axes|between the axes|in the nucleus|in the s subshell].
+Ligands causing a large energy difference between d orbital subsets are [strong field|weak field|monodentate|chiral] ligands.
+Ligands can be placed in order of their ability to split d orbitals; this is the [spectrochemical series|electrochemical series|homologous series|reactivity series].
+Colours of many transition metal complexes can be explained in terms of [d–d transitions|s–p transitions|nuclear spin flips|bond vibrations].
+Light is absorbed when electrons in a [lower|higher|half-filled|core] energy d orbital are promoted to a d orbital of higher energy.
+If light of one colour is absorbed, the [complementary|same|white|infrared] colour is observed.
+These transitions happen when energy corresponding to the [ultraviolet or visible|infrared|radio|microwave] region is absorbed.
+Transition metals and their compounds can act as [catalysts|indicators|buffers|primary standards].
+[Heterogeneous|Homogeneous|Hexadentate|Racemic] catalysts are in a different state to the reactants.
+Heterogeneous catalysis involves [adsorption|absorption|dissolving|evaporation] of reactive molecules onto active sites. Unpaired d electrons or unfilled d orbitals allow activated complexes to form, providing pathways with [lower|higher|equal|zero] activation energies.
+[Homogeneous|Heterogeneous|Bidentate|Stereo] catalysts are in the same state as the reactants.
+Homogeneous catalysis can be explained by [changing oxidation states|adsorption onto surfaces|changing colour|hybridisation] with the formation of intermediate complexes.
+Naming: ligands are named first, [alphabetically|by size|by charge|randomly], followed by the central metal. NH<sub>3</sub> is named [ammine|amino|ammonia|amido] and H<sub>2</sub>O is named [aqua|hydro|oxo|hydroxido].
+If the complex has an overall [negative|positive|zero] charge, the metal name takes the suffix [−ate|−ite|−ide|−ium], e.g. iron becomes [ferrate|ironate|ferrite|ferride] and copper becomes cuprate.
+Formulae: the metal symbol comes first; ligands are written with the [atom that bonds to the metal first|heaviest atom first|hydrogen first|charge first], e.g. water is written as OH<sub>2</sub>. The complex is enclosed in [square brackets|round brackets|curly brackets|no brackets] with the overall charge outside.`},
+
+{area:"Physical chemistry",title:"Chemical Equilibrium",pts:`
+A reaction is at equilibrium when the rate of the forward reaction [equals|is greater than|is less than|is double] the rate of the reverse reaction, in a [closed|open|heated|catalysed] system.
+At equilibrium the composition of reactants and products [remains constant|keeps changing|becomes zero|is always 50:50].
+The equilibrium constant, K, is essentially a [ratio|sum|difference|product] between the products and reactants at equilibrium.
+For aA + bB ⇌ cC + dD, K = [[C]<sup>c</sup>[D]<sup>d</sup> / [A]<sup>a</sup>[B]<sup>b</sup>|[A]<sup>a</sup>[B]<sup>b</sup> / [C]<sup>c</sup>[D]<sup>d</sup>|[C][D] / [A][B]|c[C] + d[D] − a[A] − b[B]].
+The concentrations of pure solids and pure liquids are given a value of [1|0|100|their GFM] in the equilibrium expression.
+Equilibrium constants have [no units|units of mol l<sup>−1</sup>|units of kJ mol<sup>−1</sup>|units of s<sup>−1</sup>].
+If K is less than 1, the equilibrium lies to the [left (reactants)|right (products)|middle|outside the system].
+K is not affected by changes in [concentration, pressure or a catalyst|temperature|any condition|temperature or catalyst].
+The value of K is affected by changes in [temperature|pressure|concentration|catalyst].
+For endothermic reactions, a rise in temperature causes K to [increase|decrease|stay the same|become zero]; for exothermic reactions, K [decreases|increases|stays the same|doubles].
+In water and aqueous solutions, there is an equilibrium between water molecules and [hydronium and hydroxide|hydrogen and oxide|sodium and chloride|oxygen and hydrogen gas] ions.
+The ionisation of water: H<sub>2</sub>O + H<sub>2</sub>O ⇌ [H<sub>3</sub>O<sup>+</sup> + OH<sup>−</sup>|H<sub>2</sub> + O<sub>2</sub>|H<sup>+</sup> + O<sup>2−</sup>|H<sub>2</sub>O<sub>2</sub> + H<sub>2</sub>].
+H<sub>3</sub>O<sup>+</sup> is a hydronium ion, which is a [hydrated proton|hydrated electron|dehydrated proton|hydroxide ion].
+The ionic product of water is K<sub>w</sub> = [[H<sub>3</sub>O<sup>+</sup>][OH<sup>−</sup>]|[H<sub>3</sub>O<sup>+</sup>]/[OH<sup>−</sup>]|[H<sub>2</sub>O]<sup>2</sup>|[H<sub>3</sub>O<sup>+</sup>] + [OH<sup>−</sup>]].
+K<sub>w</sub> varies with [temperature|pressure|concentration|pH]. At 25 °C, K<sub>w</sub> = [1 × 10<sup>−14</sup>|1 × 10<sup>−7</sup>|1 × 10<sup>14</sup>|7].
+At pH 7 and 25 °C, [H<sub>3</sub>O<sup>+</sup>] and [OH<sup>−</sup>] are both [1 × 10<sup>−7</sup>|1 × 10<sup>−14</sup>|7|0] mol l<sup>−1</sup>.
+If the concentration of H<sub>3</sub>O<sup>+</sup> or OH<sup>−</sup> is known, the other can be calculated using [K<sub>w</sub>|K<sub>a</sub>|K<sub>In</sub>|ΔG°].
+Brønsted–Lowry: an acid is a proton [donor|acceptor|creator|destroyer]; a base is a proton [acceptor|donor|creator|destroyer].
+When an acid loses a proton it forms a [conjugate base|conjugate acid|salt|buffer]; when a base gains a proton it forms a [conjugate acid|conjugate base|salt|indicator].
+Water is [amphoteric|neutral only|a strong acid|a strong base]; it can act as both an acid and a base.
+Strong acids and bases are [completely|partially|not|reversibly] dissociated into ions in aqueous solution.
+Weak acids and bases are only [partially|completely|never|always] dissociated into ions in aqueous solution.
+Examples of strong acids include hydrochloric, sulfuric and [nitric|ethanoic|carbonic|sulfurous] acid.
+Ethanoic acid, carbonic acid and [sulfurous|nitric|hydrochloric|sulfuric] acid are examples of weak acids.
+Solutions of [metal hydroxides|amines|ammonia|carboxylic acids] are strong bases.
+[Ammonia and amines|Metal hydroxides|Metal oxides|Sodium carbonate and NaOH] are examples of weak bases.
+Equimolar solutions of weak and strong acids have different pH, conductivity and reaction rates, but the [stoichiometry|pH|rate|conductivity] of reactions is the same.
+The acid dissociation constant is K<sub>a</sub> = [[H<sub>3</sub>O<sup>+</sup>][A<sup>−</sup>] / [HA]|[HA] / [H<sub>3</sub>O<sup>+</sup>][A<sup>−</sup>]|[H<sub>3</sub>O<sup>+</sup>][OH<sup>−</sup>]|[A<sup>−</sup>] / [HA]], and pK<sub>a</sub> = [−log<sub>10</sub>K<sub>a</sub>|log<sub>10</sub>K<sub>a</sub>|1/K<sub>a</sub>|10<sup>−Ka</sup>].
+The smaller the value of K<sub>a</sub>, the [weaker|stronger|more concentrated|more dilute] the acid; the bigger the pK<sub>a</sub>, the weaker the acid.
+The pH of a strong acid: pH = [−log<sub>10</sub>[H<sub>3</sub>O<sup>+</sup>]|log<sub>10</sub>[H<sub>3</sub>O<sup>+</sup>]|14 − [H<sub>3</sub>O<sup>+</sup>]|−log<sub>10</sub>[OH<sup>−</sup>]] and [H<sub>3</sub>O<sup>+</sup>] = 10<sup>−pH</sup>.
+For a strong alkali, first find [H<sub>3</sub>O<sup>+</sup>] using [K<sub>w</sub>|K<sub>a</sub>|pK<sub>a</sub>|K<sub>In</sub>], then use pH = −log<sub>10</sub>[H<sub>3</sub>O<sup>+</sup>].
+The approximate pH of a weak acid: pH = [½pK<sub>a</sub> − ½log<sub>10</sub>c|pK<sub>a</sub> − log<sub>10</sub>c|½pK<sub>a</sub> + ½log<sub>10</sub>c|2pK<sub>a</sub> − log<sub>10</sub>c].
+A salt from a strong acid and a weak base has pH [&lt; 7 (acidic)|= 7 (neutral)|&gt; 7 (alkaline)]; a weak acid and a strong base give pH [&gt; 7 (alkaline)|&lt; 7 (acidic)|= 7 (neutral)].
+The pH of a salt can be explained with reference to the appropriate [equilibria|enthalpy changes|reaction rates|spectra].
+A buffer solution is one in which the pH remains [approximately constant|exactly 7|rapidly changing|always acidic] when small amounts of acid, base or water are added.
+An acid buffer consists of a weak acid and one of its salts made from a [strong base|weak base|strong acid|weak acid].
+A basic buffer consists of a solution of a [weak base|strong base|strong acid|metal hydroxide] and one of its salts.
+A buffer resists a change in pH because its equilibrium [shifts to remove added H<sup>+</sup> or OH<sup>−</sup>|stops reacting|releases water|changes colour].
+pH of an acid buffer: pH = pK<sub>a</sub> − log<sub>10</sub>[[acid]/[salt]|[salt]/[acid]|[acid] × [salt]|[H<sub>3</sub>O<sup>+</sup>]].
+Indicators are [weak acids|strong acids|strong bases|salts]: HIn + H<sub>2</sub>O ⇌ H<sub>3</sub>O<sup>+</sup> + In<sup>−</sup>.
+The colour of HIn must be [distinctly different|the same as|colourless compared|slightly darker] from the colour of the conjugate base In<sup>−</sup>.
+K<sub>In</sub> = [[H<sub>3</sub>O<sup>+</sup>][In<sup>−</sup>] / [HIn]|[HIn] / [H<sub>3</sub>O<sup>+</sup>][In<sup>−</sup>]|[In<sup>−</sup>] / [HIn]|[H<sub>3</sub>O<sup>+</sup>][HIn]].
+The colour of the indicator is determined by the [ratio of [HIn] to [In<sup>−</sup>]|temperature|volume of solution|K<sub>w</sub>].
+The theoretical colour change happens when [HIn] = [In<sup>−</sup>], so K<sub>In</sub> = [[H<sub>3</sub>O<sup>+</sup>]|[OH<sup>−</sup>]|1|K<sub>w</sub>].
+In practice the colour change is only distinguishable when [HIn] and [In<sup>−</sup>] differ by a factor of [10|2|100|1000].
+The pH range of the colour change is pH = [pK<sub>In</sub> ± 1|pK<sub>In</sub> ± 2|pK<sub>In</sub> × 10|7 ± 1].
+The pH range of the indicator must correspond to the [rapid change in pH|starting pH|final pH|pH of water] of the titration.`},
+
+{area:"Physical chemistry",title:"Reaction Feasibility",pts:`
+The standard enthalpy of formation, ΔH°<sub>f</sub>, is the enthalpy change when [one mole|one gram|one litre|two moles] of a substance is formed from its [elements|ions|compounds|atoms in the gas phase] in their standard states.
+The standard state of a substance is its most stable state at a pressure of [1 atmosphere|0 atmospheres|10 atmospheres|1 pascal] and a specified temperature, usually [298 K|273 K|0 K|373 K].
+The enthalpy of formation of elements is [zero|one|always negative|always positive].
+ΔH° = [ΣΔH°<sub>f</sub>(products) − ΣΔH°<sub>f</sub>(reactants)|ΣΔH°<sub>f</sub>(reactants) − ΣΔH°<sub>f</sub>(products)|ΣΔH°<sub>f</sub>(products) + ΣΔH°<sub>f</sub>(reactants)|ΔG° − TΔS°].
+The entropy of a system is a measure of its degree of [disorder|heat|order|pressure].
+The greater the disorder, the greater the entropy. [Solids|Gases|Liquids|Solutions] have low disorder and [gases|solids|crystals|metals] have high disorder.
+There is a rapid increase in entropy at the melting point and an even larger change at the [boiling point|freezing point|absolute zero|standard state].
+At [0 K|273 K|298 K|100 K] a perfect crystal has an entropy of zero. This is the [third|first|second|zeroth] law of thermodynamics.
+ΔS° = [ΣS°(products) − ΣS°(reactants)|ΣS°(reactants) − ΣS°(products)|ΔH°/ΔG°|ΣS°(products) × ΣS°(reactants)].
+The [second|first|third|zeroth] law of thermodynamics states that the total entropy of a reaction system and its surroundings always [increases|decreases|stays constant|becomes zero] for a spontaneous process.
+ΔS°<sub>total</sub> = [ΔS°<sub>system</sub> + ΔS°<sub>surroundings</sub>|ΔS°<sub>system</sub> − ΔS°<sub>surroundings</sub>|ΔH° − TΔS°|ΔS°<sub>system</sub> × T].
+A change in entropy, ΔS, is accompanied by a change in [enthalpy, ΔH|mass|pressure|volume], which affects the entropy of the surroundings.
+Heat energy released by the system into the surroundings [increases|decreases|has no effect on|halves] the entropy of the surroundings.
+Heat energy absorbed by the system from the surroundings [decreases|increases|has no effect on|doubles] the entropy of the surroundings.
+ΔG° = [ΣΔG°<sub>f</sub>(products) − ΣΔG°<sub>f</sub>(reactants)|ΣΔG°<sub>f</sub>(reactants) − ΣΔG°<sub>f</sub>(products)|ΣΔG°<sub>f</sub>(products) + ΣΔG°<sub>f</sub>(reactants)|ΔH° + TΔS°].
+Free energy is related to enthalpy and entropy by ΔG° = [ΔH° − TΔS°|ΔH° + TΔS°|TΔH° − ΔS°|ΔS° − TΔH°].
+If ΔG° is [negative|positive|zero|large and positive], a reaction is said to be feasible.
+The temperature at which a reaction becomes feasible can be estimated by finding where ΔG° [&lt; 0|&gt; 0|= 1|= ΔH°].
+At equilibrium, ΔG° = [0|1|−1|ΔH°].
+In a reversible reaction, the reaction proceeds spontaneously until the composition is reached where ΔG = [0|ΔH|1|TΔS].`},
+
+{area:"Physical chemistry",title:"Kinetics",pts:`
+The rate of a chemical reaction normally depends on the [concentrations of the reactants|mass of the products|colour of the solution|size of the container].
+[Orders of reaction|Equilibrium constants|Enthalpy changes|Oxidation states] are used to relate the rate of reaction to the reacting species.
+The overall order tells you the number of species reacting in the [rate determining step|fastest step|final step|equilibrium mixture].
+In the rate equation rate = k[A][B]<sup>2</sup>, k is the [rate constant|equilibrium constant|Boltzmann constant|Planck constant].
+The order with respect to a reactant is the [power|coefficient|square root|logarithm] to which its concentration is raised in the rate equation.
+The overall order is the [sum|product|difference|average] of the powers in the rate equation.
+The order of reaction can only be determined from [experimental data|the balanced equation|the stoichiometry|ΔH values].
+If changing [A] has no effect on rate, the reaction is [zero|first|second|third] order with respect to A.
+If doubling [A] doubles the rate, the reaction is [first|zero|second|third] order with respect to A.
+If doubling [A] increases the rate fourfold, the reaction is [second|first|fourth|zero] order with respect to A.
+The rate equation and k can be determined from [initial rate|equilibrium|enthalpy|spectroscopic] data. For rate = k[X][Y]<sup>2</sup>, k = [rate / [X][Y]<sup>2</sup>|[X][Y]<sup>2</sup> / rate|rate × [X][Y]<sup>2</sup>|rate / [X] + [Y]<sup>2</sup>].
+Units of k: first order = [s<sup>−1</sup>|l mol<sup>−1</sup> s<sup>−1</sup>|mol l<sup>−1</sup> s<sup>−1</sup>|no units]; second order = [l mol<sup>−1</sup> s<sup>−1</sup>|s<sup>−1</sup>|l<sup>2</sup> mol<sup>−2</sup> s<sup>−1</sup>|mol l<sup>−1</sup>]; third order = l<sup>2</sup> mol<sup>−2</sup> s<sup>−1</sup>.
+Reactions usually occur by a series of steps called a reaction [mechanism|equilibrium|cycle|titration].
+The rate of reaction depends on the [slowest|fastest|first|last] step, called the rate determining step.
+Experimentally determined rate equations can be used to determine possible [reaction mechanisms|equilibrium constants|enthalpy changes|yields].`},
+
+{area:"Organic chemistry & instrumental analysis",title:"Molecular Orbitals",pts:`
+[Skeletal|Molecular|Empirical|Orbital box] structural formulae are a shorthand way of drawing the structures of organic molecules.
+You must be able to convert between full, shortened and skeletal formulae and write the [molecular|empirical|IUPAC|isomeric] formula from any of them.
+Molecular orbitals form when [atomic orbitals|nuclei|ions|molecules] combine. The number of molecular orbitals formed is [equal to|double|half|unrelated to] the number of atomic orbitals that combine.
+Combining two atomic orbitals produces a lower energy [bonding|anti-bonding|hybrid|non-bonding] molecular orbital and a higher energy [anti-bonding|bonding|hybrid|core] molecular orbital.
+Both electrons are found in the lower energy bonding molecular orbital with [opposite|parallel|no|identical] spins.
+End-on overlap along the axis of the bond forms [sigma (σ)|pi (π)|delta (δ)|hybrid] bonds; side-on overlap of parallel orbitals forms [pi (π)|sigma (σ)|ionic|dative] bonds.
+Hybridisation is the mixing of atomic orbitals within an atom to generate new [hybrid|molecular|anti-bonding|ionic] orbitals, which are [degenerate|non-degenerate|empty|antibonding].
+Hybridisation can be used to explain the bonding and shape of molecules of [carbon|noble gases|transition metals|metal ions].
+In alkanes, carbon forms four degenerate [sp³|sp²|sp|dsp²] hybrid orbitals in a [tetrahedral|trigonal planar|linear|octahedral] arrangement.
+In alkenes, carbon forms three [sp²|sp³|sp|sp⁴] hybrid orbitals in a trigonal planar arrangement; the remaining 2p orbitals overlap [side-on to form a π bond|end-on to form a σ bond|to form an ionic bond|to form a hydrogen bond].
+In alkynes, carbon forms two [sp|sp²|sp³|s²p] hybrid orbitals in a [linear|bent|tetrahedral|trigonal planar] arrangement, and the two unhybridised p orbitals form two π bonds.
+Benzene, C<sub>6</sub>H<sub>6</sub>, is a [planar|tetrahedral|chair-shaped|linear] molecule. The stability of the ring means it will not undergo [addition|substitution|combustion|any] reactions.
+In benzene the carbons are [sp²|sp³|sp|unhybridised] hybridised; unhybridised p orbitals overlap side-on to form a π system across all six carbons, in which electrons are [delocalised|localised|ionised|paired on one carbon].
+Electrons fill [bonding|antibonding|hybrid|empty] molecular orbitals, leaving higher energy antibonding orbitals unfilled.
+The highest occupied bonding orbital is the [HOMO|LUMO|SOMO|NMR]; the lowest unoccupied antibonding orbital is the [LUMO|HOMO|TMS|GFM].
+Absorption of electromagnetic energy can promote electrons from the [HOMO to the LUMO|LUMO to the HOMO|nucleus to the HOMO|σ to the σ orbital].
+Most organic molecules appear colourless because the HOMO–LUMO gap is relatively [large|small|zero|negative], so they absorb in the [ultraviolet|visible|infrared|radio] region.
+A [chromophore|ligand|nucleophile|carbocation] is a group of atoms within a molecule responsible for absorption of light in the visible region.
+Chromophores exist in molecules containing a [conjugated system|single σ bond|chiral centre|hydroxyl group], where adjacent unhybridised p orbitals overlap side-on.
+Molecules with [alternating single and double bonds|only single bonds|only triple bonds|ionic bonds], and aromatic molecules, have conjugated systems.
+The more atoms in the conjugated system, the [smaller|larger|same|more variable] the HOMO–LUMO gap, so light of [longer|shorter|zero|higher energy] wavelength is absorbed.
+When the wavelength absorbed is in the visible region, the compound shows the [complementary|same|white|ultraviolet] colour.`},
+
+{area:"Organic chemistry & instrumental analysis",title:"Organic Synthesis",pts:`
+You need to name, draw and describe alkanes, alkenes, alcohols, carboxylic acids, aldehydes, ketones, haloalkanes, ethers and [esters|metals|salts|transition metal complexes].
+Reaction types to identify include substitution, addition, elimination and [condensation|nuclear fission|combustion only|precipitation].
+In curly arrow notation, a [double-headed|single-headed|dashed|straight] arrow shows the movement of an electron pair; the [tail|head|middle|colour] shows the source of the electrons.
+Homolytic fission forms two neutral [radicals|ions|carbocations|nucleophiles]; each atom keeps one electron and it normally occurs when [non-polar|polar|ionic|dative] bonds break.
+Reactions involving homolytic fission tend to produce [very complex mixtures|single pure products|no products|only gases], making them unsuitable for synthesis.
+Heterolytic fission forms two [oppositely charged ions|neutral radicals|identical atoms|free electrons]; one atom keeps both electrons and it normally occurs when [polar|non-polar|metallic|hydrogen] bonds break.
+Heterolytic fission gives [far fewer|many more|exactly the same|no] products, so is better suited for organic synthesis.
+In heterolytic fission, attacking groups are classified as nucleophiles or [electrophiles|radicals|ligands|chromophores].
+A nucleophile is electron [rich|deficient|neutral|free] and donates a pair of electrons; an electrophile is electron [deficient|rich|saturated|paired] and accepts a pair.
+Nucleophiles are attracted to atoms with a full or partial [positive|negative|neutral|magnetic] charge.
+A [carbocation|carbanion|radical|alkoxide] is an ion in which a carbon atom carries a full positive charge.
+[Tertiary|Primary|Secondary|Methyl] carbocations are the most stable as they have the most alkyl groups to donate electrons.
+Haloalkanes are substituted alkanes where hydrogen atoms are replaced by [halogen|hydroxyl|alkoxy|amine] atoms.
+Monohaloalkanes undergo [elimination|addition|oxidation|condensation] to form alkenes using a strong base (KOH or NaOH) in [ethanol|water|acid|ether].
+Monohaloalkanes undergo nucleophilic substitution with aqueous alkalis to form [alcohols|ethers|nitriles|alkenes], alcoholic alkoxides to form [ethers|alcohols|esters|amines], and ethanolic cyanide to form [nitriles|amines|ketones|alkanes].
+S<sub>N</sub>1 has [one|two|three|zero] species in the rate determining step and goes via a [trigonal planar carbocation|trigonal bipyramidal transition state|cyclic ion|free radical]; S<sub>N</sub>2 has two species and goes via a single five-centred trigonal bipyramidal transition state.
+[Steric hindrance|Hydrogen bonding|Delocalisation|Chirality] and inductive stabilisation of the carbocation explain which mechanism a haloalkane prefers.
+Alkenes are [unsaturated|saturated|aromatic|ionic] hydrocarbons containing at least one C=C double bond.
+Alkenes can be prepared by [dehydration of alcohols|hydration of alkanes|oxidation of ketones|reduction of esters] and by base-induced elimination of hydrogen halides from monohaloalkanes.
+Alkenes undergo [electrophilic addition|nucleophilic substitution|electrophilic substitution|elimination] with hydrogen, halogens, hydrogen halides and water (acid catalyst).
+Markovnikov’s rule: when HX or water adds to an unsymmetrical alkene, the H atom attaches to the carbon with the [most|fewest|no|same number of] hydrogen atoms already.
+Markovnikov’s rule predicts the [major and minor|only|equilibrium|racemic] products formed.
+Addition of HX or acid-catalysed water involves an intermediate [carbocation|cyclic ion|radical|carbanion].
+The mechanism for addition of a halogen shows a [cyclic ion|carbocation only|free radical|trigonal bipyramidal] intermediate.
+Alcohols contain the [hydroxyl, −OH|carboxyl, −COOH|carbonyl, C=O|alkoxy, −OR] functional group.
+Alcohols can be prepared from aldehydes and ketones by [reduction|oxidation|hydration|elimination] using lithium aluminium hydride.
+Primary alcohols oxidise to aldehydes then [carboxylic acids|ketones|ethers|alkenes]; secondary alcohols oxidise to [ketones|aldehydes|carboxylic acids|esters].
+Alcohols react with reactive metals like sodium to form [alkoxides|esters|ethers directly|alkanes], which react with monohaloalkanes to form ethers.
+Esters form faster from alcohols with [acid chlorides|carboxylic acids|alkanes|ketones], and no catalyst is needed.
+Hydroxyl groups make alcohols polar, giving rise to [hydrogen bonding|ionic bonding|metallic bonding|only London forces], which explains their boiling points, viscosity and solubility.
+Ethers have the general structure [R′–O–R″|R–OH|R–COOH|R–CHO].
+In naming ethers, the alkoxy group is named by adding the ending [‘oxy’|‘ol’|‘al’|‘one’] to the alkyl substituent.
+Ethers are prepared by nucleophilic substitution of a monohaloalkane with an [alkoxide|alkene|amine|aldehyde].
+Ethers have [lower|higher|identical|unpredictable] boiling points than isomeric alcohols due to a lack of hydrogen bonding.
+Methoxymethane and methoxyethane are [soluble|insoluble|explosive|solid] in water; larger ethers are insoluble due to increased molecular size.
+Ethers are commonly used as [solvents|catalysts|indicators|reducing agents] since they are relatively inert.
+Carboxylic acids [partially|fully|never|always] dissociate in water, giving them a slightly acidic nature.
+The [longer|shorter|more branched|more polar] the carbon chain, the lower the solubility of a carboxylic acid.
+Carboxylic acids can be prepared by oxidising aldehydes using acidified dichromate, Fehling’s solution or [Tollens’ reagent|bromine water|sodium hydroxide|lithium aluminium hydride], or by hydrolysing nitriles, esters or amides.
+Carboxylic acids react with amines to form alkylammonium salts that form [amides|esters|ethers|nitriles] when heated, and are reduced to primary alcohols by [lithium aluminium hydride|acidified dichromate|Tollens’ reagent|sulfuric acid].
+Amines are organic derivatives of [ammonia|water|methane|benzene] where hydrogen atoms are replaced by alkyl groups.
+Amines can be classified as primary, secondary or [tertiary|quaternary only|aromatic only|chiral].
+Amines react with [acids|bases|alkanes|ethers] to form salts.
+[Primary and secondary|Only tertiary|All|No] amines display hydrogen bonding, so they have higher boiling points than isomeric tertiary amines.
+Amines are [weak bases|strong bases|strong acids|neutral]: the nitrogen lone pair accepts a proton from water, producing [hydroxide|hydronium|hydride|oxide] ions.
+A benzene ring with one hydrogen substituted is known as the [phenyl|benzyl|methyl|ethyl] group, formula –C<sub>6</sub>H<sub>5</sub>.
+Benzene undergoes [electrophilic substitution|electrophilic addition|nucleophilic substitution|elimination] reactions.
+Nitration of benzene uses concentrated sulfuric acid and concentrated [nitric acid|hydrochloric acid|phosphoric acid|ethanoic acid]; alkylation uses a haloalkane and [aluminium chloride|sodium hydroxide|water|copper(II) oxide].`},
+
+{area:"Organic chemistry & instrumental analysis",title:"Stereochemistry",pts:`
+Molecules with the same molecular formula but different structural formulae are called [isomers|isotopes|homologues|allotropes].
+[Structural|Geometric|Optical|Stereo] isomers have atoms bonded together in a different order.
+Stereoisomers have the same order of bonding but a different [spatial arrangement|molecular formula|mass|number of atoms]. The two types are geometric and [optical|structural|chain|positional].
+Geometric isomers occur when there is [restricted rotation|free rotation|a chiral centre|delocalisation] around a C=C double bond or a C–C bond in a cyclic compound.
+Each carbon of the restricted bond must have [two different groups|two identical groups|a hydrogen atom|a halogen] attached.
+Geometric isomers are labelled [cis|trans|R|S] when the substituents are on the same side and [trans|cis|meso|racemic] when on opposite sides.
+Geometric isomers have differences in [physical properties|molecular formula|mass|number of bonds], such as melting and boiling points, and can differ chemically.
+Optical isomers occur when [four|three|two|six] different groups are arranged tetrahedrally around a [chiral|planar|trigonal|sp²] carbon.
+Optical isomers are [non-superimposable mirror images|superimposable mirror images|structural isomers|identical molecules] and can be described as [enantiomers|diastereomers|geometric isomers|conformers].
+Optical isomers have identical physical properties except for their effect on [plane-polarised light|boiling point|density|solubility].
+They have identical chemical properties except in a [chiral environment|aqueous solution|acid|vacuum], such as in biological systems.
+Optical isomers rotate plane-polarised light by the same amount but in [opposite directions|the same direction|different amounts|no direction].
+An equal mixture of two enantiomers is optically [inactive|active|unstable|coloured]; this is called a [racemic mixture|buffer|eutectic mixture|azeotrope].`},
+
+{area:"Organic chemistry & instrumental analysis",title:"Experimental Determination of Structure",pts:`
+A number of experimental techniques are used to verify the [chemical structure|melting point only|colour|price] of a substance.
+[Elemental microanalysis|Mass spectrometry|IR spectroscopy|NMR] determines the masses of C, H, O, S and N in a sample in order to find its [empirical formula|molecular formula|structural formula|GFM].
+An empirical formula shows the [simplest ratio|actual number|arrangement|bonding] of the elements in a molecule.
+Elemental microanalysis data can come from combustion product masses or [percentage by mass|melting points|R<sub>f</sub> values|wavenumbers].
+[Mass spectrometry|Infrared spectroscopy|Colorimetry|TLC] determines the accurate GFM and structural features of a compound.
+In mass spectrometry the sample is bombarded by high-energy [electrons|protons|neutrons|photons], forming positively charged [parent (molecular) ions|negative ions|radicals|nuclei] which break into smaller positive fragments.
+A mass spectrum plots relative abundance against [mass-to-charge (m/z) ratio|wavenumber|chemical shift|wavelength].
+The m/z of the parent ion gives the [GFM|empirical formula|number of H environments|functional group], so the molecular formula can be found from the empirical formula.
+[Fragmentation|Integration|Splitting|Absorbance] data can be interpreted to gain structural information.
+[Infrared|Ultraviolet|¹H NMR|Mass] spectroscopy is used to identify certain functional groups.
+When IR radiation is absorbed, bonds [vibrate (stretch and bend)|break|ionise|flip spin]. The wavelengths absorbed depend on the type of atoms and the [strength of the bond|colour|mass of the sample|temperature].
+In IR, absorbance is measured in [wavenumbers, cm<sup>−1</sup>|nm|ppm|m/z], the reciprocal of wavelength.
+Characteristic IR absorptions are given in the [data booklet|periodic table|spectrochemical series|electrochemical series].
+¹H NMR gives information about the different chemical [environments|masses|charges|colours] of hydrogen atoms and how many there are in each.
+In a strong magnetic field ¹H nuclei align with or against the field. Absorption of [radio frequency|infrared|ultraviolet|X-ray] radiation causes nuclei to ‘flip’ to the higher energy alignment.
+The chemical shift, δ, relates to the environment of the ¹H atom and is measured in [ppm|cm<sup>−1</sup>|nm|Hz only].
+Chemical shift values for different environments are given in the [data booklet|mass spectrum|empirical formula|course notes only].
+The area under a peak (integration curve height) is proportional to the [number of ¹H atoms in that environment|number of carbons|GFM|bond strength].
+The standard reference in ¹H NMR is [tetramethylsilane (TMS)|water|benzene|ethanol], assigned a chemical shift of [0|1|7|100].
+¹H NMR spectra can be obtained using low-resolution or [high-resolution|ultra-low|infrared|mass] NMR.
+High-resolution ¹H NMR uses [higher|lower|the same|no] radio frequencies than low-resolution and gives more detailed spectra.
+In high-resolution ¹H NMR, peaks split into multiplets following the [n+1 rule|Aufbau principle|Markovnikov rule|octet rule], where n is the number of ¹H atoms on the [neighbouring carbon|same carbon|oxygen atom|whole molecule].
+Low-resolution ¹H NMR spectra can be [sketched|ignored|only measured|never predicted] for any given compound.`},
+
+{area:"Organic chemistry & instrumental analysis",title:"Pharmaceutical Chemistry",pts:`
+Drugs are substances that alter the [biochemical processes|DNA sequence|mass|temperature] in the body.
+Drugs that have [beneficial|harmful|no|random] effects are used in medicines.
+A medicine usually contains the drug plus other ingredients such as [fillers|catalysts|indicators|ligands] to add bulk or sweeteners to improve taste.
+Drugs generally work by binding to specific [protein|fat|carbohydrate|DNA] molecules, found on cell surfaces ([receptors|ligands|chromophores|buffers]) or as enzymes within a cell.
+The shape and size of a drug lets it interact with a receptor binding site or an enzyme’s [active site|nucleus|cell wall|chiral centre]. Interactions include van der Waals forces and/or [ionic bonds|metallic bonds|nuclear forces|covalent network bonds].
+The structural fragment of a drug that allows binding normally consists of different [functional groups|metal ions|isotopes|chromophores] correctly orientated with respect to each other.
+By comparing the structures of drugs with [similar effects|different colours|similar masses|the same price], the structural fragment involved in drug action can be identified.
+Drugs acting on receptors can be classified as [agonists or antagonists|acids or bases|cis or trans|oxidising or reducing].
+An [agonist|antagonist|inhibitor|filler] mimics the natural compound and produces a similar response.
+An [antagonist|agonist|enzyme|substrate] prevents the natural compound from binding, blocking the natural response.
+Many drugs that act on enzymes are [enzyme inhibitors|enzyme activators|receptors|agonists], binding to the active site and blocking the reaction normally catalysed there.`},
+
+{area:"Researching chemistry",title:"Researching Chemistry",note:"No summary sheet — built from the course specification.",pts:`
+A [pipette with safety filler|measuring cylinder|beaker|conical flask] is used to transfer an accurate volume of solution.
+A [volumetric (standard) flask|conical flask|round-bottomed flask|beaker] is used to make up a solution to an accurately known volume.
+A [Büchner, Hirsch or sintered glass funnel|separating funnel|thistle funnel|filter paper cone only] is used for vacuum filtration.
+A [separating funnel|burette|condenser|colorimeter] is used in solvent extraction to separate two immiscible layers.
+When drawing a graph of results, data should be represented as a [scatter graph|pie chart|bar chart|histogram] with a line of best fit, which can be straight or [curved|zig-zagged|dotted|stepped].
+[Rogue points|Average values|Concordant results|Controls] should be identified and eliminated before calculating mean values.
+A [positive control|blank|rogue result|negative ion] (e.g. a known substance) can be used to validate a technique or procedure.
+Stoichiometry is the study of [mole relationships|reaction rates|energy changes|electron arrangements] involved in chemical reactions.
+The mass of one mole of a substance in grams is equal to its [gram formula mass (GFM)|atomic number|molar volume|concentration].
+Percentage by mass is the mass of solute made up to [100 cm<sup>3</sup>|1 litre|1 cm<sup>3</sup>|10 cm<sup>3</sup>] of solution.
+The unit ppm stands for parts per million and refers to 1 mg per [kg or 1 mg per litre|g or 1 mg per cm<sup>3</sup>|tonne|mole].
+Percentage yield is reduced by mechanical losses, purification of product, [side reactions|catalysts|accurate weighing|using excess reactant] and equilibrium position.
+In gravimetric analysis, the [tare|zero-error|hold|calibrate] function of an electronic balance is used, and a weighing boat may be weighed before and after transfer — this is weighing [by difference|by estimate|by volume|by titration].
+‘Weighing accurately approximately’ means weighing a mass close to the stated value but recording it [precisely|to the nearest gram|roughly|only once].
+Heating to constant mass involves heating, cooling in a [desiccator|freezer|fume cupboard|water bath] to prevent absorption of water, weighing, and repeating until the mass [no longer changes|is zero|doubles|halves].
+Gravimetric analysis converts the substance into another substance of [known chemical composition|unknown composition|higher energy|lower purity] which can be readily isolated and purified.
+The conversion in gravimetric analysis can occur through precipitation or [volatilisation|titration|chromatography|distillation].
+In precipitation, the filtrate is tested to ensure the reaction has [gone to completion|started|reversed|reached equilibrium]; the precipitate is washed, dried to constant mass and weighed.
+A solution of accurately known concentration is known as a [standard solution|saturated solution|buffer solution|dilute solution].
+To prepare a standard solution: weigh a [primary standard|indicator|catalyst|buffer] accurately, dissolve in a small volume of solvent, transfer the solution and [rinsings|precipitate|filtrate|vapour] to a volumetric flask, make up to the graduation mark, then stopper and invert.
+A primary standard must be available in a [high state of purity|coloured form|liquid state|gaseous state], be stable, be soluble and have a reasonably [high|low|zero|variable] GFM.
+Examples of primary standards include sodium carbonate, potassium hydrogen phthalate and [potassium iodate|sodium hydroxide|hydrochloric acid|ethanol].
+Sodium hydroxide is not a primary standard because it has a relatively low GFM and [absorbs moisture as a solid|is coloured|is insoluble|is a weak base], so its solution must be [standardised|distilled|recrystallised|evaporated] before use.
+Titrations are repeated until results are [concordant|identical to the theory|rogue|averaged with the rough].
+[Complexometric|Redox|Acid–base|Back] titrations involve the formation of complexes; [EDTA|phenolphthalein|potassium permanganate|silver nitrate] is an important reagent for finding metal ion concentrations.
+A [back titration|redox titration|direct titration|complexometric titration] reacts a substance with an excess of reagent and then titrates the excess; it is useful for a solid with [low solubility|high solubility|a bright colour|a low melting point].
+Colorimetry uses the relationship between the [colour intensity|mass|temperature|volume] of a solution and the concentration of the coloured species.
+In colorimetry, a filter is chosen with a colour [complementary to|the same as|lighter than|unrelated to] the colour of the solution, and a [blank|positive control|primary standard|rogue sample] is used to zero the instrument.
+A calibration graph is plotted from the absorbance of a series of [standard solutions|unknown samples|blanks|indicators]; the test concentration must lie in the [straight line section|curved section|origin only|any section] of the graph.
+[Distillation|Reflux|Recrystallisation|Vacuum filtration] is used for identification and purification of organic compounds; the [boiling point|melting point|R<sub>f</sub> value|colour] found can confirm identity.
+Distillation can purify a compound by separating it from [less volatile|more volatile|identical|gaseous] substances in the mixture.
+Heating under [reflux|vacuum|pressure|distillation] allows heat to be applied over an extended period without volatile substances escaping. The mixture is placed in a round-bottomed flask with [anti-bumping granules|a catalyst only|ice|a desiccant] and fitted with a condenser.
+Vacuum filtration involves filtration under [reduced pressure|increased pressure|high temperature|reflux], giving a faster separation of a precipitate from a filtrate.
+Recrystallisation: dissolve the impure solid in a [minimum volume of hot solvent|large volume of cold solvent|minimum volume of cold solvent|boiling acid], hot filter to remove [insoluble|soluble|all|coloured] impurities, cool slowly, then filter, wash and dry the crystals.
+The recrystallisation solvent should dissolve the compound completely at [high|low|room|all] temperatures and only sparingly at lower temperatures.
+Solvent extraction isolates a solute using a solvent that is [immiscible|miscible|identical|reactive] with the original solution. The ratio of solute in each layer is set by the [equilibrium constant, K|rate constant, k|GFM|R<sub>f</sub> value].
+More solute is extracted using [several extractions with smaller volumes|one extraction with a large volume|no solvent|hot solvent only] of solvent.
+The extraction solvent should be [volatile|non-volatile|reactive with the solute|miscible with water] so the solute can be obtained by evaporation, and unreactive with the solute.
+Impurities [lower and broaden|raise and narrow|raise and broaden|do not change] the melting point of a compound, due to disruption of intermolecular bonding in the crystal lattice.
+A [mixed melting point|boiling point|R<sub>f</sub>|titration] involves mixing a small quantity of product with the pure compound to see whether they are the same substance.
+Chromatography separates substances using differences in their [polarity or molecular size|colour only|density|temperature].
+TLC uses a fine film of [silica or aluminium oxide|filter paper|activated charcoal|glass beads] on a plate. The sample is spotted on a [pencil|pen|crayon|ink] base line, and spots are often visualised with a developing agent or [ultraviolet light|infrared light|a magnet|heat only].
+R<sub>f</sub> = [distance travelled by sample ÷ distance travelled by solvent|distance travelled by solvent ÷ distance travelled by sample|sample distance × solvent distance|solvent distance − sample distance].
+Under the same conditions a compound always has the [same|a different|a random|zero] R<sub>f</sub> value; a [co-spot|blank|rogue spot|calibration] can be used to compare directly with the pure substance.
+A pure substance should appear as a [single spot|two spots|a smear|no spot] on a TLC plate; more than one spot shows [impurities are present|the substance is pure|the solvent is wrong|the plate is dry].`}
+];
+
+let order=[];let current=0;
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const scores=store.get('ahc-scores')||{};
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const SUP={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','−':'⁻','-':'⁻','+':'⁺','c':'ᶜ','d':'ᵈ','a':'ᵃ','b':'ᵇ','p':'ᵖ','H':'ᴴ'},SUB={'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉','a':'ₐ','l':'ₗ','s':'ₛ','f':'f'};
+function strip(h){h=h.replace(/<sup>(.*?)<\/sup>/g,(m,x)=>[...x].map(c=>SUP[c]||c).join('')).replace(/<sub>(.*?)<\/sub>/g,(m,x)=>[...x].map(c=>SUB[c]||c).join(''));const d=document.createElement('div');d.innerHTML=h;return d.textContent}
+// parse blanks (handles nested [ ] inside options like [H3O+])
+function parse(line){let out='',i=0,blanks=[];while(i<line.length){if(line[i]==='['){let depth=1,j=i+1;while(j<line.length&&depth){if(line[j]==='[')depth++;else if(line[j]===']')depth--;j++}const inner=line.slice(i+1,j-1);
+// split on top-level |
+let parts=[],buf='',d=0;for(const ch of inner){if(ch==='['||ch==='(')d++;if(ch===']'||ch===')')d--;if(ch==='|'&&d===0){parts.push(buf);buf=''}else buf+=ch}parts.push(buf);
+if(parts.length<2){out+=line.slice(i,j);i=j;continue}
+blanks.push(parts[0]);out+=`\u0000${blanks.length-1}\u0000`;line.length;i=j;continue}out+=line[i];i++}return{out,blanks}}
+// For lines containing bracket-concentration options, only treat as blank if contains a top-level '|'
+function render(idx){current=idx;const t=TOPICS[idx];const card=document.getElementById('card');
+const lines=t.pts.trim().split('\n');let html=`<button class="back" onclick="showHome()">← All topics</button><div class="area">${t.area}</div><h2>${t.title}</h2><p class="intro">${t.note?t.note+' ':''}After completing this topic you should know and understand the following:</p><ol>`;let n=0;
+lines.forEach(l=>{const {out,blanks}=parse(l);let s=out.replace(/\u0000(\d+)\u0000/g,(m,k)=>{const raw=findOpts(l,+k);const opts=shuffle(raw.slice());const id=n++;return `<select data-a="${encodeURIComponent(raw[0])}" aria-label="blank ${id+1}"><option value="">—choose—</option>${opts.map(o=>`<option value="${encodeURIComponent(o)}">${strip(o)}</option>`).join('')}</select>`});html+=`<li>${s}</li>`});
+html+=`</ol><div class="bar"><button class="primary" id="chk">Check answers</button><button id="rev">Show answers</button><button id="rst">Reset</button><span class="prog" id="prog"></span><span class="result" id="res"></span></div>`;card.innerHTML=html;
+card.querySelectorAll('select').forEach(s=>s.addEventListener('change',()=>{s.classList.remove('ok','bad');const f=s.nextElementSibling;if(f&&f.classList.contains('fix'))f.remove();prog()}));
+document.getElementById('chk').onclick=check;document.getElementById('rev').onclick=reveal;document.getElementById('rst').onclick=()=>render(idx);
+prog();buildNav();document.getElementById('topsel').value=idx;window.scrollTo({top:0,behavior:'smooth'})}
+function findOpts(line,k){let i=0,c=-1;while(i<line.length){if(line[i]==='['){let depth=1,j=i+1;while(j<line.length&&depth){if(line[j]==='[')depth++;else if(line[j]===']')depth--;j++}const inner=line.slice(i+1,j-1);let parts=[],buf='',d=0;for(const ch of inner){if(ch==='['||ch==='(')d++;if(ch===']'||ch===')')d--;if(ch==='|'&&d===0){parts.push(buf);buf=''}else buf+=ch}parts.push(buf);if(parts.length>=2){c++;if(c===k)return parts}i=j;continue}i++}return['?']}
+function prog(){const s=[...document.querySelectorAll('#card select')];const done=s.filter(x=>x.value).length;document.getElementById('prog').textContent=`${done} / ${s.length} filled`}
+function check(){const s=[...document.querySelectorAll('#card select')];let ok=0;s.forEach(x=>{const f=x.nextElementSibling;if(f&&f.classList.contains('fix'))f.remove();x.classList.remove('ok','bad');if(x.value===x.dataset.a){x.classList.add('ok');ok++}else{x.classList.add('bad')}});
+const pct=Math.round(ok/s.length*100);document.getElementById('res').textContent=`Score: ${ok} / ${s.length} (${pct}%)`;const k=TOPICS[current].title;if(!scores[k]||pct>scores[k])scores[k]=pct;store.set('ahc-scores',scores);buildNav()}
+function reveal(){document.querySelectorAll('#card select').forEach(x=>{if(x.value!==x.dataset.a){const f=x.nextElementSibling;if(!(f&&f.classList.contains('fix'))){x.classList.add('bad');const sp=document.createElement('span');sp.className='fix';sp.innerHTML='→ '+decodeURIComponent(x.dataset.a);x.after(sp)}}})}
+function buildNav(){const nav=document.getElementById('nav');let h='',last='';TOPICS.forEach((t,i)=>{if(t.area!==last){h+=`<h3>${t.area}</h3>`;last=t.area}const sc=scores[t.title]!=null?`<span class="sc">best ${scores[t.title]}%</span>`:'';h+=`<button class="${i===current?'on':''}" data-i="${i}"><span>${t.title}</span>${sc}</button>`});nav.innerHTML=h;nav.querySelectorAll('button').forEach(b=>b.onclick=()=>render(+b.dataset.i))}
+const UNIT={"Inorganic chemistry":"Unit 1: Inorganic Chemistry","Physical chemistry":"Unit 2: Physical Chemistry","Organic chemistry & instrumental analysis":"Unit 3: Organic Chemistry & Instrumental Analysis","Researching chemistry":"Unit 4: Researching Chemistry"};TOPICS.forEach(t=>t.area=UNIT[t.area]||t.area);
+const ts=document.getElementById('topsel');ts.innerHTML=TOPICS.map((t,i)=>`<option value="${i}">${t.title}</option>`).join('');ts.onchange=()=>render(+ts.value);
+function showHome(){document.getElementById('topicview').style.display='none';const h=document.getElementById('home');h.style.display='block';let s='',last='';TOPICS.forEach((t,i)=>{if(t.area!==last){if(last)s+='</div></section>';s+=`<section class="unit"><h2>${t.area}</h2><div class="grid">`;last=t.area}const n=(t.pts.match(/\|/g)?1:0);const sc=scores[t.title]!=null?`Best score: ${scores[t.title]}%`:'Not attempted';s+=`<button class="tile" data-i="${i}"><b>${t.title}</b><span>${sc}</span></button>`});s+='</div></section>';h.innerHTML=s;h.querySelectorAll('.tile').forEach(b=>b.onclick=()=>openTopic(+b.dataset.i));window.scrollTo({top:0})}
+function openTopic(i){document.getElementById('home').style.display='none';document.getElementById('topicview').style.display='';render(i)}
+showHome();
+{const qsT=()=>{const m=location.hash.match(/^#t(\d+)$/);if(m&&TOPICS[+m[1]])openTopic(+m[1])};addEventListener('hashchange',qsT);qsT();}
+// ---- Teacher menu / present mode ----
+const tb=document.getElementById('tbtn'),td=document.getElementById('tdrop'),pt=document.getElementById('ptopic');
+pt.innerHTML=TOPICS.map((t,i)=>`<option value="${i}">${t.title}</option>`).join('');
+tb.onclick=e=>{e.stopPropagation();td.hidden=!td.hidden;tb.setAttribute('aria-expanded',!td.hidden);if(!td.hidden&&document.getElementById('topicview').style.display!=='none')pt.value=current};
+document.addEventListener('click',e=>{if(!td.contains(e.target)&&e.target!==tb)td.hidden=true});
+let P={t:0,i:0,rev:false,opt:false,lines:[]};
+function pRender(){const line=P.lines[P.i];let k=0;const {out}=parse(line);const letters='ABCDEFGH';let optHtml='';
+const s=out.replace(/\u0000(\d+)\u0000/g,(m,j)=>{const o=findOpts(line,+j);const num=++k;const sh=P.order[P.i][j];optHtml+=`<div><b>(${num})</b>${sh.map((x,q)=>letters[q]+') '+x).join('&nbsp;&nbsp;&nbsp; ')}</div>`;return `<span class="pb${P.rev?' show':''}">${P.rev?o[0]:' '.repeat(8)}${!P.rev&&P.opt?'<i>('+num+')</i>':''}</span>`});
+document.getElementById('pstmt').innerHTML=s;document.getElementById('popts').innerHTML=P.opt&&!P.rev?optHtml:'';
+document.getElementById('pcount').textContent=`${P.i+1} / ${P.lines.length}`;document.getElementById('prev2').textContent=P.rev?'Hide answer':'Reveal answer';document.getElementById('popt').textContent=P.opt?'Hide options':'Show options'}
+function pOpen(){const t=TOPICS[+pt.value];P={t:+pt.value,i:0,rev:false,opt:false,lines:t.pts.trim().split('\n')};P.order=P.lines.map(l=>{const n=(parse(l).blanks.length);return Array.from({length:n},(_,j)=>shuffle(findOpts(l,j).slice()))});document.getElementById('ptitle').textContent=t.title;td.hidden=true;document.getElementById('present').hidden=false;pRender()}
+function pMove(d){const n=P.i+d;if(n<0||n>=P.lines.length)return;P.i=n;P.rev=false;pRender()}
+function pExit(){document.getElementById('present').hidden=true;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{})}
+document.getElementById('pgo').onclick=pOpen;document.getElementById('pprev').onclick=()=>pMove(-1);document.getElementById('pnext').onclick=()=>pMove(1);
+document.getElementById('prev2').onclick=()=>{P.rev=!P.rev;pRender()};document.getElementById('popt').onclick=()=>{P.opt=!P.opt;pRender()};document.getElementById('pexit').onclick=pExit;
+document.getElementById('pfs').onclick=()=>{const el=document.getElementById('present');if(document.fullscreenElement)document.exitFullscreen();else if(el.requestFullscreen)el.requestFullscreen().catch(()=>{})};
+document.addEventListener('keydown',e=>{if(document.getElementById('present').hidden)return;if(e.key==='ArrowRight')pMove(1);else if(e.key==='ArrowLeft')pMove(-1);else if(e.key===' '){e.preventDefault();P.rev=!P.rev;pRender()}else if(e.key==='o'||e.key==='O'){P.opt=!P.opt;pRender()}else if(e.key==='Escape')pExit()});
+</script>
+</body>
+</html>
+
+<script src="../../shared/support.js" data-read-each="ol > li" data-focus="#score, #res, .result, .sc, .prog"></script>
+</body></html>
