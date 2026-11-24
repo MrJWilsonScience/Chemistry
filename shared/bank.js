@@ -273,7 +273,6 @@ document.body.innerHTML = `
   <div class="daily card" id="dailyCard"></div>
   <div class="acts">
     <button class="btn" id="goMist">Mistakes</button>
-    <button class="btn" id="goMocks">Mock papers</button>
     <button class="btn" id="goQuiz">Quiz of 10</button>
     <button class="btn" id="goRandom">Random question</button>
     <button class="btn" id="goDoNow" title="Five short questions from covered topics, shown on the board">Do Now starter</button>
@@ -282,7 +281,7 @@ document.body.innerHTML = `
   <div class="legend"><span style="--c:var(--got)">Got it</span><span style="--c:var(--part)">Partly</span><span style="--c:var(--not)">Not yet</span></div>
   <div class="srch"><input type="search" id="srch" placeholder="Search all questions, e.g. titration or ester" aria-label="Search all questions" autocomplete="off"><button type="button" class="btn sm ghost" id="srchX" hidden>Clear</button></div>
   <div id="srchRes" hidden></div>
-  <div class="tabs" role="tablist"><button role="tab" id="tabT" data-tab="topics">Topics</button><button role="tab" id="tabS" data-tab="subs">Sub-topics</button></div>
+  <div class="tabs" role="tablist"><button role="tab" id="tabT" data-tab="topics">Topics</button><button role="tab" id="tabS" data-tab="subs">Sub-topics</button><button role="tab" id="tabP" data-tab="papers">Full papers</button></div>
   <div id="topics"><p class="muted">Loading topics…</p></div>
   <section class="card panel" id="mine">
     <h2>Your progress</h2>
@@ -361,14 +360,6 @@ document.body.innerHTML = `
   <div id="mList"></div>
 </main>
 
-<main class="wrap" data-screen="mocks" hidden>
-  <button class="btn sm" id="kBack">← Topics</button>
-  <h1 style="margin:12px 0 4px">Mock papers</h1>
-  <p class="muted" style="margin:0 0 12px" id="kLead"></p>
-  <div class="card xtbox" id="kXt"></div>
-  <div class="mocks" id="kList"></div>
-  <p class="muted small">Each mock is built from QS past paper questions from ${LV === 'ah' ? '2016' : '2015'} to 2026, spread across the course topics in proportion. No question appears in more than one mock. The specimen paper is left out so you can sit it on its own.</p>
-</main>
 
 <main class="wrap q-wrap" data-screen="mockq" hidden>
   <div class="qtop"><button class="btn sm" id="kqExit">← Save and leave</button><span class="zm" data-zm></span><span class="row" style="gap:6px"><button class="btn sm" id="kRest">Rest break</button><button class="btn ghost timer" id="kTimer" title="Tap to pause or restart"></button></span></div>
@@ -394,7 +385,7 @@ document.body.innerHTML = `
 </main>
 
 <main class="wrap" data-screen="mockr" hidden>
-  <button class="btn sm" id="krBack">← Mock papers</button>
+  <button class="btn sm" id="krBack">← Full papers</button>
   <div class="card panel"><h2 id="krTitle"></h2><p class="score" id="krScore"></p><div id="krSecs"></div><p class="muted" id="krMsg"></p>
     <button class="btn" id="krShow" hidden>Show my score</button><div class="row"><button class="btn pri" id="krMist">Go to my mistakes</button><button class="btn" id="krHome">Back to topics</button></div></div>
 </main>
@@ -432,8 +423,9 @@ function drawHome() {
   drawCov(); drawDaily();
   $('#lead').textContent = `${total.toLocaleString()} QS past paper questions sorted into ${TOPICS.length} topics, with marking instructions.`;
   const units = [...new Set(TOPICS.map(t => t.unit))];
-  const tab = ST.tab === 'subs' ? 'subs' : 'topics';
+  const tab = ['subs', 'papers'].includes(ST.tab) ? ST.tab : 'topics';
   $$('.tabs [data-tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
+  if (tab === 'papers') { drawPapers(); $('#goTeach').hidden = !TEACHER; drawShared(); return; }
   if (tab === 'subs') {
     $('#topics').innerHTML = units.map(u => `<h2 class="unit">${esc(u)}</h2>${TOPICS.filter(t => t.unit === u).map(t => `
       <h3 class="ka"><span>${esc(t.name)}</span><small>${t.count} questions</small></h3>
@@ -815,31 +807,58 @@ const P = A.paper, NMOCK = 4;
 let MK = null;
 const hm = m => m >= 60 ? `${Math.floor(m / 60)} hour${m >= 120 ? 's' : ''}${m % 60 ? ' ' + (m % 60) + ' minute' + (m % 60 === 1 ? '' : 's') : ''}` : `${m} minute${m === 1 ? '' : 's'}`;
 const clock = s => { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); };
-function openMocks() {
-  show('mocks');
-  $('#kLead').textContent = `Full practice papers in the 2027 exam format: Section 1 is ${P.mc} marks of multiple choice and Section 2 is ${P.wr} marks of written questions, ${P.mc + P.wr} marks in ${hm(P.mins)}. Have your data booklet and some paper ready.`;
-  const xt = +SUP().xt || 0;
-  $('#kXt').innerHTML = `<div><b>Extra time</b><small>${xt ? `${hm(Math.round(P.mins * XT()))} in total (${hm(P.mins)} plus ${xt}%).` : `Set this to match your exam arrangements.`} You can take a rest break at any time: the clock stops until you come back.</small></div>
-    <div class="seg" role="group" aria-label="Extra time">${[0, 25, 50, 100].map(v => `<button type="button" data-xt="${v}" aria-pressed="${v === xt}">${v ? '+' + v + '%' : 'None'}</button>`).join('')}</div>`;
-  $$('#kXt [data-xt]').forEach(b => b.onclick = () => { if (window.QSSUP) QSSUP.set({xt: +b.dataset.xt}); openMocks(); });
-  const M = ST.mocks || {}, run = ST.mockrun;
-  $('#kList').innerHTML = Array.from({length: NMOCK}, (_, i) => {
-    const k = i + 1, r = M[k], live = run && run.k === k;
-    return `<div class="card mk"><div class="mkn" aria-hidden="true">${k}</div><div><b>Mock paper ${k}</b><small>${P.mc + P.wr} marks · ${hm(Math.round(P.mins * XT()))}${XT() > 1 ? ' with extra time' : ''}</small>
-      <small>${r && SUP().focus ? `Last sat on ${new Date(r.at).toLocaleDateString('en-GB', {day: 'numeric', month: 'short'})}` : r ? `Best ${r.best}% · last ${r.last}% on ${new Date(r.at).toLocaleDateString('en-GB', {day: 'numeric', month: 'short'})}` : 'Not tried yet'}</small></div>
-      <button class="btn ${live ? 'pri' : ''}" data-k="${k}">${live ? 'Carry on' : r ? 'Sit again' : 'Start'}</button></div>`;
-  }).join('');
-  $$('#kList [data-k]').forEach(b => b.onclick = () => startMock(+b.dataset.k));
+function openMocks() { ST.tab = 'papers'; save(); show('home'); drawHome(); const t = $('#tabP'); if (t) t.scrollIntoView({block: 'start'}); }
+let PLIST = null;
+const getPapers = () => PLIST || (PLIST = J('papers.json').catch(e => { PLIST = null; throw e; }));
+const pname = y => y === 2027 ? 'Specimen question paper' : `${yname(y)} paper`;
+const pmins = p => Math.max(15, Math.round(P.mins * (p.mc + p.wr) / (P.mc + P.wr) / 5) * 5);
+const sat = r => new Date(r.at).toLocaleDateString('en-GB', {day: 'numeric', month: 'short'});
+const resLine = r => r && SUP().focus ? `Last sat on ${sat(r)}` : r ? `Best ${r.best}% · last ${r.last}% on ${sat(r)}` : 'Not tried yet';
+function drawPapers() {
+  const xt = +SUP().xt || 0, M = ST.mocks || {}, PP = ST.papers || {}, run = ST.mockrun;
+  $('#topics').innerHTML = `<h2 class="unit">Mock papers</h2>
+    <p class="muted" style="margin:0 0 12px">Full practice papers in the 2027 exam format: Section 1 is ${P.mc} marks of multiple choice and Section 2 is ${P.wr} marks of written questions, ${P.mc + P.wr} marks in ${hm(P.mins)}. Have your data booklet and some paper ready.</p>
+    <div class="card xtbox" id="kXt"><div><b>Extra time</b><small>${xt ? `${hm(Math.round(P.mins * XT()))} for a mock (${hm(P.mins)} plus ${xt}%).` : `Set this to match your exam arrangements.`} It applies to mocks and past papers. You can take a rest break at any time: the clock stops until you come back.</small></div>
+      <div class="seg" role="group" aria-label="Extra time">${[0, 25, 50, 100].map(v => `<button type="button" data-xt="${v}" aria-pressed="${v === xt}">${v ? '+' + v + '%' : 'None'}</button>`).join('')}</div></div>
+    <div class="mocks">${Array.from({length: NMOCK}, (_, i) => {
+      const k = i + 1, r = M[k], live = run && (run.kind || 'mock') === 'mock' && run.k === k;
+      return `<div class="card mk"><div class="mkn" aria-hidden="true">${k}</div><div><b>Mock paper ${k}</b><small>${P.mc + P.wr} marks · ${hm(Math.round(P.mins * XT()))}${XT() > 1 ? ' with extra time' : ''}</small><small>${resLine(r)}</small></div>
+        <button class="btn ${live ? 'pri' : ''}" data-k="${k}">${live ? 'Carry on' : r ? 'Sit again' : 'Start'}</button></div>`; }).join('')}</div>
+    <p class="muted small">Each mock is built from QS past paper questions from ${LV === 'ah' ? '2016' : '2015'} to 2026, spread across the course topics in proportion. No question appears in more than one mock. The specimen paper is left out so you can sit it on its own.</p>
+    <h2 class="unit">Past papers</h2>
+    <p class="muted" style="margin:0 0 12px">Sit a whole QS past paper, question by question in the original order, then mark it the same way as a mock. Times are at the 2027 exam pace (${hm(P.mins)} for ${P.mc + P.wr} marks).${LV === 'higher' ? ' These papers are put together from the topic question bank. Some papers are missing a few question parts, so their totals can be a few marks under the real paper.' : ''}</p>
+    <div class="mocks" id="pList"><p class="muted">Loading papers…</p></div>`;
+  $$('#kXt [data-xt]').forEach(b => b.onclick = () => { if (window.QSSUP) QSSUP.set({xt: +b.dataset.xt}); drawHome(); });
+  $$('#topics [data-k]').forEach(b => b.onclick = () => startMock(+b.dataset.k));
+  getPapers().then(list => {
+    const el = $('#pList'); if (!el) return;
+    el.innerHTML = list.map(p => { const r = PP[p.y], live = run && run.kind === 'paper' && run.k === p.y;
+      return `<div class="card mk"><div class="mkn" aria-hidden="true">${p.y === 2027 ? 'S' : String(p.y).slice(2)}</div><div><b>${esc(pname(p.y))}</b><small>${p.mc + p.wr} marks (${p.mc} multiple choice, ${p.wr} written) · ${hm(Math.round(pmins(p) * XT()))}${XT() > 1 ? ' with extra time' : ''}</small><small>${resLine(r)}</small></div>
+        <button class="btn ${live ? 'pri' : ''}" data-y="${p.y}">${live ? 'Carry on' : r ? 'Sit again' : 'Start'}</button></div>`; }).join('');
+    $$('#pList [data-y]').forEach(b => b.onclick = () => startPaper(+b.dataset.y));
+  }).catch(() => { const el = $('#pList'); if (el) el.innerHTML = '<p class="muted">The past papers could not be loaded. Check your connection and try again.</p>'; });
 }
-$('#goMocks').onclick = openMocks;
-$('#kBack').onclick = () => { show('home'); drawHome(); };
 async function startMock(k) {
   toast('Loading mock paper ' + k + '…');
   let d; try { d = await J('mock' + k + '.json'); } catch (e) { return toast('Could not load the mock paper. Check your connection and try again.'); }
   const items = d.items.map(({t, r}) => A.one(TOPICS.find(x => x.code === t) || {code: t, subs: []}, r));
   items.forEach(q => q.marks = +q.marks || 1);
-  const live = ST.mockrun && ST.mockrun.k === k ? ST.mockrun : {k, ans: {}, used: 0, pos: 0, marks: {}, stage: 'q'};
-  MK = {k, items, mins: d.mins || P.mins, st: live, t0: Date.now(), run: true, tid: null};
+  runPaper({kind: 'mock', k, name: `Mock paper ${k}`, items, mins: d.mins || P.mins, tot: {mc: P.mc, wr: P.wr}});
+}
+async function startPaper(y) {
+  toast('Loading the ' + pname(y) + '…');
+  let p, lists;
+  try { p = (await getPapers()).find(x => x.y === y); if (!p) return toast('That paper could not be found.');
+    const codes = [...new Set(p.items.map(i => i[0]))]; lists = Object.fromEntries(await Promise.all(codes.map(async c => [c, await load(c)]))); }
+  catch (e) { return toast('Could not load the paper. Check your connection and try again.'); }
+  const items = p.items.map(([t, id, m]) => { const q = (lists[t] || []).find(x => x.id === id); return q && Object.assign({}, q, {marks: +m || 1}); }).filter(Boolean);
+  if (!items.length) return toast('That paper could not be loaded.');
+  runPaper({kind: 'paper', k: y, name: pname(y), items, mins: pmins(p), tot: {mc: p.mc, wr: p.wr}});
+}
+function runPaper(o) {
+  const r = ST.mockrun, live = r && (r.kind || 'mock') === o.kind && r.k === o.k ? r : {k: o.k, kind: o.kind, ans: {}, used: 0, pos: 0, marks: {}, stage: 'q'};
+  if (live.pos >= o.items.length) live.pos = 0;
+  MK = Object.assign(o, {st: live, t0: Date.now(), run: true, tid: null});
   ST.mockrun = live; save();
   if (live.stage === 'm') return mockMark();
   MK.rest = 0; $('#rest').hidden = true;
@@ -862,7 +881,7 @@ $('#kTimer').onclick = () => { if (!MK) return; if (SUP().focus) { MK.peek = MK.
 function drawMockQ() {
   const S = MK.st, q = MK.items[S.pos], n = MK.items.length, nmc = MK.items.filter(x => x.kind === 'mc').length;
   const sec = q.kind === 'mc' ? `Section 1 · question ${S.pos + 1} of ${nmc}` : `Section 2 · question ${S.pos - nmc + 1} of ${n - nmc}`;
-  $('#kqMeta').innerHTML = `<b>Mock paper ${MK.k} · ${sec}</b> · ${q.marks} mark${q.marks === 1 ? '' : 's'}<br><span class="muted">${esc(paperOf(q))}, ${esc(q.label)}</span>`;
+  $('#kqMeta').innerHTML = `<b>${esc(MK.name)} · ${sec}</b> · ${q.marks} mark${q.marks === 1 ? '' : 's'}<br><span class="muted">${esc(paperOf(q))}, ${esc(q.label)}</span>`;
   $('#kqImg').src = q.qimg || ''; $('#kqImg').alt = `${paperOf(q)}, ${q.label}`;
   showText('kq', q);
   if (q.kind === 'mc') {
@@ -881,7 +900,7 @@ function drawMockQ() {
 }
 $('#kqPrev').onclick = () => { if (MK.st.pos > 0) { MK.st.pos--; bankTime(); drawMockQ(); } };
 $('#kqNext').onclick = () => { if (MK.st.pos < MK.items.length - 1) { MK.st.pos++; bankTime(); drawMockQ(); } };
-$('#kqExit').onclick = () => { bankTime(); clearInterval(MK.tid); MK = null; openMocks(); toast('Saved. Carry on later from Mock papers.'); };
+$('#kqExit').onclick = () => { bankTime(); clearInterval(MK.tid); MK = null; openMocks(); toast('Saved. Carry on later from Full papers.'); };
 $('#kqFinish').onclick = () => {
   const b = $('#kqFinish'), left = MK.items.filter((_, i) => !MK.st.ans[i]).length;
   if (!b.dataset.sure) { b.dataset.sure = 1; b.textContent = left ? `${left} not answered. Tap to finish` : 'Tap again to finish'; setTimeout(() => { if (b) { delete b.dataset.sure; b.textContent = 'Finish and mark'; } }, 4000); return; }
@@ -889,11 +908,11 @@ $('#kqFinish').onclick = () => {
   bankTime(); clearInterval(MK.tid); MK.run = false; MK.st.stage = 'm'; save(); mockMark();
 };
 async function mockMark() {
-  if (MK.items.some(needsHeavy)) { show('mockm'); $('#kmTitle').textContent = `Mock paper ${MK.k}: marking`; $('#kmMC').innerHTML = '<p class="muted">Loading the marking instructions…</p>'; $('#kmWr').innerHTML = ''; await heavyAll(MK.items); if (!MK) return; }
+  if (MK.items.some(needsHeavy)) { show('mockm'); $('#kmTitle').textContent = `${MK.name}: marking`; $('#kmMC').innerHTML = '<p class="muted">Loading the marking instructions…</p>'; $('#kmWr').innerHTML = ''; await heavyAll(MK.items); if (!MK) return; }
   const S = MK.st, its = MK.items, mc = its.map((q, i) => [q, i]).filter(([q]) => q.kind === 'mc'), wr = its.map((q, i) => [q, i]).filter(([q]) => q.kind !== 'mc');
   const mcScore = mc.filter(([q, i]) => S.ans[i] === q.key).length;
   show('mockm');
-  $('#kmTitle').textContent = `Mock paper ${MK.k}: marking`;
+  $('#kmTitle').textContent = `${MK.name}: marking`;
   $('#kmMC').innerHTML = `<h2>Section 1 · ${mcScore} / ${mc.length}</h2><div class="mcg">${mc.map(([q, i], j) => { const a = S.ans[i], ok = a === q.key;
     return `<button type="button" class="${ok ? 'ok' : 'no'}" data-i="${i}" title="${esc(paperOf(q) + ', ' + q.label)}"><b>${j + 1}</b><span>${a || '–'}${ok ? '' : ' → ' + esc(q.key)}</span></button>`; }).join('')}</div>
     <p class="muted small" style="margin:8px 0 0">Tap a question to see it with its explanation.</p><div id="kmMCq"></div>`;
@@ -910,7 +929,7 @@ async function mockMark() {
 function mockTotal() {
   const S = MK.st, wr = MK.items.map((q, i) => [q, i]).filter(([q]) => q.kind !== 'mc'), left = wr.filter(([, i]) => S.marks[i] == null).length;
   const mcScore = MK.items.filter((q, i) => q.kind === 'mc' && S.ans[i] === q.key).length, w = wr.reduce((s, [, i]) => s + (S.marks[i] || 0), 0);
-  $('#kmTot').textContent = `${mcScore + w} / ${P.mc + P.wr} so far${left ? ` · ${left} to mark` : ''}`;
+  $('#kmTot').textContent = `${mcScore + w} / ${MK.tot.mc + MK.tot.wr} so far${left ? ` · ${left} to mark` : ''}`;
   $('#kmDone').textContent = left ? `Finish (${left} unmarked count as 0)` : 'See my result';
 }
 $('#kmDone').onclick = () => {
@@ -920,15 +939,15 @@ $('#kmDone').onclick = () => {
     if (q.kind === 'mc') { const ok = S.ans[i] === q.key; s1 += ok ? 1 : 0; rate(q, ok ? 'got' : 'not'); }
     else { const m = S.marks[i] || 0; s2 += m; rate(q, m >= q.marks ? 'got' : m > 0 ? 'part' : 'not'); }
   });
-  const pct = Math.round(100 * (s1 + s2) / (P.mc + P.wr)), M = ST.mocks = ST.mocks || {}, old = M[MK.k];
+  const T = MK.tot, pct = Math.round(100 * (s1 + s2) / (T.mc + T.wr)), M = MK.kind === 'paper' ? (ST.papers = ST.papers || {}) : (ST.mocks = ST.mocks || {}), old = M[MK.k];
   M[MK.k] = {best: Math.max(pct, old ? old.best : 0), last: pct, at: Date.now()};
   const mins = Math.round(S.used / 60);
   delete ST.mockrun; save();
   show('mockr');
-  $('#krTitle').textContent = `Mock paper ${MK.k}`;
-  $('#krScore').textContent = `${s1 + s2} / ${P.mc + P.wr} · ${pct}%`;
+  $('#krTitle').textContent = MK.name;
+  $('#krScore').textContent = `${s1 + s2} / ${T.mc + T.wr} · ${pct}%`;
   $('#krScore').hidden = $('#krSecs').hidden = !!SUP().focus; $('#krShow').hidden = !SUP().focus;
-  $('#krSecs').innerHTML = `<div class="kr"><span>Section 1 · multiple choice</span>${bar({g: s1, p: 0, n: P.mc - s1}, P.mc)}<b>${s1} / ${P.mc}</b></div><div class="kr"><span>Section 2 · written</span>${bar({g: s2, p: 0, n: P.wr - s2}, P.wr)}<b>${s2} / ${P.wr}</b></div>`;
+  $('#krSecs').innerHTML = `<div class="kr"><span>Section 1 · multiple choice</span>${bar({g: s1, p: 0, n: T.mc - s1}, T.mc)}<b>${s1} / ${T.mc}</b></div><div class="kr"><span>Section 2 · written</span>${bar({g: s2, p: 0, n: T.wr - s2}, T.wr)}<b>${s2} / ${T.wr}</b></div>`;
   $('#krMsg').textContent = `Time used: ${hm(mins || 1)} of ${hm(mockMins())}. Every question you dropped marks on is now in your mistakes list, ready to come back in two days.${old ? ` Your best before this was ${old.best}%.` : ''}`;
   MK = null;
 };
@@ -944,7 +963,7 @@ $('#krHome').onclick = () => { show('home'); drawHome(); };
 const b64e = s => btoa(unescape(encodeURIComponent(s))), b64d = s => decodeURIComponent(escape(atob(s)));
 $('#mkCode').onclick = () => {
   const compact = Object.entries(ST.r).map(([k, v]) => [k, v.r[0], v.t]);
-  const code = `QS-${LV}-` + b64e(JSON.stringify({v: 2, r: compact, s: ST.streak || null, m: ST.mocks || null}));
+  const code = `QS-${LV}-` + b64e(JSON.stringify({v: 2, r: compact, s: ST.streak || null, m: ST.mocks || null, p: ST.papers || null}));
   $('#code').hidden = false; $('#code').textContent = code; $('#cpCode').hidden = false;
 };
 $('#cpCode').onclick = () => { navigator.clipboard?.writeText($('#code').textContent).then(() => toast('Code copied.'), () => toast('Select the code and copy it.')); };
@@ -959,6 +978,7 @@ $('#ldCode').onclick = () => {
     if (!Array.isArray(d)) {
       if (d.s && (!ST.streak || (d.s.last || '') > (ST.streak.last || ''))) { ST.streak = d.s; extra += ', your streak'; }
       if (d.m) { const M = ST.mocks = ST.mocks || {}; let k2 = 0; for (const k in d.m) { const a = d.m[k], b = M[k]; M[k] = b ? {best: Math.max(a.best, b.best), last: a.at > b.at ? a.last : b.last, at: Math.max(a.at, b.at)} : a; k2++; } if (k2) extra += ` and ${k2} mock result${k2 === 1 ? '' : 's'}`; }
+      if (d.p) { const M = ST.papers = ST.papers || {}; let k3 = 0; for (const k in d.p) { const a = d.p[k], b = M[k]; M[k] = b ? {best: Math.max(a.best, b.best), last: a.at > b.at ? a.last : b.last, at: Math.max(a.at, b.at)} : a; k3++; } if (k3) extra += ` and ${k3} past paper result${k3 === 1 ? '' : 's'}`; }
     }
     save(); drawHome(); $('#codeIn').value = ''; toast(`Loaded ${n} answers${extra}.`);
   }
@@ -1313,7 +1333,6 @@ if (window.QSSUP) {
     const k = JSON.stringify(o); if (k === last) return; last = k;
     if (view.screen === 'home' && TOPICS.length) { const a = $('#covBox').open, b = $('#settings').open, c = $('#supBox').open; drawHome(); $('#covBox').open = a; $('#settings').open = b; $('#supBox').open = c; }
     if (view.screen === 'list') drawList();
-    if (view.screen === 'mocks') openMocks();
     if (view.screen === 'mockq') drawMockTimer();
   });
 } else $('#supBox').hidden = true;
@@ -1330,7 +1349,8 @@ function fromHash() {
   if (h === 'daily') return startDaily(false);
   if (h === 'covered') { show('home'); drawHome(); $('#covBox').open = true; $('#covBox').scrollIntoView({block: 'start'}); return; }
   if (h === 'mistakes') return openMist();
-  if (h === 'mocks') return openMocks();
+  if (h === 'mocks' || h === 'papers') return openMocks();
+  m = h.match(/^paper-(\d{4})$/); if (m) return startPaper(+m[1]);
   m = h.match(/^mock-(\d)$/); if (m) return startMock(+m[1]);
 }
 window.QSBANK = {go: h => { if (TOPICS.length) { if (location.hash.slice(1) === h) fromHash(); else location.hash = h; } else location.hash = h; }};
