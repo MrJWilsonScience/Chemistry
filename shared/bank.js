@@ -671,12 +671,13 @@ function drawPV() {
   if (pvRev) stage = mc ? stage + `<div class="card" style="margin-top:12px;color:var(--ink)"><div class="key"><span class="l">${esc(cur.key)}</span><p><b>Answer ${esc(cur.key)}.</b> ${F(cur.why || '')}</p></div></div>`
     : miHTML(cur, 'Marking instructions');
   if (((pvRev && !cur.mt) || !cur.txt) && needsHeavy(cur)) { const q = cur; heavy(q).then(() => { if (cur === q && PV) drawPV(); }).catch(() => {}); }
+  el.style.setProperty('--pz', pvZ);
   el.innerHTML = `<header><span class="ttl">${seq.length > 1 ? `${pos + 1} of ${seq.length} · ` : ''}${esc(paperOf(cur))} · ${esc(cur.label)}</span><span>${cur.marks} mark${cur.marks === 1 ? '' : 's'} · ${pvRev && !mc ? 'Marking instructions' : KIND[cur.kind]}</span><span class="timer" id="pvTimer"></span></header>
     <div class="stage"><div style="width:100%;max-width:1400px">${stage}</div></div>
     <footer><button class="btn" id="pvPrev" ${pos === 0 ? 'disabled' : ''}>← Prev</button>
       <button class="btn pri" id="pvRev">${mc ? (pvRev ? 'Hide answer' : 'Reveal answer') : (pvRev ? 'Show question' : 'Show marking instructions')}</button>
       <button class="btn" id="pvNext" ${pos >= seq.length - 1 ? 'disabled' : ''}>Next →</button><span class="pvz"><button class="btn sm" id="pvZm" aria-label="Smaller text">A−</button><button class="btn sm" id="pvZp" aria-label="Larger text">A+</button></span><button class="btn" id="pvExit">Exit</button></footer>`;
-  const setZ = d => { pvZ = Math.min(2.5, Math.max(0.6, Math.round((pvZ + d) * 10) / 10)); try { localStorage.setItem('pvZ', pvZ); } catch (e) {} const t = el.querySelector('.pvtext'); if (t) t.style.setProperty('--pz', pvZ); };
+  const setZ = d => { pvZ = Math.min(2.5, Math.max(0.6, Math.round((pvZ + d) * 10) / 10)); try { localStorage.setItem('pvZ', pvZ); } catch (e) {} el.style.setProperty('--pz', pvZ); const t = el.querySelector('.pvtext'); if (t) t.style.setProperty('--pz', pvZ); };
   $('#pvZm').onclick = () => setZ(-0.1); $('#pvZp').onclick = () => setZ(0.1);
   $('#pvPrev').onclick = () => { if (pos > 0) { pos--; drawQ(); pvRev = false; drawPV(); } };
   $('#pvNext').onclick = () => { if (pos < seq.length - 1) { pos++; drawQ(); pvRev = false; drawPV(); } };

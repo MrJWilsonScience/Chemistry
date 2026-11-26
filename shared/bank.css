@@ -259,7 +259,7 @@ input[type=text]{width:100%;min-height:42px;border:1.5px solid var(--line);borde
 
 /* marking instructions as text */
 .mtbox{margin:6px 0}
-.mt{border:1px solid var(--line,#cfd6e4);border-radius:10px;overflow:hidden;background:var(--card,#fff)}
+.mt{border:1px solid var(--line,#cfd6e4);border-radius:10px;overflow:hidden;background:var(--panel,#fff);color:var(--ink,#13242a)}
 .mt .mr{display:grid;grid-template-columns:96px 1fr 1fr;border-top:1px solid var(--line,#cfd6e4)}
 .mt .mr:first-child{border-top:0}
 .mt .ml{padding:8px 10px;font-weight:700;background:rgba(127,127,127,.08)}
@@ -280,3 +280,11 @@ input[type=text]{width:100%;min-height:42px;border:1.5px solid var(--line);borde
 .qtext .pb{min-width:0;overflow-x:auto}
 @media(max-width:520px){.qtext{padding:14px 12px}.qtext .pt{grid-template-columns:1.9em minmax(0,1fr) 1.3em;gap:0 .25em}.qtext table{font-size:.8em}.qtext th,.qtext td{padding:.3em .35em}}
 @media(max-width:520px){.qtext .pb table{width:100%;max-width:100%;font-size:.74em;margin-left:0;margin-right:0}.qtext .pb th,.qtext .pb td{padding:.22em .25em}.qtext .pt .pt{grid-template-columns:1.5em minmax(0,1fr) 1.1em}}
+
+/* marking instructions in present mode: dark text on a light sheet, sized like the question */
+.pv .mtbox{margin-top:12px}
+.pv .mt{background:#fff;color:#13242a;border-color:#cfd6e4;font-size:calc(clamp(1rem,1.5vw,1.45rem) * var(--pz,1));line-height:1.45}
+.pv .mt .ml{background:#e9eef2}
+.pv .mt .mg{color:#2c3e47;opacity:1}
+.pv .mt .mr{grid-template-columns:clamp(110px,10.5vw,175px) 1fr 1fr}
+.pv .mtsc summary{color:#8cc4ff;cursor:pointer;margin-top:10px;font-weight:700}
