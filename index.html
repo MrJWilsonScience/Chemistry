@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>QS Chemistry Hub</title>
+<title>Qualifications Scotland Chemistry Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <style>
@@ -155,7 +155,7 @@ h1{font-size:clamp(2rem,4.6vw,3.2rem);line-height:1.05;margin:0;text-wrap:balanc
 <body>
 <section class="menu" id="levels">
   <div class="hero"><div class="in">
-    <h1>QS Chemistry</h1>
+    <h1>Qualifications Scotland Chemistry</h1>
     <p>Choose your course to open its past paper questions, topic practice, fill-the-gaps revision and virtual labs.</p>
     <p class="days" id="days" role="timer"></p>
     <p class="by">Compiled by Mr Wilson, Greenwood Academy</p>
@@ -189,7 +189,7 @@ h1{font-size:clamp(2rem,4.6vw,3.2rem);line-height:1.05;margin:0;text-wrap:balanc
   </nav>
   <div class="pop" id="colPop" hidden role="dialog" aria-label="Question paper colour">
     <h3>Question paper colour</h3>
-    <p>The QS standard colours for adapted question papers. Applies to past paper questions, mock papers and flashcards. Shades on screen are close matches, not exact.</p>
+    <p>The Qualifications Scotland standard colours for adapted question papers. Applies to past paper questions, mock papers and flashcards. Shades on screen are close matches, not exact.</p>
     <div class="sw" id="colSw"></div>
     <label class="tg"><input type="checkbox" id="colDim"> Dim bright question sheets</label>
   </div>
@@ -226,7 +226,7 @@ const ICONS={
 };
 const CAL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
 const TOOLS=[
-  {id:'bank',name:'Past paper questions',short:'Past papers',desc:'QS past paper questions sorted by topic, with marking'},
+  {id:'bank',name:'Past paper questions',short:'Past papers',desc:'Qualifications Scotland past paper questions sorted by topic, with marking'},
   {id:'notes',name:'Topic practice',short:'Topic practice',desc:'Unlimited questions on every topic, with step-by-step worked answers'},
   {id:'cloze',name:'Fill the gaps',short:'Fill the gaps',desc:'Topic summaries with missing words to complete'},
   {id:'lab',name:'Virtual lab',short:'Virtual lab',desc:'Experiments with a prediction to start and evaluation questions to finish'},
@@ -276,7 +276,7 @@ function route(){
   const {lv,tool,sub}=parse();
   $('levels').hidden=!!lv;$('tools').hidden=!lv||!!tool;$('view').hidden=!tool;
   document.body.style.overflow=tool?'hidden':'';
-  if(!lv){document.title='QS Chemistry Hub';return}
+  if(!lv){document.title='Qualifications Scotland Chemistry Hub';return}
   const L=LEVELS.find(x=>x.id===lv);
   $('covBtn')?.remove();
   if(!tool){
@@ -362,7 +362,7 @@ document.addEventListener('click',e=>{
 $('back').onclick=()=>go('');
 $('homeBtn').onclick=()=>go('');
 
-/* ---------- question paper colour (QS standard colours for adapted papers) ---------- */
+/* ---------- question paper colour (Qualifications Scotland standard colours for adapted papers) ---------- */
 const PAPERS=[['white','White','#ffffff'],['cream','Cream','#f6eed3'],['pink','Pink','#f7d3dc'],['yellow','Yellow','#fbf1a3'],['green','Green','#d3ecc8'],['purple','Purple','#e0d4ee'],['blue','Blue','#cfe4f5'],['orange','Orange','#fbd7ad']];
 const LSset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 function drawCol(){
@@ -418,7 +418,7 @@ route();
 </script>
 <script>
 (function(){const at=Date.parse('2027-05-21T09:00:00+01:00');function t(){const el=document.getElementById('days');if(!el)return;
-const d=Math.floor((at-Date.now())/86400000);el.innerHTML=d>0?`<b>${d}</b><span>day${d===1?'':'s'} until the QS Chemistry exams<br><small>Fri 21 May 2027</small></span>`:'Good luck in your QS Chemistry exams!'}
+const d=Math.floor((at-Date.now())/86400000);el.innerHTML=d>0?`<b>${d}</b><span>day${d===1?'':'s'} until the Qualifications Scotland Chemistry exams<br><small>Fri 21 May 2027</small></span>`:'Good luck in your Qualifications Scotland Chemistry exams!'}
 t();setInterval(t,3600000)})();
 </script>
 </body>

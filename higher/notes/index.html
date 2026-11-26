@@ -746,7 +746,7 @@ T.enthalpy={group:"Energy",title:"Enthalpy of combustion",intro:"Using E = cmΔT
     return{q:`<p>The enthalpy of combustion of ${nm} is ${dh0} kJ mol⁻¹. Calculate the temperature rise when <b>${d.mf} g</b> of ${nm} is burned to heat <b>${d.V} cm³</b> of water, assuming no heat is lost.</p>`,
       a:`<p>n(${chem(f)}) = ${d.mf} ÷ ${M} = ${sf(n)} mol</p><p>E = ${sf(n)} × ${Math.abs(dh0)} = ${sf(E)} kJ</p><p>ΔT = E ÷ cm = ${sf(E)} ÷ (4.18 × ${fx(m,3)}) = <b>${sf(dt)} °C</b></p>`}}};
 
-/* ===== relative atomic masses (QS data booklet values to 1 d.p.) ===== */
+/* ===== relative atomic masses (Qualifications Scotland data booklet values to 1 d.p.) ===== */
 const AR={H:1.0,Li:6.9,C:12.0,N:14.0,O:16.0,Na:23.0,Mg:24.3,Al:27.0,S:32.1,Cl:35.5,K:39.1,Ca:40.1,Mn:54.9,Fe:55.8,Cu:63.5,Zn:65.4,Br:79.9,Ag:107.9,I:126.9};
 function gfm(f){let i=0;const num=()=>{let s="";while(/\d/.test(f[i]||""))s+=f[i++];return s?+s:1};
   const grp=()=>{let t=0;while(i<f.length&&f[i]!==")"){if(f[i]==="("){i++;const g=grp();i++;t+=g*num()}else{let e=f[i++];if(/[a-z]/.test(f[i]||""))e+=f[i++];t+=AR[e]*num()}}return t};

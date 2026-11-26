@@ -31,7 +31,7 @@ const AD = {
     papers: [['all', 'All papers', () => true], ['2015', '2015 onwards', y => y >= 2015], ['2022', '2022 onwards', y => y >= 2022],
       ['last3', 'Most recent (2024 onwards + specimen)', latest], ['spec', 'Specimen paper only', y => y === 2027]],
     yname: y => y === 2020 ? '2020*' : y === 2027 ? 'Specimen' : String(y),
-    foot: '2020* is the undated 2020 paper. Specimen is the QS specimen question paper for the 2027 exam.',
+    foot: '2020* is the undated 2020 paper. Specimen is the Qualifications Scotland specimen question paper for the 2027 exam.',
     fmt: esc,
     async index() {
       const [ix, st] = await Promise.all([J('index.json'), J('subtopics.json').catch(() => ({defs: [], items: {}}))]);
@@ -62,7 +62,7 @@ const AD = {
     papers: [['all', 'All papers', () => true], ['2015', 'Current course (2015 onwards)', y => y >= 2015], ['2020', '2020 onwards', y => y >= 2020],
       ['last3', 'Most recent (2024 onwards + specimen)', latest], ['spec', 'Specimen paper only', y => y === 2027]],
     yname: y => y === 2027 ? 'Specimen' : String(y),
-    foot: 'Papers before 2015 are from the old Higher course; most questions still fit. Specimen is the QS specimen question paper for the 2027 exam.',
+    foot: 'Papers before 2015 are from the old Higher course; most questions still fit. Specimen is the Qualifications Scotland specimen question paper for the 2027 exam.',
     fmt: esc,
     sym: {PER: 'Pe', SB: 'Sb', RED: 'Rx', SCC: 'Cc', AAEF: 'Es', SDE: 'Sd', PRO: 'Pr', OOF: 'Ox', FRAG: 'Fr', SKIN: 'Sk', RATE: 'Ra', GMR: 'Gm', EQ: 'Eq', CE: 'Ce', CA: 'An', APP: 'Ap', TECH: 'Te', REP: 'Rp', NUM: 'Nu', OE: 'Oe'},
     async index() {
@@ -99,7 +99,7 @@ const AD = {
     papers: [['all', 'All papers', () => true], ['2016', '2016 onwards', y => y >= 2016], ['2020', 'Current course (2020 onwards)', y => y >= 2020],
       ['last3', 'Most recent (2024 onwards + specimen)', latest], ['spec', 'Specimen paper only', y => y === 2027]],
     yname: y => y === 2027 ? 'Specimen' : String(y),
-    foot: 'Answers to older questions are updated where the data booklet has changed. Specimen is the QS specimen question paper for the 2027 exam.',
+    foot: 'Answers to older questions are updated where the data booklet has changed. Specimen is the Qualifications Scotland specimen question paper for the 2027 exam.',
     fmt: AHchem,
     async index() {
       const ix = await J('data/index.json');
@@ -179,7 +179,7 @@ const LOADING = '<p class="muted">Loading…</p>';
 const MTQ = [];
 const needsMI = q => needsHeavy(q) && !q.mt;
 function miHTML(q, alt) {
-  const img = q.mi ? `<div class="sheet"><img src="${q.mi}" alt="${alt || 'QS marking instructions for ' + esc(q.label)}"></div>` : '';
+  const img = q.mi ? `<div class="sheet"><img src="${q.mi}" alt="${alt || 'Qualifications Scotland marking instructions for ' + esc(q.label)}"></div>` : '';
   if (q.mt) {
     const id = MTQ.indexOf(q) < 0 ? MTQ.push(q) - 1 : MTQ.indexOf(q);
     return `<div class="mtbox">${q.mt}${img ? `<details class="mtsc"><summary>Show the original scan</summary>${img}</details>` : `<details class="mtsc" data-mq="${id}"><summary>Show the original scan</summary><div class="mtimg"></div></details>`}</div>`;
@@ -191,7 +191,7 @@ document.addEventListener('toggle', e => {
   const d = e.target; if (!d.classList || !d.classList.contains('mtsc') || !d.open || d.dataset.mq === undefined) return;
   const q = MTQ[+d.dataset.mq], box = d.querySelector('.mtimg'); if (!q || !box || box.dataset.done) return;
   box.innerHTML = LOADING;
-  heavy(q).then(() => { box.dataset.done = 1; box.innerHTML = q.mi ? `<div class="sheet"><img src="${q.mi}" alt="QS marking instructions for ${esc(q.label)}"></div>` : '<p class="muted">The scan is not available.</p>'; }).catch(() => { box.innerHTML = '<p class="muted">Could not load the scan. Check your connection and try again.</p>'; });
+  heavy(q).then(() => { box.dataset.done = 1; box.innerHTML = q.mi ? `<div class="sheet"><img src="${q.mi}" alt="Qualifications Scotland marking instructions for ${esc(q.label)}"></div>` : '<p class="muted">The scan is not available.</p>'; }).catch(() => { box.innerHTML = '<p class="muted">Could not load the scan. Check your connection and try again.</p>'; });
 }, true);
 
 /* ---------------- tiny UI helpers ---------------- */
@@ -276,7 +276,7 @@ document.body.innerHTML = `
         <label class="tog"><input type="checkbox" id="timerOpt"> Show a timer (1½ minutes a mark)</label></div>
       <div class="paperpick"><span class="lb">Question paper colour</span><div class="sw" id="paperSw" role="group" aria-label="Question paper colour"></div>
         <label class="tog"><input type="checkbox" id="dimOpt"> Dim bright question sheets</label>
-        <p class="muted small" style="margin:4px 0 0">The QS standard colours for adapted papers. Shades on screen are close matches, not exact.</p></div>
+        <p class="muted small" style="margin:4px 0 0">The Qualifications Scotland standard colours for adapted papers. Shades on screen are close matches, not exact.</p></div>
     </div>
   </details>
   <details class="card settings" id="supBox">
@@ -305,7 +305,7 @@ document.body.innerHTML = `
     <div class="row" style="margin-top:8px"><button class="btn sm ghost" id="reset">Reset my progress</button></div>
     <label class="tog" style="margin-top:8px"><input type="checkbox" id="teachOpt"> Show teacher tools in this browser (question sets and printable worksheets)</label>
   </section>
-  <p class="muted small">${esc(A.foot)} Questions and marking instructions are from QS past papers. Multiple choice explanations and suggested points were written by Claude (AI).</p>
+  <p class="muted small">${esc(A.foot)} Questions and marking instructions are from Qualifications Scotland past papers. Multiple choice explanations and suggested points were written by Claude (AI).</p>
 </main>
 
 <main class="wrap" data-screen="list" hidden>
@@ -434,7 +434,7 @@ $('#timerOpt').onchange = e => { ST.o.timer = e.target.checked; save(); };
 function drawHome() {
   const total = TOPICS.reduce((s, t) => s + t.count, 0);
   drawCov(); drawDaily();
-  $('#lead').textContent = `${total.toLocaleString()} QS past paper questions sorted into ${TOPICS.length} topics, with marking instructions.`;
+  $('#lead').textContent = `${total.toLocaleString()} Qualifications Scotland past paper questions sorted into ${TOPICS.length} topics, with marking instructions.`;
   const units = [...new Set(TOPICS.map(t => t.unit))];
   const tab = ['subs', 'papers'].includes(ST.tab) ? ST.tab : 'topics';
   $$('.tabs [data-tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
@@ -558,11 +558,11 @@ function answerMC(L) {
   stopTimer(true);
   $('#qAns').innerHTML = `<div class="card"><p class="verdict ${right ? 'ok' : 'no'}" style="margin:0 0 8px">${right ? 'Correct!' : `Not quite: you chose ${esc(L)}.`}</p>
     <div class="key"><span class="l" aria-label="Answer">${esc(cur.key || '?')}</span><p>${F(cur.why || '')}</p></div>
-    <p class="muted small" style="margin:8px 0 0">Answer from the QS marking instructions. Explanation written by Claude (AI).</p></div>${extrasHTML()}`;
+    <p class="muted small" style="margin:8px 0 0">Answer from the Qualifications Scotland marking instructions. Explanation written by Claude (AI).</p></div>${extrasHTML()}`;
 }
 function extrasHTML() {
   let h = '';
-  if (cur.oe && cur.oe.groups.length) h += `<div class="card oe"><h3>Suggested points: ${F(cur.oe.title)}</h3><p class="muted small" style="margin:0">Written by Claude (AI), not an official QS answer. Any correct, relevant chemistry can gain credit.</p>
+  if (cur.oe && cur.oe.groups.length) h += `<div class="card oe"><h3>Suggested points: ${F(cur.oe.title)}</h3><p class="muted small" style="margin:0">Written by Claude (AI), not an official Qualifications Scotland answer. Any correct, relevant chemistry can gain credit.</p>
     ${cur.oe.groups.map(([g, its]) => `<h4>${esc(g)}</h4><ul>${its.map(x => `<li>${F(x)}</li>`).join('')}</ul>`).join('')}</div>`;
   (cur.cur || []).forEach(c => h += `<div class="card oe"><h3>${esc(c.title)}</h3><ul>${c.lines.map(l => l.startsWith('B:') ? `<li><b>${F(l.slice(2))}</b></li>` : `<li>${F(l)}</li>`).join('')}</ul></div>`);
   (cur.notes || []).forEach(n => h += `<div class="note">${F(n)}</div>`);
@@ -706,7 +706,7 @@ document.addEventListener('keydown', e => {
   else if (k === 'M' && cur.kind === 's2') revealS2();
 });
 
-/* ---------------- question paper colour (QS standard colours for adapted papers) ---------------- */
+/* ---------------- question paper colour (Qualifications Scotland standard colours for adapted papers) ---------------- */
 const PAPERS = [['white', 'White', '#ffffff'], ['cream', 'Cream', '#f6eed3'], ['pink', 'Pink', '#f7d3dc'], ['yellow', 'Yellow', '#fbf1a3'],
   ['green', 'Green', '#d3ecc8'], ['purple', 'Purple', '#e0d4ee'], ['blue', 'Blue', '#cfe4f5'], ['orange', 'Orange', '#fbd7ad']];
 function applyPaper() {
@@ -838,9 +838,9 @@ function drawPapers() {
       const k = i + 1, r = M[k], live = run && (run.kind || 'mock') === 'mock' && run.k === k;
       return `<div class="card mk"><div class="mkn" aria-hidden="true">${k}</div><div><b>Mock paper ${k}</b><small>${P.mc + P.wr} marks · ${hm(Math.round(P.mins * XT()))}${XT() > 1 ? ' with extra time' : ''}</small><small>${resLine(r)}</small></div>
         <button class="btn ${live ? 'pri' : ''}" data-k="${k}">${live ? 'Carry on' : r ? 'Sit again' : 'Start'}</button></div>`; }).join('')}</div>
-    <p class="muted small">Each mock is built from QS past paper questions from ${LV === 'ah' ? '2016' : '2015'} to 2026, spread across the course topics in proportion. No question appears in more than one mock. The specimen paper is left out so you can sit it on its own.</p>
+    <p class="muted small">Each mock is built from Qualifications Scotland past paper questions from ${LV === 'ah' ? '2016' : '2015'} to 2026, spread across the course topics in proportion. No question appears in more than one mock. The specimen paper is left out so you can sit it on its own.</p>
     <h2 class="unit">Past papers</h2>
-    <p class="muted" style="margin:0 0 12px">Sit a whole QS past paper, question by question in the original order, then mark it the same way as a mock. Times are at the 2027 exam pace (${hm(P.mins)} for ${P.mc + P.wr} marks).${LV === 'higher' ? ' These papers are put together from the topic question bank. Some papers are missing a few question parts, so their totals can be a few marks under the real paper.' : ''}</p>
+    <p class="muted" style="margin:0 0 12px">Sit a whole Qualifications Scotland past paper, question by question in the original order, then mark it the same way as a mock. Times are at the 2027 exam pace (${hm(P.mins)} for ${P.mc + P.wr} marks).${LV === 'higher' ? ' These papers are put together from the topic question bank. Some papers are missing a few question parts, so their totals can be a few marks under the real paper.' : ''}</p>
     <div class="mocks" id="pList"><p class="muted">Loading papers…</p></div>`;
   $$('#kXt [data-xt]').forEach(b => b.onclick = () => { if (window.QSSUP) QSSUP.set({xt: +b.dataset.xt}); drawHome(); });
   $$('#topics [data-k]').forEach(b => b.onclick = () => startMock(+b.dataset.k));
@@ -1142,7 +1142,7 @@ async function makePdf(withAns) {
   if (!list.length) return toast('Add some questions first.');
   toast('Making your PDF…'); await heavyAll(list);
   const title = `${A.title}: ${ST.setName || 'Question set'}`, B = [{type: 'text', text: title, size: 16, bold: true, gap: 4},
-    {type: 'text', text: `${list.length} questions · ${list.reduce((s, q) => s + q.marks, 0)} marks. Questions from QS past papers.`, size: 9, gap: 10}];
+    {type: 'text', text: `${list.length} questions · ${list.reduce((s, q) => s + q.marks, 0)} marks. Questions from Qualifications Scotland past papers.`, size: 9, gap: 10}];
   for (const [i, q] of list.entries()) {
     B.push({type: 'text', text: `${i + 1}. ${paperOf(q)}, ${q.label} (${q.marks} mark${q.marks === 1 ? '' : 's'})`, size: 11, bold: true, gap: 4});
     const j = q.qimg && await toJpeg(q.qimg); if (j) B.push({type: 'img', src: j});
@@ -1153,7 +1153,7 @@ async function makePdf(withAns) {
       if (q.kind === 'mc') B.push({type: 'text', text: `${i + 1}. Answer ${q.key}. ${plain(q.why)}`, size: 10, gap: 6});
       else { B.push({type: 'text', text: `${i + 1}. ${paperOf(q)}, ${q.label}: marking instructions`, size: 11, bold: true, gap: 4}); const j = q.mi && await toJpeg(q.mi); if (j) B.push({type: 'img', src: j}); }
     }
-    B.push({type: 'text', text: 'Multiple choice explanations were written by Claude (AI) and are not part of the official QS marking instructions.', size: 8, gap: 2});
+    B.push({type: 'text', text: 'Multiple choice explanations were written by Claude (AI) and are not part of the official Qualifications Scotland marking instructions.', size: 8, gap: 2});
   }
   await saveFile(title.replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') + (withAns ? '_with_answers' : '') + '.pdf', buildPdf(B, title));
 }
@@ -1236,7 +1236,7 @@ async function makeSheet(withAns) {
   const ans = !withAns ? '' : `<section class="answers"><h2>Answers</h2>${list.map((q, i) => q.kind === 'mc'
     ? `<div class="wa"><p><b>${i + 1}.</b> Answer <b>${esc(q.key)}</b>. ${F(q.why || '')}</p></div>`
     : `<div class="wa"><p><b>${i + 1}.</b> ${esc(paperOf(q))}, ${esc(q.label)}: marking instructions</p>${q.mi ? `<img class="scan" src="${q.mi}" alt="Marking instructions">` : '<p>Marking instructions not available.</p>'}</div>`).join('')}
-    <p class="note">Multiple choice explanations were written by Claude (AI) and are not part of the official QS marking instructions.</p></section>`;
+    <p class="note">Multiple choice explanations were written by Claude (AI) and are not part of the official Qualifications Scotland marking instructions.</p></section>`;
   const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${esc(title)}</title><style>
 ${css}
 :root{color-scheme:light}body{margin:0;background:#fff;color:#111;font:15px/1.5 "Trebuchet MS",sans-serif}
@@ -1254,7 +1254,7 @@ img.scan{display:block;max-width:100%;margin:6px auto}
 .bar button{font:inherit;padding:6px 14px;border-radius:8px;border:1px solid #888;background:#fff;cursor:pointer}
 @page{margin:14mm}@media print{.bar{display:none}.page{padding:0;max-width:none}}
 </style></head><body><div class="bar"><button onclick="print()">Print or save as PDF</button><span>${list.length} questions · ${marks} marks</span></div><div class="page">
-<h1>${esc(title)}</h1><p class="sub">${list.length} questions · ${marks} marks · Questions from QS past papers</p>
+<h1>${esc(title)}</h1><p class="sub">${list.length} questions · ${marks} marks · Questions from Qualifications Scotland past papers</p>
 <div class="who"><span>Name</span><span>Class</span><span>Date</span></div>
 ${qs}${ans}</div></body></html>`;
   await saveFile(name.replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') + (withAns ? '_worksheet_with_answers' : '_worksheet') + '.html', new Blob([html], {type: 'text/html'}));
