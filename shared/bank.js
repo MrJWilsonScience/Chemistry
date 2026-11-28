@@ -178,11 +178,29 @@ const needsHeavy = q => !!(q && q.pk && !q.hv);
 const LOADING = '<p class="muted">Loading…</p>';
 const MTQ = [];
 const needsMI = q => needsHeavy(q) && !q.mt;
+/* Transcribed marking instructions laid out like the SQA tables: Question | Answer | Max mark | Additional guidance */
+const MTHEAD = '<div class="mh" aria-hidden="true"><div>Question</div><div>Answer</div><div>Max mark</div><div>Additional guidance</div></div>';
+function mtTable(h) {
+  if (!h || h.includes('class="mh"')) return h;
+  const rows = h.replace(/<div class="mr">([\s\S]*?)(?=<div class="mr">|<\/div>\s*$)/g, (m, inner) => {
+    const lab = inner.match(/<div class="ml">([\s\S]*?)<\/div>/), ans = inner.match(/<div class="ma">([\s\S]*)/);
+    if (!lab || !ans) return m;
+    const sm = lab[1].match(/<small>([\s\S]*?)<\/small>/), label = lab[1].replace(/<small>[\s\S]*?<\/small>/, '');
+    const mk = sm ? sm[1].replace(/\s*marks?\s*$/i, '') : '';
+    // split the answer and guidance cells
+    const body = ans[1], gi = body.indexOf('<div class="mg">');
+    let a, g = '';
+    if (gi >= 0) { a = body.slice(0, gi); g = body.slice(gi + 16); g = g.replace(/<\/div>\s*<\/div>\s*$/, ''); a = a.replace(/<\/div>\s*$/, ''); }
+    else { a = body.replace(/<\/div>\s*<\/div>\s*$/, ''); }
+    return `<div class="mr"><div class="ml">${label}</div><div class="ma">${a}</div><div class="mk" data-l="Max mark">${mk}</div><div class="mg" data-l="Additional guidance">${g}</div></div>`;
+  });
+  return rows.replace('<div class="mt">', '<div class="mt">' + MTHEAD);
+}
 function miHTML(q, alt) {
   const img = q.mi ? `<div class="sheet"><img src="${q.mi}" alt="${alt || 'Qualifications Scotland marking instructions for ' + esc(q.label)}"></div>` : '';
   if (q.mt) {
     const id = MTQ.indexOf(q) < 0 ? MTQ.push(q) - 1 : MTQ.indexOf(q);
-    return `<div class="mtbox">${q.mt}${img ? `<details class="mtsc"><summary>Show the original scan</summary>${img}</details>` : `<details class="mtsc" data-mq="${id}"><summary>Show the original scan</summary><div class="mtimg"></div></details>`}</div>`;
+    return `<div class="mtbox">${mtTable(q.mt)}${img ? `<details class="mtsc"><summary>Show the original scan</summary>${img}</details>` : `<details class="mtsc" data-mq="${id}"><summary>Show the original scan</summary><div class="mtimg"></div></details>`}</div>`;
   }
   if (img) return img;
   return needsHeavy(q) ? LOADING : '<p class="muted">Marking instructions are not available for this question.</p>';
@@ -830,18 +848,19 @@ const sat = r => new Date(r.at).toLocaleDateString('en-GB', {day: 'numeric', mon
 const resLine = r => r && SUP().focus ? `Last sat on ${sat(r)}` : r ? `Best ${r.best}% · last ${r.last}% on ${sat(r)}` : 'Not tried yet';
 function drawPapers() {
   const xt = +SUP().xt || 0, M = ST.mocks || {}, PP = ST.papers || {}, run = ST.mockrun;
-  $('#topics').innerHTML = `<h2 class="unit">Mock papers</h2>
+  $('#topics').innerHTML = `<div class="card xtbox" id="kXt"><div><b>Extra time</b><small>${xt ? `${hm(Math.round(P.mins * XT()))} for a mock (${hm(P.mins)} plus ${xt}%).` : `Set this to match your exam arrangements.`} It applies to mocks and past papers. You can take a rest break at any time: the clock stops until you come back.</small></div>
+  <div class="seg" role="group" aria-label="Extra time">${[0, 25, 50, 100].map(v => `<button type="button" data-xt="${v}" aria-pressed="${v === xt}">${v ? '+' + v + '%' : 'None'}</button>`).join('')}</div></div>
+
+    <h2 class="unit">Past papers</h2>
+    <p class="muted" style="margin:0 0 12px">Sit a whole Qualifications Scotland past paper, question by question in the original order, then mark it the same way as a mock. Times are at the 2027 exam pace (${hm(P.mins)} for ${P.mc + P.wr} marks).${LV === 'higher' ? ' These papers are put together from the topic question bank. Some papers are missing a few question parts, so their totals can be a few marks under the real paper.' : ''}</p>
+    <div class="mocks" id="pList"><p class="muted">Loading papers…</p></div>
+    <h2 class="unit">Mock papers</h2>
     <p class="muted" style="margin:0 0 12px">Full practice papers in the 2027 exam format: Section 1 is ${P.mc} marks of multiple choice and Section 2 is ${P.wr} marks of written questions, ${P.mc + P.wr} marks in ${hm(P.mins)}. Have your data booklet and some paper ready.</p>
-    <div class="card xtbox" id="kXt"><div><b>Extra time</b><small>${xt ? `${hm(Math.round(P.mins * XT()))} for a mock (${hm(P.mins)} plus ${xt}%).` : `Set this to match your exam arrangements.`} It applies to mocks and past papers. You can take a rest break at any time: the clock stops until you come back.</small></div>
-      <div class="seg" role="group" aria-label="Extra time">${[0, 25, 50, 100].map(v => `<button type="button" data-xt="${v}" aria-pressed="${v === xt}">${v ? '+' + v + '%' : 'None'}</button>`).join('')}</div></div>
     <div class="mocks">${Array.from({length: NMOCK}, (_, i) => {
       const k = i + 1, r = M[k], live = run && (run.kind || 'mock') === 'mock' && run.k === k;
       return `<div class="card mk"><div class="mkn" aria-hidden="true">${k}</div><div><b>Mock paper ${k}</b><small>${P.mc + P.wr} marks · ${hm(Math.round(P.mins * XT()))}${XT() > 1 ? ' with extra time' : ''}</small><small>${resLine(r)}</small></div>
         <button class="btn ${live ? 'pri' : ''}" data-k="${k}">${live ? 'Carry on' : r ? 'Sit again' : 'Start'}</button></div>`; }).join('')}</div>
-    <p class="muted small">Each mock is built from Qualifications Scotland past paper questions from ${LV === 'ah' ? '2016' : '2015'} to 2026, spread across the course topics in proportion. No question appears in more than one mock. The specimen paper is left out so you can sit it on its own.</p>
-    <h2 class="unit">Past papers</h2>
-    <p class="muted" style="margin:0 0 12px">Sit a whole Qualifications Scotland past paper, question by question in the original order, then mark it the same way as a mock. Times are at the 2027 exam pace (${hm(P.mins)} for ${P.mc + P.wr} marks).${LV === 'higher' ? ' These papers are put together from the topic question bank. Some papers are missing a few question parts, so their totals can be a few marks under the real paper.' : ''}</p>
-    <div class="mocks" id="pList"><p class="muted">Loading papers…</p></div>`;
+    <p class="muted small">Each mock is built from Qualifications Scotland past paper questions from ${LV === 'ah' ? '2016' : '2015'} to 2026, spread across the course topics in proportion. No question appears in more than one mock. The specimen paper is left out so you can sit it on its own.</p>`;
   $$('#kXt [data-xt]').forEach(b => b.onclick = () => { if (window.QSSUP) QSSUP.set({xt: +b.dataset.xt}); drawHome(); });
   $$('#topics [data-k]').forEach(b => b.onclick = () => startMock(+b.dataset.k));
   getPapers().then(list => {

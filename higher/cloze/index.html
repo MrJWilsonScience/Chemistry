@@ -84,7 +84,7 @@ select.bad{background:var(--bad-bg);border:1.5px solid var(--bad);color:var(--ba
 <body>
 <header>
   <h1>Higher Chemistry: Fill the Blanks</h1>
-  <p>Choose the missing word from each drop-down, then press <b>Check answers</b>. Points marked <span class="tag">Course spec</span> come from the Qualifications Scotland course specification.</p>
+  <p>Choose the missing word from each drop-down, then press <b>Check answers</b>. Every statement is based on the Qualifications Scotland Higher Chemistry course specification.</p>
 </header>
 <main><div id="menu"></div><div id="view" class="hidden"><button class="back" id="back">← All topics</button><div class="card" id="topic"></div></div></main>
 <div class="tfoot" id="tfoot"><button class="tbtn" id="tmenuBtn">Teacher menu</button>
@@ -118,224 +118,383 @@ select.bad{background:var(--bad-bg);border:1.5px solid var(--bad);color:var(--ba
 <script>
 /* Syntax: {correct|distractor|distractor|...}. Lines starting "*" are from the course spec. */
 const TOPICS = [
-{title:"Controlling the Rate", sections:[
- ["Prior knowledge",[
-  "Decreasing the {particle size|concentration|temperature} of a reactant increases the speed of a reaction, e.g. sawdust burns more brightly than a lump of wood.",
-  "Catalysts speed up reactions but are {not used up|used up|destroyed} and can be recovered chemically unchanged.",
-  "Average rate = change in quantity ÷ {time taken|mass at start|volume of gas}."
- ]],
- ["Key points",[
-  "If the rate is too {slow|fast} the process is uneconomic; if it's too {fast|slow} it can become dangerous.",
-  "Relative rate = {1 / time|time / 1|1 / mass|mass × time}.",
-  "Particles can only react if they collide with enough {kinetic|potential|light} energy and the correct {collision geometry|temperature|concentration}.",
-  "Activation energy, E<sub>A</sub>, is the {minimum|maximum|average} kinetic energy needed by colliding particles to produce a reaction.",
-  "{Light|Sound|Electrical} energy can increase the number of particles with energy greater than E<sub>A</sub>, e.g. in photosynthesis.",
-  "Decreasing the particle size increases the {surface area|activation energy|enthalpy change} and therefore the number of collisions.",
-  "Increasing {pressure|volume|activation energy} means more gas particles are present, giving more collisions per second.",
-  "Temperature is a measure of the {average|total|minimum} kinetic energy of the particles in a substance.",
-  "Increasing temperature increases the number of particles with energy {greater|less} than the activation energy.",
-  "In an exothermic reaction the potential energy of the products is {less|more} than the reactants.",
-  "Endothermic reactions have {positive|negative} enthalpy values.",
-  "Catalysts {lower|raise|do not change} the activation energy for a reaction.",
-  "The activated complex is an {unstable|stable|ionic} arrangement of atoms formed at the {maximum|minimum|start} of the potential energy barrier.",
-  "*Energy distribution diagrams show the effect of temperature on the {kinetic|potential|nuclear} energy of particles."
- ]]
+/* ================= UNIT 1: CHEMICAL CHANGES AND STRUCTURE ================= */
+{title:"Periodicity", sections:[
+ ["The periodic table",[
+  "The elements are arranged in the periodic table in order of increasing {atomic number|mass number|relative atomic mass|reactivity}.",
+  "Because the periodic table is arranged by {position|colour|state|density}, chemists can predict the properties of any element.",
+  "A group is a vertical column of elements with similar chemical properties because they have the same number of {outer-shell electrons|neutrons|protons|energy levels}.",
+  "Across a period, atomic number increases, the number of outer electrons increases and character changes from {metallic to non-metallic|non-metallic to metallic|ionic to metallic|covalent to ionic only}.",
+  "Lithium, sodium, magnesium, aluminium and potassium all have a {metallic lattice|covalent network|covalent molecular|monatomic} structure.",
+  "Hydrogen, nitrogen, oxygen, fluorine and chlorine exist as {covalent molecular|covalent network|metallic|monatomic} substances.",
+  "Phosphorus (P₄), sulfur (S₈) and the fullerenes such as C₆₀ are {covalent molecular|covalent network|ionic|metallic} substances.",
+  "Boron, silicon and carbon (diamond and graphite) are {covalent network|covalent molecular|metallic|monatomic} substances.",
+  "The noble gases exist as {monatomic|diatomic|covalent network|metallic} elements."]],
+ ["Trends in atomic properties",[
+  "Covalent radius is a measure of the {size|mass|charge|density} of an atom.",
+  "Across a period, covalent radius {decreases|increases|stays the same|varies randomly} because the nuclear charge increases.",
+  "Down a group, covalent radius {increases|decreases|stays the same|doubles} because there are more occupied electron shells.",
+  "First ionisation energy is the energy required to remove one mole of electrons from one mole of {gaseous atoms|solid atoms|aqueous ions|molecules}.",
+  "The second ionisation energy is the energy needed to remove a further mole of electrons from one mole of {gaseous ions|gaseous molecules|solid atoms|liquid atoms}.",
+  "Across a period, first ionisation energy generally {increases|decreases|stays the same|falls then rises} because of increasing nuclear charge and decreasing atomic size.",
+  "Down a group, first ionisation energy generally {decreases|increases|stays the same|doubles} because of increasing atomic size and increased screening by inner shells.",
+  "The screening effect is when inner-shell electrons {repel|attract|neutralise|shield nothing from} the outer electrons, reducing the pull of the nucleus.",
+  "Electronegativity is an atom's attraction for the {electrons in a bond|protons in a nucleus|neutrons|electrons in a different molecule}.",
+  "Across a period, electronegativity generally {increases|decreases|stays the same|falls then rises}, and down a group it generally {decreases|increases|stays the same|doubles}.",
+  "Trends in electronegativity can be explained using covalent radius, nuclear charge and {screening|isotopes|colour|density}."]]
 ]},
-{title:"Periodicity, Bonding & Intermolecular Forces", sections:[
- ["Trends in the periodic table",[
-  "Covalent radius is a measure of the {size|charge|mass} of an atom.",
-  "Electronegativity is a measure of an atom's attraction for {bonding electrons|protons|neutrons}.",
-  "Ionisation energy is the energy needed to remove one mole of electrons from one mole of {gaseous|solid|aqueous} atoms.",
-  "Across a period, the {nuclear charge|number of shells|covalent radius} increases, increasing the attraction between nucleus and electrons.",
-  "Down a group, inner electron shells {screen|attract|repel} the outer electrons from the nuclear pull."
- ]],
- ["Bonding and structure",[
-  "Silicon and boron have a {covalent network|covalent molecular|metallic lattice|monatomic} structure.",
-  "The noble gases are {monatomic|covalent network|metallic} elements.",
-  "Metallic bonding is the attraction between positive metal ions and {delocalised electrons|negative ions|shared electrons}.",
-  "Covalent bonding is the attraction between positive nuclei and {shared electrons|delocalised electrons|negative ions}.",
-  "Covalent network elements have very {high|low} melting points and do not conduct, except {graphite|diamond|silicon}.",
-  "When covalent molecular substances melt, the {intermolecular forces|covalent bonds|metallic bonds} are broken.",
-  "A large difference in electronegativity gives a(n) {ionic|polar covalent|non-polar covalent} bond.",
-  "Pure covalent and ionic bonding are the opposite ends of a bonding {continuum|series|trend}.",
-  "Ionic compounds conduct when molten or in solution because the {ions|electrons|molecules} are free to move.",
-  "Silicon dioxide and silicon carbide are examples of covalent {network|molecular} compounds.",
-  "A molecule with polar bonds can still be non-polar if its shape is {symmetrical|unsymmetrical|linear only}, so the dipoles cancel.",
-  "Polar molecules {will|will not} be deflected by a charged rod.",
-  "Ionic and polar substances tend to dissolve in {polar|non-polar} solvents such as water."
- ]],
+
+{title:"Structure & Bonding", sections:[
+ ["Types of bond",[
+  "In a covalent bond, atoms share pairs of electrons, and the two positive nuclei are held together by their attraction for the {shared pair|negative ions|neutrons|delocalised electrons}.",
+  "A polar covalent bond forms when the attraction for the bonding electrons is {different|equal|zero|infinite} for the two atoms.",
+  "Partial charges on a polar bond are shown using δ⁺ and δ⁻ notation, and the bond is said to have a {dipole|lattice|isotope|catalyst}.",
+  "An ionic bond is the electrostatic attraction between {positive and negative ions|two nuclei|shared electrons and nuclei|delocalised electrons and cations only}.",
+  "Ionic compounds form {lattices|molecules|chains|discrete units} of oppositely charged ions.",
+  "The simplest ionic formula shows the {ratio of ions|number of atoms in a molecule|mass of the compound|number of bonds}.",
+  "Pure covalent and pure ionic bonding are the two ends of a bonding {continuum|series|cycle|period}, with polar covalent bonding in between.",
+  "A larger electronegativity difference between bonded atoms means a {more polar|less polar|non-polar|metallic} bond.",
+  "When the electronegativity difference is very large, electrons are {transferred completely|shared equally|delocalised|lost to the nucleus only}, forming ions.",
+  "Compounds formed between metals and non-metals are {often, but not always,|never|always|only occasionally} ionic."]],
+ ["Properties and structure",[
+  "State at room temperature, melting point, boiling point, solubility and electrical {conductivity|colour|smell|density} can be used to deduce the bonding and structure of a substance.",
+  "Covalent network substances have {very high|very low|low|moderate} melting points because a giant network of strong covalent bonds must be broken.",
+  "Ionic compounds conduct electricity when {molten or dissolved|solid|cold|dry} because the ions are free to move.",
+  "Metals conduct electricity because of {delocalised electrons|mobile ions|free neutrons|polar bonds}.",
+  "When covalent molecular substances melt or boil, the {intermolecular forces|covalent bonds|ionic bonds|metallic bonds} are broken.",
+  "A molecule with polar bonds can be non-polar overall if its shape is {symmetrical|unsymmetrical|angular|pyramidal}, because the dipoles cancel.",
+  "Carbon dioxide has polar bonds but is a non-polar molecule because it is {linear and symmetrical|angular|trigonal pyramidal|tetrahedral and unsymmetrical}."]]
+]},
+
+{title:"Intermolecular Forces", sections:[
  ["Van der Waals forces",[
-  "London dispersion forces arise from {temporary|permanent} dipoles and induced dipoles.",
-  "The strength of London dispersion forces is related to the number of {electrons|protons|bonds}.",
-  "Hydrogen bonds form where hydrogen is bonded directly to nitrogen, oxygen or {fluorine|chlorine|carbon}.",
-  "Strongest to weakest: {hydrogen bonding|London dispersion forces|pd-pd attractions} > permanent dipole-permanent dipole > London dispersion forces.",
-  "Hydrogen bonding in ice gives an expanded structure, so ice is {less|more} dense than water.",
-  "Melting point, boiling point and {viscosity|conductivity|electronegativity} can be explained by intermolecular forces."
- ]]
+  "All molecular substances and monatomic elements can condense and freeze at low enough temperatures because of attractive forces between their {molecules or atoms|nuclei|electrons only|ions}.",
+  "Intermolecular forces are collectively known as {van der Waals forces|ionic bonds|covalent bonds|metallic bonds}.",
+  "London dispersion forces act between {all atoms and molecules|polar molecules only|ions only|molecules containing hydrogen only}.",
+  "London dispersion forces are electrostatic attractions between {temporary and induced dipoles|permanent dipoles|oppositely charged ions|delocalised electrons and nuclei}.",
+  "The strength of London dispersion forces depends on the number of {electrons|protons only|isotopes|bonds} in the atom or molecule.",
+  "A molecule is polar if it has a {permanent dipole|temporary dipole only|full ionic charge|lattice structure}.",
+  "Permanent dipole–permanent dipole interactions are extra attractions between {polar molecules|non-polar molecules|ions|metal atoms}.",
+  "For molecules with a similar number of electrons, permanent dipole–permanent dipole interactions are {stronger|weaker|equal to|negligible compared with} London dispersion forces.",
+  "Of the three types of van der Waals force, the strongest is {hydrogen bonding|London dispersion|permanent dipole–permanent dipole|all are equal}."]],
+ ["Hydrogen bonding and properties",[
+  "A hydrogen bond forms between molecules containing hydrogen bonded to fluorine, oxygen or {nitrogen|carbon|chlorine|sulfur}.",
+  "Hydrogen bonds are stronger than other permanent dipole interactions but {weaker|stronger|the same strength|much stronger} than covalent bonds.",
+  "Melting point, boiling point and viscosity are explained by the {type and strength of intermolecular forces|number of covalent bonds|number of neutrons|colour of the substance}.",
+  "Polar substances have {higher|lower|the same|negligible} melting and boiling points than non-polar substances with a similar number of electrons.",
+  "The unusually high boiling points of ammonia, water and hydrogen fluoride are due to {hydrogen bonding|London dispersion forces only|covalent bonding|ionic bonding}.",
+  "Ice has an open structure because of hydrogen bonding, so ice is {less|more|equally} dense than liquid water.",
+  "Ionic and polar molecular compounds tend to dissolve in {polar|non-polar} solvents such as water.",
+  "Non-polar molecular substances tend to dissolve in {non-polar|polar} solvents.",
+  "To predict solubility, look for O–H or N–H bonds, which allow {hydrogen bonding|ionic bonding|covalent bonding|metallic bonding}, and consider whether the polar bonds are arranged to give a permanent dipole."]]
 ]},
-{title:"Alcohols, Carboxylic Acids & Oxidation", sections:[
- ["Prior knowledge",[
-  "An alkane is a {saturated|unsaturated} hydrocarbon.",
-  "Unsaturated compounds {decolourise|turn blue|turn milky} bromine solution.",
-  "The functional group of the carboxylic acids is the {carboxyl|hydroxyl|carbonyl} group, –COOH."
- ]],
- ["Key points",[
-  "Alcohols with three hydroxyl groups are called {triols|diols|trimers}.",
-  "Primary alcohols have the hydroxyl group at the {end|middle} of the carbon chain.",
-  "In {tertiary|secondary|primary} alcohols, the –OH is attached to a carbon atom also attached to a branch.",
-  "Aldehydes and ketones contain the {carbonyl|carboxyl|hydroxyl} functional group.",
-  "In {ketones|aldehydes}, the carbonyl group is within the carbon chain.",
-  "In carbon compounds, oxidation is an {increase|decrease} in the O:H ratio.",
-  "Mild oxidation of a primary alcohol gives an {aldehyde|ketone|ester}; a secondary alcohol gives a {ketone|aldehyde|carboxylic acid}.",
-  "{Tertiary|Primary|Secondary} alcohols do not undergo mild oxidation.",
-  "Hot copper(II) oxide changes from black to {brown|green|white}.",
-  "Acidified potassium dichromate changes from orange to {green|blue|colourless}.",
-  "With an aldehyde, Fehling's solution changes from blue to a {red precipitate|silver mirror|green solution}.",
-  "Tollens' reagent forms a {silver mirror|red precipitate|blue solution} with aldehydes.",
-  "Mild oxidation of aldehydes gives {carboxylic acids|alcohols|ketones}.",
-  "Antioxidants are themselves {easily oxidised|easily reduced|unreactive}, so they oxidise in place of the compounds they protect."
- ]]
-]},
-{title:"Esters, Fats & Oils, Soaps & Emulsions", sections:[
- ["Esters",[
-  "Esters form in a {condensation|hydrolysis|addition} reaction between a carboxylic acid and an alcohol; the other product is {water|hydrogen|carbon dioxide}.",
-  "The ester link is {-COO-|-CONH-|-OH|-CHO}.",
-  "Ester names end in {-oate|-ol|-al|-one}, e.g. ethyl ethanoate.",
-  "{Hydrolysis|Condensation|Oxidation} of an ester gives the parent alcohol and carboxylic acid.",
-  "Esters are used in flavourings, perfumes and {solvents|fuels|fertilisers}."
- ]],
- ["Fats and oils",[
-  "Edible fats and oils are esters of long-chain carboxylic acids and the alcohol {glycerol|ethanol|methanol}.",
-  "Fats and oils are a {concentrated|dilute} source of energy and transport fat-soluble {vitamins|proteins|minerals}.",
-  "Triglycerides contain {3|2|1} fatty acids and 1 glycerol.",
-  "Glycerol's systematic name is {propane-1,2,3-triol|propan-2-ol|propane-1,2-diol}.",
-  "Oil molecules have {more|fewer} C=C double bonds than fat molecules.",
-  "{Bromine solution|Fehling's solution|Tollens' reagent} can measure the degree of unsaturation.",
-  "Double bonds stop oil molecules packing closely, so van der Waals forces are {weaker|stronger} and melting points are {lower|higher}."
- ]],
- ["Soaps, detergents & emulsions",[
-  "Alkaline hydrolysis of fats and oils with NaOH or KOH gives soap ions and {glycerol|water|ethanol}.",
-  "The ionic head of a soap ion is {hydrophilic|hydrophobic}.",
-  "The covalent hydrocarbon tail is {hydrophobic|hydrophilic} and dissolves in oil.",
-  "Soap forms scum with hard water containing calcium and {magnesium|sodium|potassium} ions.",
-  "Soapless detergents {do not form|form} scum in hard water.",
-  "An emulsion forms when droplets of one {liquid|solid|gas} are dispersed in another liquid.",
-  "Milk, mayonnaise and {ice-cream|vinegar|salt water} are examples of emulsions.",
-  "Emulsifiers prevent oil and water {separating|mixing|reacting}.",
-  "Mono- and diglycerides are made by reacting glycerol with edible {fats and oils|proteins|alcohols}."
- ]]
-]},
-{title:"Proteins", sections:[
- ["Key points",[
-  "Proteins are a major {structural|insulating|energy-storing} material in animal tissues.",
-  "{Amino acids|Fatty acids|Esters} are the building blocks of proteins.",
-  "Amino acids contain an amino group, {–NH₂|–OH|–COO–}, and a carboxyl group, –COOH.",
-  "Amino acids that must be eaten in the diet are called {essential|primary|saturated} amino acids.",
-  "Amino acids join by {condensation|hydrolysis|oxidation} reactions to form proteins.",
-  "The –CONH– bond is called an amide link or a {peptide|ester|glycosidic} link.",
-  "During digestion, enzymes break down proteins by {hydrolysis|condensation|addition} into amino acids.",
-  "Long-chain protein molecules form spirals or {sheets|rings|crystals}.",
-  "Proteins are held in their shapes by {hydrogen bonding|ionic bonding|metallic bonding}.",
-  "When proteins are heated, the hydrogen bonds break and reform and the protein is {denatured|hydrolysed|oxidised}.",
-  "This explains why enzymes stop working when the temperature is too {high|low}."
- ]]
-]},
-{title:"Fragrances & Skin Care", sections:[
- ["Essential oils & terpenes",[
-  "Essential oils are concentrated extracts of the {aroma|colour|sugar} compounds from plants.",
-  "Essential oils are usually {volatile|non-volatile}, insoluble in water and are mixtures of organic compounds.",
-  "The most common compounds in essential oils are {terpenes|esters|proteins}.",
-  "Terpenes are based on {isoprene|ethene|glycerol}, 2-methylbuta-1,3-diene.",
-  "Isoprene's molecular formula is {C₅H₈|C₄H₈|C₅H₁₀|C₅H₁₂}.",
-  "Terpenes are {unsaturated|saturated} because they contain C=C bonds.",
-  "Oxidation of terpenes in plants produces the distinctive smell of spices such as cloves, cinnamon and {ginger|mint|vanilla}."
- ]],
- ["UV light & free radicals",[
-  "UV light has enough energy to break {covalent|ionic|metallic} bonds, forming atoms with unpaired electrons.",
-  "Atoms with unpaired electrons are called {free radicals|ions|isotopes}.",
-  "In the {initiation|propagation|termination} step, free radicals form.",
-  "In the {termination|initiation|propagation} step, free radicals react with other free radicals.",
-  "Compounds that react with free radicals to form stable molecules are free radical {scavengers|initiators|catalysts}.",
-  "Vitamin {C|A|D} and Vitamin E are added to anti-ageing creams as free radical scavengers.",
-  "Free radical scavengers make polymers more {durable|biodegradable|flexible}."
- ]]
-]},
-{title:"Chemistry in Industry", sections:[
- ["Process design",[
-  "Industrial processes are designed to {maximise|minimise} profit and minimise the impact on the environment.",
-  "Feedstocks are the {chemicals used to make the product|waste products|by-products sold on}.",
-  "Environmental considerations include minimising {waste|yield|profit} and avoiding toxic substances.",
-  "On flow diagrams, look for opportunities to {recycle|evaporate|neutralise} chemicals back into the process.",
-  "Selling {by-products|feedstocks|catalysts} can make a process more profitable."
- ]],
- ["Calculations",[
-  "Number of moles = mass ÷ {gram formula mass|molar volume|concentration}.",
-  "Number of moles = concentration × {volume (l)|mass (g)|time (s)}.",
-  "Number of moles of gas = gas volume ÷ {molar volume|gram formula mass|concentration}.",
-  "If you need more of a reactant than you have, it is the {limiting factor|excess reactant}.",
-  "The mass of product formed is calculated from the {limiting|excess} reactant only.",
-  "*% yield = (actual yield ÷ {theoretical yield|mass of reactants|atom economy}) × 100.",
-  "*Atom economy = (mass of desired product ÷ total mass of {reactants|products|by-products}) × 100.",
-  "*A {high|low} atom economy means fewer waste atoms are produced."
- ]]
-]},
-{title:"Chemical Equilibrium", sections:[
- ["Key points",[
-  "The {⇌|→|=} symbol denotes a reversible reaction.",
-  "In a {closed|open} system, dynamic equilibrium is reached when the rates of forward and reverse reactions are {equal|zero|increasing}.",
-  "At equilibrium, concentrations of reactants and products stay {constant|equal|at zero}.",
-  "If the equilibrium lies to the right, there is a greater concentration of {products|reactants}.",
-  "Increasing the temperature favours the {endothermic|exothermic} reaction.",
-  "Increasing the pressure shifts the equilibrium to the side with the {fewest|most} moles of gas.",
-  "Adding a reactant shifts the equilibrium to the {right|left}.",
-  "Adding a product shifts the equilibrium to the {left|right}.",
-  "A catalyst increases the rates of forward and reverse reactions {equally|unequally}.",
-  "A catalyst {does not affect|shifts} the position of equilibrium but increases the rate at which it is reached."
- ]]
-]},
-{title:"Chemical Energy", sections:[
- ["Prior knowledge",[
-  "Exothermic reactions have {negative|positive} ΔH values.",
-  "E<sub>h</sub> = {cmΔT|mcΔH|c/mΔT}.",
-  "ΔH is measured in {kJ mol⁻¹|g mol⁻¹|mol l⁻¹}."
- ]],
- ["Key points",[
-  "Endothermic industrial reactions have cost implications in the supply of {heat energy|catalysts|water}.",
-  "Bond breaking is {endothermic|exothermic}.",
-  "Bond making is {exothermic|endothermic}.",
-  "Molar bond enthalpy is the energy required to break one mole of bonds in {diatomic|triatomic|ionic} molecules.",
-  "Mean bond enthalpy is the {average|maximum|minimum} enthalpy change for breaking a bond in a variety of substances.",
-  "Bond enthalpies are listed in the {Data Booklet|Periodic Table|course specification}.",
-  "Enthalpy of combustion is the energy released when {1 mole|1 gram|1 litre} of a substance burns completely in oxygen.",
-  "Enthalpies of combustion are always {negative|positive}.",
-  "Hess's Law states the enthalpy change for a reaction is {independent of|dependent on} the route taken."
- ]]
-]},
+
 {title:"Oxidising & Reducing Agents", sections:[
- ["Key points",[
-  "Reduction is a {gain|loss} of electrons.",
-  "Oxidation is a {loss|gain} of electrons.",
-  "An oxidising agent {accepts|donates} electrons.",
-  "A reducing agent {donates|accepts} electrons.",
-  "Elements with {low|high} electronegativities tend to lose electrons and act as reducing agents.",
-  "{Metals|Non-metals|Noble gases} tend to be good reducing agents.",
-  "The strongest oxidising agents in the periodic table are in group {7|1|0|2}.",
-  "Dichromate and permanganate ions are strong oxidising agents in {acidic|alkaline|neutral} solutions.",
-  "{Carbon monoxide|Hydrogen peroxide|Oxygen} is a gas that can be used as a reducing agent.",
-  "Oxidising agents kill fungi and bacteria and are used as {bleach|fuel|fertiliser}.",
-  "The electrochemical series is a series of {reduction|oxidation|neutralisation} reactions.",
-  "The strongest oxidising agents are at the {bottom of the left|top of the right|top of the left}-hand column of the electrochemical series.",
-  "Ion-electron equations are balanced by adding water molecules, {hydrogen ions|hydroxide ions|oxygen atoms} and electrons.",
-  "Permanganate titrations need no indicator: purple permanganate turns {colourless|orange|green} when reduced."
- ]]
+ ["Redox",[
+  "Reduction is the {gain|loss|sharing|removal} of electrons by a reactant.",
+  "Oxidation is the {loss|gain|sharing|addition} of electrons by a reactant.",
+  "Reduction and oxidation always take place {together|separately|one after the other|in different vessels} in a redox reaction.",
+  "An oxidising agent {accepts|donates|shares|destroys} electrons, so it is itself {reduced|oxidised|neutralised|precipitated}.",
+  "A reducing agent {donates|accepts|shares|destroys} electrons, so it is itself {oxidised|reduced|neutralised|precipitated}.",
+  "Elements with low electronegativity tend to lose electrons and act as {reducing|oxidising} agents.",
+  "Elements with high electronegativity tend to gain electrons and act as {oxidising|reducing} agents.",
+  "The strongest reducing agents are found in Group {1|7|0|4}, and the strongest oxidising agents in Group {7|1|0|4}."]],
+ ["Common oxidising and reducing agents",[
+  "Hydrogen peroxide, H₂O₂, is an {oxidising|reducing|neutral|inert} agent.",
+  "Dichromate and permanganate ions are strong oxidising agents in {acidic|alkaline|neutral|molten} solution.",
+  "Carbon monoxide gas is a {reducing|oxidising|neutral|catalytic} agent.",
+  "Oxidising agents are used to kill fungi and bacteria and to {inactivate viruses|neutralise acids|make soaps|dissolve metals}.",
+  "Oxidising agents break down coloured compounds, so they are used as {bleaches|fuels|fertilisers|solvents}.",
+  "In the electrochemical series, the strongest oxidising agents are at the {bottom of the left-hand column|top of the right-hand column|top of the left-hand column|bottom of the right-hand column}.",
+  "In the electrochemical series, the strongest reducing agents are at the {top of the right-hand column|bottom of the left-hand column|top of the left-hand column|bottom of the right-hand column}."]],
+ ["Redox equations",[
+  "Ion-electron equations are balanced by adding water molecules, {H⁺ ions|OH⁻ ions|neutrons|oxygen atoms} and electrons as needed.",
+  "Two ion-electron equations are combined, after balancing the electrons, to give the full {redox equation|neutralisation equation|nuclear equation|combustion equation}.",
+  "In the reaction Zn + Cu²⁺ → Zn²⁺ + Cu, zinc acts as the {reducing agent|oxidising agent|catalyst|spectator}.",
+  "In the reaction Zn + Cu²⁺ → Zn²⁺ + Cu, Cu²⁺ is {reduced|oxidised|neutralised|a spectator}."]]
+]},
+
+/* ================= UNIT 2: NATURE'S CHEMISTRY ================= */
+{title:"Systematic Carbon Chemistry", sections:[
+ ["Saturated, unsaturated and isomers",[
+  "Saturated compounds contain only {single carbon–carbon bonds|at least one C=C bond|ionic bonds|hydrogen bonds}.",
+  "Unsaturated compounds contain at least one {C=C double bond|C–C single bond|–OH group|–COOH group}.",
+  "Compounds containing C=C undergo {addition|condensation|hydrolysis|neutralisation} reactions, in which two molecules combine to form one.",
+  "Bromine solution is quickly {decolourised|turned blue|turned black|unchanged} by unsaturated compounds.",
+  "Molecular structures can be drawn as full or {shortened|ionic|empirical|electron-dot only} structural formulae.",
+  "Isomers have the same molecular formula but different {structural formulae|molecular formulae|empirical formulae|atomic numbers}.",
+  "Isomers may belong to {different homologous series|the same series only|no series|the alkane series only}, and usually have different physical properties."]],
+ ["Predicting physical properties",[
+  "Solubility, boiling point and volatility of organic compounds can be predicted from the presence of O–H or N–H bonds, which allow {hydrogen bonding|ionic bonding|metallic bonding|covalent network bonding}.",
+  "The spatial arrangement of polar bonds decides whether a molecule has a {permanent dipole|temporary dipole only|full charge|lattice}.",
+  "The molecular size of a compound affects the strength of its {London dispersion forces|covalent bonds|ionic bonds|metallic bonds}.",
+  "Larger hydrocarbon molecules have {higher|lower|the same} boiling points than smaller ones because of stronger London dispersion forces."]]
+]},
+
+{title:"Alcohols & Carboxylic Acids", sections:[
+ ["Alcohols",[
+  "An alcohol contains the {hydroxyl (–OH)|carboxyl (–COOH)|carbonyl (C=O)|amino (–NH₂)} functional group.",
+  "Straight-chain and branched alcohols with up to {8|4|6|12} carbons in the longest chain can be named systematically.",
+  "In the name butan-2-ol, the 2 shows the position of the {hydroxyl group|double bond|methyl group|carbonyl group}.",
+  "In a primary alcohol the carbon bonded to the –OH group is bonded to {one|two|three|four} other carbon atom(s).",
+  "In a secondary alcohol the carbon bonded to the –OH group is bonded to {two|one|three|zero} other carbon atoms, and in a tertiary alcohol to {three|two|one|four}.",
+  "Alcohols with two –OH groups are called {diols|triols|dialcohols|phenols}, and those with three are called {triols|diols|trialcohols|glycols}.",
+  "The –OH groups make alcohols polar and allow {hydrogen bonding|ionic bonding|metallic bonding|covalent network bonding} between molecules.",
+  "Hydrogen bonding explains the high boiling point, viscosity and {miscibility with water|insolubility in water|low melting point|non-polarity} of small alcohols."]],
+ ["Carboxylic acids",[
+  "A carboxylic acid contains the {carboxyl (–COOH)|hydroxyl (–OH)|carbonyl (C=O)|ester (–COO–)} functional group.",
+  "Straight-chain and branched carboxylic acids with up to 8 carbons can be named {systematically|only by common names|only by formula|only by colour}.",
+  "Metal oxide + carboxylic acid → {salt + water|salt + hydrogen|salt + carbon dioxide|water only}.",
+  "Metal hydroxide + carboxylic acid → {salt + water|salt + hydrogen|salt + carbon dioxide|water only}.",
+  "Metal carbonate + carboxylic acid → salt + water + {carbon dioxide|hydrogen|oxygen|nitrogen}.",
+  "The name of the salt formed depends on the acid and the {base|solvent|catalyst|temperature} used.",
+  "Ethanoic acid reacting with sodium hydroxide forms sodium {ethanoate|ethanol|ethane|ethoxide}."]]
+]},
+
+{title:"Esters, Fats & Oils", sections:[
+ ["Esters",[
+  "An ester contains the {ester link (–COO–)|hydroxyl group|carbonyl group|amide link}.",
+  "Esters are named from the parent {alcohol and carboxylic acid|aldehyde and ketone|alkane and alkene|amine and acid chloride}.",
+  "Esters are used as flavourings and fragrances because many smell {fruity|rancid|pungent|of ammonia}, and as solvents for {non-polar|polar|ionic|metallic} compounds.",
+  "Esterification is the reaction of an alcohol with a carboxylic acid; it is a {condensation|hydrolysis|neutralisation|addition} reaction.",
+  "In esterification, a molecule of {water|hydrogen|carbon dioxide|oxygen} is eliminated and the ester link forms.",
+  "A condensation reaction joins two molecules together with the loss of a {small molecule|large molecule|catalyst|proton only}.",
+  "Ester hydrolysis is the reaction of an ester with {water|oxygen|hydrogen|bromine} to form an alcohol and a carboxylic acid.",
+  "Hydrolysis is the opposite of {condensation|addition|oxidation|neutralisation}."]],
+ ["Fats and oils",[
+  "Edible fats and oils are {esters|alcohols|carboxylic acids|amines} formed from glycerol and three fatty acids.",
+  "Glycerol has the systematic name {propane-1,2,3-triol|propan-1-ol|propane-1,2-diol|propanoic acid}.",
+  "Fatty acids are {straight-chain|ring-shaped|branched only|ionic} carboxylic acids, saturated or unsaturated, usually with long carbon chains.",
+  "Edible oils have {lower|higher|the same} melting points than fats.",
+  "Double bonds in the fatty acid chains stop molecules packing closely together, so more C=C bonds give {weaker|stronger|the same} van der Waals forces and a lower melting point.",
+  "Each C=C bond in a fat or oil reacts with bromine in an {addition|condensation|hydrolysis|neutralisation} reaction.",
+  "The more C=C bonds a fat or oil has, the {more|less|same amount of} bromine solution it decolourises.",
+  "Fats and oils are a concentrated source of {energy|vitamin C|minerals only|water} and are needed to transport and store fat-soluble vitamins."]]
+]},
+
+{title:"Soaps, Detergents & Emulsions", sections:[
+ ["Soaps",[
+  "Soaps are made by the {alkaline hydrolysis|acid hydrolysis|addition|combustion} of fats or oils.",
+  "Alkaline hydrolysis of a fat or oil gives three fatty acid salts (soap) and one molecule of {glycerol|ethanol|propane|water}.",
+  "A soap ion has a non-polar {hydrophobic tail|hydrophilic tail|ionic tail|polar tail} and an ionic hydrophilic head.",
+  "In soap removing grease, the tails dissolve in the oil or {grease|water|salt|air} while the heads stay in the water.",
+  "Agitation forms ball-like structures called {micelles|polymers|lattices|crystals} that repel each other and keep the oil suspended in water.",
+  "The negatively charged heads of soap ions in micelles {repel|attract|neutralise|bond to} each other."]],
+ ["Hard water and detergents",[
+  "Hard water contains high levels of dissolved {metal ions|non-metal ions|air|oxygen}.",
+  "In hard water, soap forms an insoluble precipitate called {scum|micelles|foam|glycerol}.",
+  "Soapless detergents have {hydrophobic tails and ionic hydrophilic heads|ionic tails and hydrophobic heads|no heads|no tails} and clean like soap.",
+  "Soapless detergents {do not|do} form scum in hard water."]],
+ ["Emulsions and emulsifiers",[
+  "An emulsion consists of small droplets of one liquid {dispersed in|dissolved in|chemically bonded to|frozen in} another.",
+  "An emulsifier prevents {polar and non-polar liquids|two polar liquids|two solids|two gases} from separating.",
+  "Food emulsifiers are made by reacting edible oils with {glycerol|water only|ethanol|ammonia}, giving molecules with only one or two fatty acid groups.",
+  "In an emulsifier, the hydroxyl groups are {hydrophilic|hydrophobic|non-polar|ionic} and the fatty acid chains are {hydrophobic|hydrophilic|polar|ionic}.",
+  "An emulsifier dissolves in both oil and water, which forms a {stable emulsion|precipitate|solution of ions|gas}."]]
+]},
+
+{title:"Proteins", sections:[
+ ["Structure of proteins",[
+  "Proteins are the main structural materials in animal tissue and are involved in {regulating life processes|storing energy only|making fats|making carbohydrates}.",
+  "Enzymes are proteins that act as {biological catalysts|fuels|emulsifiers|fatty acids}.",
+  "Amino acids are the building blocks of {proteins|fats|carbohydrates|esters}.",
+  "Each amino acid contains an amino group, –NH₂, and a {carboxyl group, –COOH|hydroxyl group, –OH|carbonyl group, C=O|ester link}.",
+  "Proteins are formed by {condensation|addition|hydrolysis|neutralisation} reactions between amino acids.",
+  "In protein formation, the amino group of one amino acid joins to the {carboxyl group|hydroxyl group|carbonyl group|methyl group} of another, eliminating water.",
+  "The link between two amino acids is a {peptide (amide) link, –CONH–|ester link, –COO–|ether link, –O–|carbonyl link, C=O}.",
+  "Different sequences of amino acids give proteins with different {roles|melting points only|colours|densities}."]],
+ ["Digestion, shape and denaturation",[
+  "Essential amino acids are those that humans {cannot make|can make easily|do not need|get from the air}, so they must come from the diet.",
+  "In digestion, proteins are broken down into amino acids by enzyme {hydrolysis|condensation|addition|oxidation}.",
+  "Protein chains fold into spirals, sheets or other shapes, held by {intermolecular bonding between side chains|covalent bonds only|metallic bonds|ionic lattices}.",
+  "Denaturation happens when heating {breaks the bonds holding the shape|makes new peptide links|forms new amino acids|neutralises the protein}, so the protein changes shape.",
+  "Denaturation of proteins changes the {texture|colour of the atoms|atomic number|isotopes} of cooked food."]]
+]},
+
+{title:"Oxidation of Food", sections:[
+ ["Oxidation of alcohols",[
+  "For carbon compounds, oxidation is an {increase|decrease|no change} in the oxygen to hydrogen ratio.",
+  "For carbon compounds, reduction is a {decrease|increase|no change} in the oxygen to hydrogen ratio.",
+  "Primary alcohols are oxidised first to {aldehydes|ketones|esters|alkenes} and then to carboxylic acids.",
+  "Secondary alcohols are oxidised to {ketones|aldehydes|carboxylic acids|esters}.",
+  "Tertiary alcohols {cannot|can easily} be oxidised by hot copper(II) oxide or acidified dichromate.",
+  "When hot copper(II) oxide oxidises an alcohol, the black solid turns {brown|green|blue|white}.",
+  "When acidified dichromate(VI) oxidises an alcohol, the colour changes from orange to {green|blue|purple|colourless}."]],
+ ["Aldehydes and ketones",[
+  "Aldehydes and ketones contain the {carbonyl group (C=O)|hydroxyl group|carboxyl group|ester link}.",
+  "Aldehydes {can|cannot} be oxidised to carboxylic acids, but ketones {cannot|can} be oxidised in the same way.",
+  "Fehling's solution turns from blue to a {brick-red precipitate|silver mirror|green solution|colourless solution} with an aldehyde.",
+  "Tollens' reagent forms a {silver mirror|brick-red precipitate|green solution|yellow precipitate} with an aldehyde.",
+  "Acidified dichromate turns from orange to {green|blue|brown|colourless} with an aldehyde.",
+  "Many flavour and aroma molecules are {aldehydes|alkanes|alcohols only|polymers}."]],
+ ["Food and antioxidants",[
+  "Oxygen from the air can oxidise food; oxidation of edible oils gives a {rancid|sweet|fruity|salty} flavour.",
+  "Antioxidants {prevent|cause|speed up} unwanted oxidation reactions.",
+  "Antioxidants are easily {oxidised|reduced|neutralised|hydrolysed}, so they react in place of the compound they protect.",
+  "In a redox equation, the antioxidant is the substance that is {oxidised|reduced|neutralised|precipitated}."]]
+]},
+
+{title:"Fragrances & Skin Care", sections:[
+ ["Essential oils and terpenes",[
+  "Essential oils are concentrated extracts of volatile, {water-insoluble|water-soluble|ionic|metallic} aroma compounds from plants.",
+  "Essential oils are {mixtures|pure compounds|polymers|elements} and are used in perfumes, cosmetics, cleaning products and food flavourings.",
+  "Terpenes are key components of most {essential oils|soaps|fats|plastics}.",
+  "Terpenes are {unsaturated|saturated|ionic|metallic} compounds made by joining together isoprene units.",
+  "Isoprene is the common name for {2-methylbuta-1,3-diene|2-methylbutane|2-methylbut-1-ene|buta-1,3-diene only}.",
+  "Terpenes can be {oxidised|reduced|neutralised|hydrolysed} within plants to form the compounds responsible for the aroma of spices.",
+  "A terpene made from three isoprene units contains {15|10|20|5} carbon atoms."]],
+ ["UV radiation and free radicals",[
+  "UV radiation is high-energy light in sunlight that can break {bonds|nuclei|neutrons|isotopes} in molecules, causing sunburn and skin ageing.",
+  "Sun-block products stop UV light from {reaching the skin|being emitted by the sun|reaching the clouds|breaking bonds in the sun}.",
+  "Breaking bonds with UV light forms free radicals, which are very {reactive|unreactive|stable|inert} atoms or molecules with unpaired electrons.",
+  "Free radical chain reactions have three stages: initiation, propagation and {termination|combustion|oxidation|reduction}.",
+  "In the initiation step, free radicals are {formed|used up|regenerated|neutralised}.",
+  "In a propagation step, a free radical reacts and {a new free radical is formed|two radicals combine|all radicals are removed|a stable ion is formed}.",
+  "In a termination step, two free radicals {combine to form a stable molecule|form three new radicals|react with a stable molecule|are generated by UV}.",
+  "Free radical scavengers react with free radicals to form stable molecules, which {stops the chain reaction|starts the chain reaction|speeds up propagation|forms new radicals}.",
+  "Free radical scavengers are used in cosmetics, foods and {plastics|fuels|fertilisers|metals}."]]
+]},
+
+/* ================= UNIT 3: CHEMISTRY IN SOCIETY ================= */
+{title:"Getting the Most from Reactants", sections:[
+ ["Designing industrial processes",[
+  "Industrial processes aim to maximise {profit|waste|energy use|toxic by-products} while minimising environmental impact.",
+  "When designing a process, chemists consider the availability, sustainability and {cost|colour|smell|density} of feedstocks.",
+  "Other design factors include opportunities for {recycling|burning waste|dumping waste|adding colour}, energy requirements, marketability of by-products and product yield.",
+  "Environmental considerations include minimising waste, avoiding {toxic substances|catalysts|recycling|energy conservation}, and designing products to be biodegradable where appropriate."]],
+ ["Moles and gases",[
+  "A balanced equation with state symbols shows the {mole ratio|colour|speed|temperature} of reactants and products.",
+  "The molar mass (gram formula mass) of a substance in grams is equal to one {mole|litre|atom|molecule}.",
+  "Number of moles = mass ÷ {gram formula mass|volume|concentration|time}.",
+  "Concentration in mol l⁻¹ = moles of solute ÷ {volume of solution in litres|mass of solute|molar mass|time}.",
+  "Molar volume is the volume occupied by {one mole of any gas|one litre of any gas|one gram of any gas|one mole of any liquid} at a given temperature and pressure.",
+  "The molar volume is the same for {all gases|only noble gases|only diatomic gases|only elements} under the same conditions.",
+  "Number of moles of gas = gas volume ÷ {molar volume|molar mass|concentration|time}."]],
+ ["Yield, atom economy and limiting reactants",[
+  "Percentage yield = (actual yield ÷ {theoretical yield|mass of reactants|molar mass|gas volume}) × 100.",
+  "Percentage atom economy = (mass of {desired product|all products|waste products|catalyst}) ÷ total mass of reactants × 100.",
+  "The theoretical yield is the maximum amount of product expected if the {limiting reactant|excess reactant|catalyst|solvent} is fully converted.",
+  "The actual yield is the amount of product {actually formed|expected|wasted|left in the flask as reactant}.",
+  "The limiting reactant is the reactant that is {completely used up|in excess|a catalyst|a solvent}.",
+  "An excess of the {cheaper|more expensive|rarer|more toxic} reactant is often used to ensure that the costly reactant is fully converted.",
+  "A reaction can have a high percentage yield but a low atom economy if large amounts of {by-products|reactants|catalyst|solvent} are formed."]]
+]},
+
+{title:"Controlling the Rate", sections:[
+ ["Collision theory",[
+  "If a reaction is too slow, the process is {uneconomic|dangerous|explosive|exothermic}, and if it is too fast there may be a risk of {explosion|low yield|slow production|cooling}.",
+  "Relative rate = {1 ÷ time|time ÷ 1|mass × time|time × volume}.",
+  "Collision theory states that for a reaction to occur, particles must collide with enough energy and the correct {collision geometry|colour|mass|charge}.",
+  "Increasing the concentration of a reactant increases the {number of collisions per second|activation energy|enthalpy change|energy of each particle}.",
+  "Increasing the pressure of a gas squeezes more particles into the same volume, increasing the {number of collisions per second|activation energy|enthalpy change|particle size}.",
+  "Reducing the particle size of a solid increases its {surface area|activation energy|enthalpy change|density}, increasing the collision rate.",
+  "Increasing temperature increases the number of particles with energy {greater than|less than|equal to|unrelated to} the activation energy."]],
+ ["Potential energy diagrams",[
+  "A potential energy diagram shows the {energy pathway|concentration|colour|mass} of a reaction.",
+  "The enthalpy change is the energy difference between the {products and reactants|activated complex and reactants|products and catalyst|solvent and solute}.",
+  "The enthalpy change is {negative|positive|zero} for an exothermic reaction and {positive|negative|zero} for an endothermic reaction.",
+  "Activation energy is the minimum energy colliding particles need to form the {activated complex|products directly|catalyst|reactants}.",
+  "The activated complex is an {unstable|stable|ionic|solid} arrangement of atoms at the maximum of the energy barrier.",
+  "A catalyst provides an alternative pathway with a {lower|higher|equal} activation energy."]],
+ ["Kinetic energy distribution",[
+  "Temperature is a measure of the {average kinetic energy|total mass|activation energy|enthalpy} of the particles.",
+  "In a reaction, the activation energy is the minimum {kinetic energy|potential energy|mass|charge} that colliding particles need.",
+  "Energy distribution diagrams show how the {spread of kinetic energies|colour|mass|volume} of particles changes with temperature.",
+  "At a higher temperature, the peak of the energy distribution curve moves to the {right and is lower|left and is higher|left and is lower|right and is higher}.",
+  "Raising the temperature or adding a catalyst increases the number of particles with energy above the {activation energy|average energy|enthalpy change|potential energy}."]]
+]},
+
+{title:"Chemical Energy", sections:[
+ ["Enthalpy and heat energy",[
+  "Enthalpy is a measure of the {chemical energy|temperature|mass|volume} in a substance.",
+  "Exothermic reactions {release|absorb} heat, and in industry this heat may need to be {removed|supplied} to stop the temperature rising.",
+  "Endothermic reactions {absorb|release} heat, and in industry heat may need to be {supplied, at a cost|removed|ignored|stored forever}.",
+  "Heat energy can be calculated using Eₕ = {cmΔT|cm ÷ ΔT|c ÷ mΔT|mΔT ÷ c}.",
+  "In Eₕ = cmΔT, c is the {specific heat capacity|concentration|molar volume|speed of light}.",
+  "Any one of Eₕ, c, m or ΔT can be calculated, in the correct {units|colours|bonds|isotopes}, from the other data."]],
+ ["Enthalpy of combustion and Hess's law",[
+  "The enthalpy of combustion is the enthalpy change when {one mole|one gram|one litre|one atom} of a substance burns completely in oxygen.",
+  "Hess's law states that the enthalpy change of a reaction is {independent of the route|dependent on the route|always negative|always positive}.",
+  "Hess's law can be used to calculate an enthalpy change from {appropriate data|temperature only|colour|volume only}.",
+  "If a reaction route is reversed, the sign of the enthalpy change {changes|stays the same|doubles|becomes zero}."]],
+ ["Bond enthalpies",[
+  "The molar bond enthalpy is the energy required to break one mole of bonds in a {diatomic molecule|solid lattice|metal|polymer}.",
+  "A mean molar bond enthalpy is the {average|largest|smallest|total} energy to break one mole of a given bond across different compounds.",
+  "Bond enthalpies can be used to estimate the enthalpy change for a reaction in the {gas phase|solid phase|liquid phase|aqueous phase}.",
+  "Estimated enthalpy change = energy to {break reactant bonds|form product bonds|break product bonds|form reactant bonds} minus energy released forming product bonds."]]
+]},
+
+{title:"Equilibria", sections:[
+ ["Dynamic equilibrium",[
+  "In a closed system, a reversible reaction reaches dynamic equilibrium when the rates of the forward and reverse reactions are {equal|zero|constant but unequal|infinite}.",
+  "At equilibrium the concentrations of reactants and products are {constant|equal|zero|always changing}.",
+  "At equilibrium, concentrations of reactants and products are {rarely equal|always equal|always zero|always doubled}.",
+  "The system must be {closed|open|heated|catalysed} for dynamic equilibrium to be reached."]],
+ ["Changing the position of equilibrium",[
+  "Chemists use strategies to shift the position of equilibrium towards the {products|reactants|catalyst|solvent} to maximise profit.",
+  "Adding more reactant shifts the position of equilibrium towards the {products|reactants|catalyst|solvent}.",
+  "Removing a product shifts the position of equilibrium towards the {products|reactants|catalyst|solvent}.",
+  "Increasing the pressure of a gaseous system shifts equilibrium towards the side with {fewer|more|the same number of} gas molecules.",
+  "Increasing the temperature shifts equilibrium in the {endothermic|exothermic} direction.",
+  "A catalyst speeds up the forward and reverse reactions {equally|forward only|reverse only|differently}.",
+  "A catalyst changes how quickly equilibrium is reached but does {not change|increase|decrease|reverse} the position of equilibrium."]]
+]},
+
+{title:"Chemical Analysis", sections:[
+ ["Chromatography",[
+  "Chromatography is used to separate the components of a mixture based on differences in {polarity or molecular size|colour only|mass only|density only}.",
+  "Specific chromatographic methods {are not|are} required knowledge.",
+  "A component can be identified by the distance it has travelled or by its {retention time|colour only|mass|volume}.",
+  "In a chromatogram, the quantity of a substance is on the y-axis and the {retention time|colour|mass|temperature} is on the x-axis."]],
+ ["Volumetric analysis",[
+  "Volumetric analysis uses a solution of accurately known {concentration|colour|mass|temperature} in a quantitative reaction to find the concentration of another substance.",
+  "A titration accurately determines the volumes needed to reach the {end-point|start-point|boiling point|melting point}.",
+  "An {indicator|catalyst|solvent|filter} is usually used to show the end-point of a titration.",
+  "Titres that are within {0.2 cm³|1 cm³|5 cm³|10 cm³} of each other are concordant.",
+  "A standard solution is a solution of accurately known {concentration|mass only|volume only|pH only}.",
+  "A redox titration is based on a {redox reaction|neutralisation reaction|precipitation reaction|combustion reaction}.",
+  "In titrations with acidified permanganate, no indicator is needed because purple permanganate becomes {colourless|green|orange|blue} when reduced.",
+  "From a balanced equation, the concentration of one reactant can be calculated from the other's concentration and both {volumes|masses|colours|temperatures}."]]
+]},
+
+/* ================= UNIT 4: RESEARCHING CHEMISTRY ================= */
+{title:"Apparatus & Practical Techniques", sections:[
+ ["Common apparatus",[
+  "A {pipette with a safety filler|beaker|measuring cylinder|funnel} is used to measure out a fixed volume of solution accurately.",
+  "A {volumetric flask|conical flask|beaker|measuring cylinder} is used to make up a standard solution.",
+  "A {burette|dropper|boiling tube|evaporating basin} is used to add liquids accurately in a titration.",
+  "A {condenser|funnel|thermometer|balance} is used in distillation to cool vapour back to liquid.",
+  "Candidates should be able to draw {labelled, sectional diagrams|3D photographs|flow charts only|graphs only} of common apparatus."]],
+ ["General techniques",[
+  "Simple filtration uses a funnel and filter paper to separate a {residue from a filtrate|solute from a solvent|gas from a solid|liquid from a liquid}.",
+  "The mass of a substance can be found by difference using a {balance|burette|pipette|condenser}.",
+  "A gas that is relatively insoluble can be collected over {water|a drying agent|oil only|acid}.",
+  "A gas syringe is used to collect {soluble gases or where a dry sample is needed|only insoluble gases|only liquids|only solids}.",
+  "Safe heating can be carried out using a Bunsen burner, a water bath or a heating {mantle|syringe|balance|funnel}.",
+  "Beaker volume markings give only a {rough indication|precise measurement|exact reading|calibrated value} of volume.",
+  "Measuring cylinders are adequate for preparative work, but {burettes, pipettes and volumetric flasks|beakers|conical flasks|funnels} are better for analytical work.",
+  "Simple distillation separates liquids with different {boiling points|colours|densities|melting points}.",
+  "To improve a method, given a procedure and/or results, a change should be suggested and {justified|ignored|repeated blindly|coloured}."]]
+]},
+
+{title:"Reporting Experimental Work", sections:[
+ ["Processing results",[
+  "Data should be tabulated with appropriate headings and {units|colours|decorations|captions only}.",
+  "A scatter graph needs suitable {scales and labels|colours|shading|3D effects}.",
+  "A line of best fit, straight or curved, shows the {trend|rogue points|mean only|colour} in the data.",
+  "A mean value is calculated by adding results and dividing by the {number of results|largest result|smallest result|sum of squares}.",
+  "Rogue points are {identified and eliminated|always kept|averaged in|ignored when plotting only}.",
+  "Where measurements are repeated, you can comment on the {reproducibility|colour|mass|density} of the results.",
+  "An uncertainty is written in the form measurement {± uncertainty|× uncertainty|÷ uncertainty|+ uncertainty only}.",
+  "Candidates {are not|are} expected to calculate uncertainties or carry out quantitative error analysis."]]
 ]}
 ];
 
-const UNITS=[["Chemical Changes and Structure",[0,1]],["Nature's Chemistry",[2,3,4,5]],["Chemistry in Society",[6,7,8,9]]];
+const UNITS=[["Chemical Changes and Structure",[0,1,2,3]],["Nature's Chemistry",[4,5,6,7,8,9,10]],["Chemistry in Society",[11,12,13,14,15]],["Researching Chemistry",[16,17]]];
 let current=0;
 const store={};
-try{const s=localStorage.getItem("hcb");if(s)Object.assign(store,JSON.parse(s));}catch(e){}
-function save(){try{localStorage.setItem("hcb",JSON.stringify(store));}catch(e){}}
+try{const s=localStorage.getItem("hcb2");if(s)Object.assign(store,JSON.parse(s));}catch(e){}
+function save(){try{localStorage.setItem("hcb2",JSON.stringify(store));}catch(e){}}
 function shuffle(a,seed){a=a.slice();let x=seed;for(let i=a.length-1;i>0;i--){x=(x*9301+49297)%233280;const j=Math.floor(x/233280*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
 function render(){

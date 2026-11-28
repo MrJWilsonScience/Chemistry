@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AH Chemistry Summary Cloze</title>
+<title>AH Chemistry Fill the Gaps</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f6f4ef;--panel:#fff;--ink:#1d2430;--muted:#5d6675;--line:#e2ddd2;--accent:#1f6f6b;--accent-soft:#e3f0ee;--ok:#1e7a3c;--ok-bg:#e4f4e8;--bad:#b3261e;--bad-bg:#fbe7e5;--sel:#fbfaf7}
@@ -80,8 +80,8 @@ sub,sup{line-height:0}
 <body>
 <header style="position:relative">
 <div class="tmenu"><button id="tbtn" aria-expanded="false">Teacher Menu ▾</button><div id="tdrop" hidden><label>Topic<select id="ptopic"></select></label><button id="pgo" class="pgo">▶ Present mode</button><p>Shows one statement at a time on a big screen. Keys: ← → move, Space reveal, O options, Esc exit.</p></div></div>
-<h1>Advanced Higher Chemistry — Summary Sheet Cloze</h1>
-<p>Pick the correct word or phrase for each blank, then check your answers.</p>
+<h1>Advanced Higher Chemistry — Fill the Gaps</h1>
+<p>Pick the correct word or phrase for each blank, then check your answers. Every statement is based on the Qualifications Scotland Advanced Higher Chemistry course specification.</p>
 </header>
 <div id="home"></div>
 <div id="present" hidden><div class="ptop"><span id="ptitle"></span><span id="pcount"></span></div><div class="pstage"><div id="pstmt"></div><div id="popts"></div></div><div class="pctrl"><button id="pprev">← Previous</button><button id="popt">Show options</button><button id="prev2" class="primary">Reveal answer</button><button id="pnext">Next →</button><button id="pfs">Full screen</button><button id="pexit">Exit</button></div></div>
@@ -95,349 +95,418 @@ sub,sup{line-height:0}
 <script>
 // Blank syntax: [correct|distractor|distractor|...]
 const TOPICS=[
+/* ============================ INORGANIC CHEMISTRY ============================ */
 {area:"Inorganic chemistry",title:"Electromagnetic Radiation & Atomic Spectra",pts:`
-Electromagnetic radiation can be described as [waves|particles only|vibrations|fields]. Different types of electromagnetic radiation have different [wavelengths|speeds|masses|charges] and frequencies.
-The different types of radiation arranged in order of wavelength is known as the [electromagnetic spectrum|emission spectrum|absorption spectrum|line spectrum].
-All waves of electromagnetic radiation travel at the [same speed|same frequency|same wavelength|same energy], c = 3 × 10<sup>8</sup> m s<sup>−1</sup>.
-The wavelength (λ) is the distance between two adjacent [crests|troughs and crests|nodes and crests|atoms] of a wave. It is commonly measured in nm, where 1 nm = [1 × 10<sup>−9</sup> m|1 × 10<sup>−6</sup> m|1 × 10<sup>−3</sup> m|1 × 10<sup>9</sup> m].
-The frequency (f) is the number of waves to pass a fixed point [per second|per metre|per mole|per centimetre], measured in s<sup>−1</sup> or Hertz (Hz).
-The wavenumber is the number of waves per metre and is equal to [1/λ|λ/c|c/λ|hf]. It is measured in [cm<sup>−1</sup>|nm|s<sup>−1</sup>|m s<sup>−1</sup>], so the wavelength must first be converted to cm.
-The relationship between wavelength, frequency and speed is given by [c = fλ|c = f/λ|E = fλ|f = cλ].
-Energy is transferred in small ‘bundles’ called [quanta|moles|orbitals|waves]. These behave like a stream of particles, known as [photons|electrons|protons|neutrons].
-Photons in [high|low|zero|constant] frequency radiation can transfer greater amounts of energy than photons in low frequency radiation.
-The energy associated with a single photon is given by E = hf or E = [hc/λ|hλ/c|Lhf|c/λ].
-The energy associated with one mole of photons is given by E = Lhf or E = [Lhc/λ|hc/λ|Lh/λ|Lcλ], where L is [Avogadro’s constant|Planck’s constant|the speed of light|the wavenumber].
-When energy is transferred to atoms, electrons may be [promoted to higher|dropped to lower|removed from inner|added to empty] energy levels.
-Atomic spectroscopy can be used to [quantify and identify|separate and purify|neutralise and dilute|ionise and fragment] elements.
-In [absorption|emission|mass|NMR] spectroscopy, radiation is directed at an atomised sample and is absorbed as electrons are promoted to higher energy levels.
-In emission spectroscopy, [high temperatures|low pressures|magnetic fields|radio waves] are used to excite electrons. As the electrons drop to lower energy levels, [photons are emitted|photons are absorbed|electrons are lost|ions are formed].
-Each element produces [characteristic|identical|continuous|random] absorption and emission spectra, which can be used to identify and quantify the element.`},
+Electromagnetic radiation is described by its wavelength and [frequency|mass|charge|density], which are linked by the equation c = fλ.
+The electromagnetic spectrum arranges the different types of radiation in order of [wavelength|charge|mass|temperature].
+Wavelengths of visible light are normally given in [nanometres|kilometres|millimetres|metres squared].
+Radiation shows a [dual wave and particle|purely wave|purely particle|neither wave nor particle] nature.
+A photon is a [particle of radiation|type of atom|negatively charged ion|molecule of gas] whose energy is proportional to frequency.
+The energy of one photon is given by E = [hf|h/f|f/h|hλ], or E = hc/λ.
+The energy of one mole of photons is given by E = [Lhf|hf/L|L/hf|Lh/f], and is often expressed in kJ mol<sup>−1</sup>.
+Photons of higher frequency carry [more|less|the same|no] energy.
+An electron gains energy when it [absorbs|emits|ionises|neutralises] a photon, and loses energy when it emits one.
+When excited electrons fall to lower energy levels they [emit photons|absorb photons|gain mass|become protons]; atomic emission gives discrete line spectra.
+Line spectra provide direct evidence for [quantised energy levels|a continuous range of energies|the existence of neutrons|isotopes].
+Each element has [characteristic|identical|random|continuous] absorption and emission spectra, which can be used to identify and quantify it.
+In absorption spectroscopy, radiation passes through an [atomised sample|solid crystal|liquid only|magnetic field] and absorbance is plotted against wavelength.
+In emission spectroscopy, [heat|cold|pressure|magnetism] is used to excite electrons, and the intensity of emitted light is plotted against wavelength.
+In atomic spectroscopy, the concentration of an element is related to the [intensity of light absorbed or emitted|mass of the sample|colour of the flame only|number of neutrons].`},
 
-{area:"Inorganic chemistry",title:"Atomic Orbitals, Electronic Configurations & the Periodic Table",pts:`
-Emission spectra give evidence for the existence of [subshells|nuclei|isotopes|ions] within an atom’s energy levels.
-The number of subshells an energy level has split into can be found using the [principal quantum number, n|angular momentum number, l|magnetic quantum number, m<sub>l</sub>|spin quantum number, m<sub>s</sub>]. For example, n = 3 has [three subshells: s, p and d|two subshells: s and p|four subshells: s, p, d and f|one subshell: s].
-Maximum electrons per subshell: s = 2, p = [6|3|8|10], d = [10|5|8|14], f = [14|7|10|18].
-Each subshell contains atomic [orbitals|nuclei|molecules|bonds]. Knowledge of the shape of [f|s|p|d] orbitals is not required.
-Orbitals within a subshell are said to be [degenerate|hybridised|excited|ionised]; they have equal energies.
-The [Aufbau principle|Pauli exclusion principle|Hund’s rule|Markovnikov’s rule] states that orbitals are filled in order of increasing energy.
-[Hund’s rule|The Aufbau principle|The Pauli exclusion principle|The n+1 rule] states that when degenerate orbitals are available, electrons fill each singly, with [parallel|opposite|random|paired] spins, before pairing occurs.
-The Pauli exclusion principle states that no two electrons can have the same set of [four|three|two|five] quantum numbers.
-Electronic configurations using spectroscopic notation and orbital box notation can be written for elements of atomic numbers 1 to [36|18|20|54].
-The periodic table is subdivided into four blocks ([s, p, d and f|1, 2, 3 and 4|K, L, M and N|σ, π, δ and φ]) corresponding to the outer electronic configurations of the elements.
-Quantum numbers describe the state of an electron, including distance from the nucleus, the orbital, its orientation and its [spin|mass|charge|speed].
-The principal quantum number, n, indicates the main [energy level|orbital shape|orbital orientation|spin direction].
-The angular momentum quantum number, l, indicates the [shape|orientation|spin|size] of the orbital: s = 0, p = [1|2|3|−1], d = 2, f = 3.
-The magnetic quantum number, m<sub>l</sub>, indicates the [orientation|shape|spin|energy level] of the orbital and can have values between [−l and +l|0 and n|−½ and +½|1 and n−1].
-The spin magnetic quantum number, m<sub>s</sub>, indicates the direction of spin and can be either [+½ or −½|+1 or −1|0 or 1|any whole number].
-Anomalies in the trends of ionisation energies can be explained by considering the [electronic configurations|atomic masses|numbers of neutrons|bond enthalpies].
-There is special stability associated with [half-filled and full|empty and quarter-filled|singly occupied|partly filled] subshells. The more stable the configuration, the [higher|lower|more variable|less important] the ionisation energy.`},
+{area:"Inorganic chemistry",title:"Atomic Orbitals & Quantum Numbers",pts:`
+Electrons show both wave and particle properties, which explains why atomic spectra are [discrete|continuous|random|absent].
+Electrons in atoms behave as [standing waves|projectiles|stationary particles|ions]; orbitals are the possible standing-wave shapes.
+Each orbital can hold a maximum of [two|one|six|eight] electrons.
+The shapes of s and p orbitals are [spherical and dumbbell-shaped|both spherical|both dumbbell-shaped|cubic and spherical]; the shape of f orbitals is not required.
+The energies of electrons in atoms are [quantised|continuous|random|zero].
+Four quantum numbers are used to describe an electron: principal, angular momentum, magnetic and [spin|charge|mass|isotope].
+The principal quantum number, n, describes the [energy level and orbital size|orbital shape|orbital orientation|spin direction].
+The angular momentum quantum number, l, describes the shape of the subshell and has values from 0 to [n − 1|n + 1|n|2n].
+The magnetic quantum number, m<sub>l</sub>, describes the [orientation of the orbital|size of the orbital|spin of the electron|energy level] and has values from −l to +l.
+The spin quantum number, m<sub>s</sub>, has values of [+½ or −½|+1 or −1|0 or 1|+2 or −2].
+The Aufbau principle states that electrons fill orbitals in order of [increasing energy|decreasing energy|increasing size|alphabetical order].
+Hund's rule states that degenerate orbitals are filled [singly with parallel spins first|in pairs first|in order of size|randomly].
+The Pauli exclusion principle states that no two electrons in an atom can have the same [four quantum numbers|principal quantum number|angular momentum quantum number|mass].
+In an isolated atom, orbitals within the same subshell are [degenerate|different in energy|of different size|always empty].`},
 
-{area:"Inorganic chemistry",title:"Shapes of Molecules",pts:`
-[VSEPR|Molecular orbital|Hybridisation|Brønsted–Lowry] theory (valence shell electron pair repulsion) can be used to predict the shapes of molecules and polyatomic ions.
-The number of electron pairs around a central atom = (number of outer electrons on the central atom + one electron for each atom bonded to it [± the ion’s charge|× the charge|+ the mass number|− the atomic number]) ÷ [2|3|4|1].
-Electron pairs are [negatively|positively|not] charged and repel each other. They are arranged to [minimise repulsion|maximise repulsion|minimise separation|maximise attraction] and maximise separation.
-Electron pair repulsions decrease in strength in the order: [non-bonding/non-bonding > non-bonding/bonding > bonding/bonding|bonding/bonding > non-bonding/bonding > non-bonding/non-bonding|non-bonding/bonding > bonding/bonding > non-bonding/non-bonding|they are all equal].
-2 electron pairs (2 bonding) give a [linear|bent|trigonal planar|tetrahedral] shape; 3 bonding pairs give a [trigonal planar|trigonal pyramidal|T-shaped|linear] shape.
-4 pairs: 4 bonding, 0 non-bonding = tetrahedral; 3 bonding, 1 non-bonding = [trigonal pyramidal|trigonal planar|bent|square planar]; 2 bonding, 2 non-bonding = [bent|linear|trigonal pyramidal|tetrahedral].
-5 bonding pairs give a [trigonal bipyramidal|octahedral|square planar|trigonal planar] shape.
-6 pairs: 6 bonding = [octahedral|hexagonal|trigonal bipyramidal|tetrahedral]; 4 bonding and 2 non-bonding = [square planar|tetrahedral|see-saw|octahedral].`},
+{area:"Inorganic chemistry",title:"Electronic Configurations & Ionisation Energies",pts:`
+Orbital box notation shows the relative energies of the orbitals in the first [four|two|six|eight] shells.
+Electronic configurations can be written using spectroscopic notation and orbital box notation for elements with atomic numbers 1 to [36|18|20|54].
+The periodic table is divided into four blocks, s, p, d and [f|g|h|e], based on the outer electron configuration.
+Trends in first, second and subsequent ionisation energies for elements 1 to 36 can be explained by the stability of [subshells|nuclei|isotopes|bonds].
+Electrons in half-filled and full subshells have [special stability|special instability|no unusual stability|the highest energy].
+The greater the stability of an electron configuration, the [higher|lower|same] the ionisation energy.
+Ionisation energy anomalies, such as the drop from beryllium to boron, are explained by the [relative energies of subshells|number of neutrons|colour of the element|density of the element].
+The large jump between successive ionisation energies shows that the next electron is being removed from an [inner shell|outer shell|nucleus|orbital of higher energy].`},
 
-{area:"Inorganic chemistry",title:"Transition Metals",pts:`
-The d-block transition metals are metals with an [incomplete|empty|completely full|half-filled] d subshell in at least one of their ions.
-Filling of d orbitals follows the Aufbau principle except for [chromium and copper|iron and cobalt|scandium and zinc|nickel and manganese], due to the special stability of a half-filled or full d subshell.
-When first-row transition elements form ions, the [4s|3d|3p|4p] electrons are lost first.
-An element is in a particular oxidation state when it has a specific [oxidation number|mass number|coordination number|quantum number].
-Uncombined elements have an oxidation state of [0|+1|−1|+2]; a single-atom ion has an oxidation state equal to its [charge|mass|group number|period].
-In a neutral molecule the oxidation numbers add up to [zero|the overall charge|+1|the number of atoms]; in a polyatomic ion they add up to [the overall charge on the ion|zero|−1|the number of atoms].
-In most compounds oxygen is [−2|+2|−1|0], hydrogen is [+1|−1|0|+2], halogens are −1 and alkali metals are +1.
-A transition metal can have [different|only one|no|fixed] oxidation states in different compounds, and these may have different [colours|masses|nuclei|atomic numbers].
-Oxidation is an [increase|decrease|no change] in oxidation number; reduction is a [decrease|increase|no change] in oxidation number.
-Changes in oxidation number of transition metal ions show whether [oxidation or reduction|neutralisation|hydrolysis|condensation] has occurred.
-Compounds with metals in high oxidation states are often [oxidising|reducing|neutralising|dehydrating] agents; those in low oxidation states are often [reducing|oxidising|drying|buffering] agents.
-Transition metals commonly form complexes with substances called [ligands|catalysts|indicators|electrophiles]. A complex is a metal ion surrounded by these.
-Ligands may be negative ions or molecules with [non-bonding pairs of electrons|positive charges|unpaired protons|empty orbitals] that they donate to the metal, forming [dative covalent|ionic|metallic|hydrogen] bonds.
-Ligands can be classified as [monodentate, bidentate, up to hexadentate|primary, secondary and tertiary|strong and weak acids|cis and trans].
-The classification of a ligand can be deduced from the [formula or structure|colour|mass|melting point] of the ligand or complex.
-The total number of bonds from the ligands to the central metal is the [coordination number|oxidation number|denticity|atomic number].
-Transition metal complexes are named according to [IUPAC|Markovnikov|Hund’s|VSEPR] rules.
-In a transition metal complex the d orbitals are [no longer degenerate|still degenerate|empty|hybridised to sp³].
-Splitting of the d orbitals occurs when electrons in approaching ligands repel the electrons in the orbitals lying [along the axes|between the axes|in the nucleus|in the s subshell].
-Ligands causing a large energy difference between d orbital subsets are [strong field|weak field|monodentate|chiral] ligands.
-Ligands can be placed in order of their ability to split d orbitals; this is the [spectrochemical series|electrochemical series|homologous series|reactivity series].
-Colours of many transition metal complexes can be explained in terms of [d–d transitions|s–p transitions|nuclear spin flips|bond vibrations].
-Light is absorbed when electrons in a [lower|higher|half-filled|core] energy d orbital are promoted to a d orbital of higher energy.
-If light of one colour is absorbed, the [complementary|same|white|infrared] colour is observed.
-These transitions happen when energy corresponding to the [ultraviolet or visible|infrared|radio|microwave] region is absorbed.
-Transition metals and their compounds can act as [catalysts|indicators|buffers|primary standards].
-[Heterogeneous|Homogeneous|Hexadentate|Racemic] catalysts are in a different state to the reactants.
-Heterogeneous catalysis involves [adsorption|absorption|dissolving|evaporation] of reactive molecules onto active sites. Unpaired d electrons or unfilled d orbitals allow activated complexes to form, providing pathways with [lower|higher|equal|zero] activation energies.
-[Homogeneous|Heterogeneous|Bidentate|Stereo] catalysts are in the same state as the reactants.
-Homogeneous catalysis can be explained by [changing oxidation states|adsorption onto surfaces|changing colour|hybridisation] with the formation of intermediate complexes.
-Naming: ligands are named first, [alphabetically|by size|by charge|randomly], followed by the central metal. NH<sub>3</sub> is named [ammine|amino|ammonia|amido] and H<sub>2</sub>O is named [aqua|hydro|oxo|hydroxido].
-If the complex has an overall [negative|positive|zero] charge, the metal name takes the suffix [−ate|−ite|−ide|−ium], e.g. iron becomes [ferrate|ironate|ferrite|ferride] and copper becomes cuprate.
-Formulae: the metal symbol comes first; ligands are written with the [atom that bonds to the metal first|heaviest atom first|hydrogen first|charge first], e.g. water is written as OH<sub>2</sub>. The complex is enclosed in [square brackets|round brackets|curly brackets|no brackets] with the overall charge outside.`},
+{area:"Inorganic chemistry",title:"Shapes of Molecules & VSEPR",pts:`
+VSEPR stands for valence shell electron pair [repulsion|resonance|reduction|redistribution].
+To find the number of electron pairs, add the valence electrons of the central atom and one per [attached atom|lone pair|neutron|orbital].
+For a negative ion, [add|subtract|ignore|double] one electron per negative charge; for a positive ion, [subtract|add|ignore|double] one per positive charge.
+The total number of electrons is then divided by [two|three|four|eight] to give the number of electron pairs.
+Electron pairs repel and arrange themselves to [maximise|minimise|equalise|ignore] their separation.
+Two electron pairs adopt a [linear|trigonal planar|tetrahedral|octahedral] arrangement.
+Three electron pairs adopt a [trigonal planar|linear|tetrahedral|octahedral] arrangement.
+Four electron pairs adopt a [tetrahedral|trigonal planar|trigonal bipyramidal|octahedral] arrangement.
+Five electron pairs adopt a [trigonal bipyramidal|tetrahedral|octahedral|square planar] arrangement.
+Six electron pairs adopt an [octahedral|trigonal bipyramidal|tetrahedral|trigonal planar] arrangement.
+The molecular shape is the arrangement of the [atoms|lone pairs|electrons only|nuclei and lone pairs] within the electron pair geometry.
+The order of repulsion strength is lone pair–lone pair > [lone pair–bonding pair|bonding pair–bonding pair|lone pair–nucleus|bonding pair–nucleus] > bonding pair–bonding pair.
+A molecule with four electron pairs, two of which are lone pairs, such as H<sub>2</sub>O, has an [angular (bent)|linear|tetrahedral|trigonal pyramidal] shape.
+A molecule with four electron pairs, one of which is a lone pair, such as NH<sub>3</sub>, has a [trigonal pyramidal|tetrahedral|angular|linear] shape.`},
 
-{area:"Physical chemistry",title:"Chemical Equilibrium",pts:`
-A reaction is at equilibrium when the rate of the forward reaction [equals|is greater than|is less than|is double] the rate of the reverse reaction, in a [closed|open|heated|catalysed] system.
-At equilibrium the composition of reactants and products [remains constant|keeps changing|becomes zero|is always 50:50].
-The equilibrium constant, K, is essentially a [ratio|sum|difference|product] between the products and reactants at equilibrium.
-For aA + bB ⇌ cC + dD, K = [[C]<sup>c</sup>[D]<sup>d</sup> / [A]<sup>a</sup>[B]<sup>b</sup>|[A]<sup>a</sup>[B]<sup>b</sup> / [C]<sup>c</sup>[D]<sup>d</sup>|[C][D] / [A][B]|c[C] + d[D] − a[A] − b[B]].
-The concentrations of pure solids and pure liquids are given a value of [1|0|100|their GFM] in the equilibrium expression.
-Equilibrium constants have [no units|units of mol l<sup>−1</sup>|units of kJ mol<sup>−1</sup>|units of s<sup>−1</sup>].
-If K is less than 1, the equilibrium lies to the [left (reactants)|right (products)|middle|outside the system].
-K is not affected by changes in [concentration, pressure or a catalyst|temperature|any condition|temperature or catalyst].
-The value of K is affected by changes in [temperature|pressure|concentration|catalyst].
-For endothermic reactions, a rise in temperature causes K to [increase|decrease|stay the same|become zero]; for exothermic reactions, K [decreases|increases|stays the same|doubles].
-In water and aqueous solutions, there is an equilibrium between water molecules and [hydronium and hydroxide|hydrogen and oxide|sodium and chloride|oxygen and hydrogen gas] ions.
-The ionisation of water: H<sub>2</sub>O + H<sub>2</sub>O ⇌ [H<sub>3</sub>O<sup>+</sup> + OH<sup>−</sup>|H<sub>2</sub> + O<sub>2</sub>|H<sup>+</sup> + O<sup>2−</sup>|H<sub>2</sub>O<sub>2</sub> + H<sub>2</sub>].
-H<sub>3</sub>O<sup>+</sup> is a hydronium ion, which is a [hydrated proton|hydrated electron|dehydrated proton|hydroxide ion].
-The ionic product of water is K<sub>w</sub> = [[H<sub>3</sub>O<sup>+</sup>][OH<sup>−</sup>]|[H<sub>3</sub>O<sup>+</sup>]/[OH<sup>−</sup>]|[H<sub>2</sub>O]<sup>2</sup>|[H<sub>3</sub>O<sup>+</sup>] + [OH<sup>−</sup>]].
-K<sub>w</sub> varies with [temperature|pressure|concentration|pH]. At 25 °C, K<sub>w</sub> = [1 × 10<sup>−14</sup>|1 × 10<sup>−7</sup>|1 × 10<sup>14</sup>|7].
-At pH 7 and 25 °C, [H<sub>3</sub>O<sup>+</sup>] and [OH<sup>−</sup>] are both [1 × 10<sup>−7</sup>|1 × 10<sup>−14</sup>|7|0] mol l<sup>−1</sup>.
-If the concentration of H<sub>3</sub>O<sup>+</sup> or OH<sup>−</sup> is known, the other can be calculated using [K<sub>w</sub>|K<sub>a</sub>|K<sub>In</sub>|ΔG°].
-Brønsted–Lowry: an acid is a proton [donor|acceptor|creator|destroyer]; a base is a proton [acceptor|donor|creator|destroyer].
-When an acid loses a proton it forms a [conjugate base|conjugate acid|salt|buffer]; when a base gains a proton it forms a [conjugate acid|conjugate base|salt|indicator].
-Water is [amphoteric|neutral only|a strong acid|a strong base]; it can act as both an acid and a base.
-Strong acids and bases are [completely|partially|not|reversibly] dissociated into ions in aqueous solution.
-Weak acids and bases are only [partially|completely|never|always] dissociated into ions in aqueous solution.
-Examples of strong acids include hydrochloric, sulfuric and [nitric|ethanoic|carbonic|sulfurous] acid.
-Ethanoic acid, carbonic acid and [sulfurous|nitric|hydrochloric|sulfuric] acid are examples of weak acids.
-Solutions of [metal hydroxides|amines|ammonia|carboxylic acids] are strong bases.
-[Ammonia and amines|Metal hydroxides|Metal oxides|Sodium carbonate and NaOH] are examples of weak bases.
-Equimolar solutions of weak and strong acids have different pH, conductivity and reaction rates, but the [stoichiometry|pH|rate|conductivity] of reactions is the same.
-The acid dissociation constant is K<sub>a</sub> = [[H<sub>3</sub>O<sup>+</sup>][A<sup>−</sup>] / [HA]|[HA] / [H<sub>3</sub>O<sup>+</sup>][A<sup>−</sup>]|[H<sub>3</sub>O<sup>+</sup>][OH<sup>−</sup>]|[A<sup>−</sup>] / [HA]], and pK<sub>a</sub> = [−log<sub>10</sub>K<sub>a</sub>|log<sub>10</sub>K<sub>a</sub>|1/K<sub>a</sub>|10<sup>−Ka</sup>].
-The smaller the value of K<sub>a</sub>, the [weaker|stronger|more concentrated|more dilute] the acid; the bigger the pK<sub>a</sub>, the weaker the acid.
-The pH of a strong acid: pH = [−log<sub>10</sub>[H<sub>3</sub>O<sup>+</sup>]|log<sub>10</sub>[H<sub>3</sub>O<sup>+</sup>]|14 − [H<sub>3</sub>O<sup>+</sup>]|−log<sub>10</sub>[OH<sup>−</sup>]] and [H<sub>3</sub>O<sup>+</sup>] = 10<sup>−pH</sup>.
-For a strong alkali, first find [H<sub>3</sub>O<sup>+</sup>] using [K<sub>w</sub>|K<sub>a</sub>|pK<sub>a</sub>|K<sub>In</sub>], then use pH = −log<sub>10</sub>[H<sub>3</sub>O<sup>+</sup>].
-The approximate pH of a weak acid: pH = [½pK<sub>a</sub> − ½log<sub>10</sub>c|pK<sub>a</sub> − log<sub>10</sub>c|½pK<sub>a</sub> + ½log<sub>10</sub>c|2pK<sub>a</sub> − log<sub>10</sub>c].
-A salt from a strong acid and a weak base has pH [&lt; 7 (acidic)|= 7 (neutral)|&gt; 7 (alkaline)]; a weak acid and a strong base give pH [&gt; 7 (alkaline)|&lt; 7 (acidic)|= 7 (neutral)].
-The pH of a salt can be explained with reference to the appropriate [equilibria|enthalpy changes|reaction rates|spectra].
-A buffer solution is one in which the pH remains [approximately constant|exactly 7|rapidly changing|always acidic] when small amounts of acid, base or water are added.
-An acid buffer consists of a weak acid and one of its salts made from a [strong base|weak base|strong acid|weak acid].
-A basic buffer consists of a solution of a [weak base|strong base|strong acid|metal hydroxide] and one of its salts.
-A buffer resists a change in pH because its equilibrium [shifts to remove added H<sup>+</sup> or OH<sup>−</sup>|stops reacting|releases water|changes colour].
-pH of an acid buffer: pH = pK<sub>a</sub> − log<sub>10</sub>[[acid]/[salt]|[salt]/[acid]|[acid] × [salt]|[H<sub>3</sub>O<sup>+</sup>]].
-Indicators are [weak acids|strong acids|strong bases|salts]: HIn + H<sub>2</sub>O ⇌ H<sub>3</sub>O<sup>+</sup> + In<sup>−</sup>.
-The colour of HIn must be [distinctly different|the same as|colourless compared|slightly darker] from the colour of the conjugate base In<sup>−</sup>.
-K<sub>In</sub> = [[H<sub>3</sub>O<sup>+</sup>][In<sup>−</sup>] / [HIn]|[HIn] / [H<sub>3</sub>O<sup>+</sup>][In<sup>−</sup>]|[In<sup>−</sup>] / [HIn]|[H<sub>3</sub>O<sup>+</sup>][HIn]].
-The colour of the indicator is determined by the [ratio of [HIn] to [In<sup>−</sup>]|temperature|volume of solution|K<sub>w</sub>].
-The theoretical colour change happens when [HIn] = [In<sup>−</sup>], so K<sub>In</sub> = [[H<sub>3</sub>O<sup>+</sup>]|[OH<sup>−</sup>]|1|K<sub>w</sub>].
-In practice the colour change is only distinguishable when [HIn] and [In<sup>−</sup>] differ by a factor of [10|2|100|1000].
-The pH range of the colour change is pH = [pK<sub>In</sub> ± 1|pK<sub>In</sub> ± 2|pK<sub>In</sub> × 10|7 ± 1].
-The pH range of the indicator must correspond to the [rapid change in pH|starting pH|final pH|pH of water] of the titration.`},
+{area:"Inorganic chemistry",title:"Transition Metals & Oxidation States",pts:`
+A d-block transition metal has an [incomplete d subshell|full d subshell|empty p subshell|full s subshell] in at least one of its ions.
+Chromium and copper are exceptions to the Aufbau filling order because of the stability of a [half-filled or full d subshell|full p subshell|half-filled s subshell|empty s subshell].
+When first-row transition metals form ions, they lose the [4s electrons before the 3d|3d electrons before the 4s|inner electrons first|electrons from all subshells equally].
+An uncombined element has an oxidation number of [0|+1|−1|+2].
+In a monatomic ion, the oxidation number is equal to the [charge on the ion|number of protons|number of neutrons|group number only].
+In most compounds, oxygen has an oxidation number of [−2|+2|−1|0] and hydrogen has an oxidation number of [+1|−1|0|+2].
+In a neutral compound, the sum of the oxidation numbers is [zero|equal to the number of atoms|positive|negative].
+In a polyatomic ion, the sum of the oxidation numbers is equal to the [charge on the ion|number of atoms|number of electrons|molar mass].
+Transition metals show [several oxidation states|only one oxidation state|no oxidation states|only negative states], and different states often have different colours.
+Oxidation is an [increase|decrease|no change] in oxidation number, and reduction is a [decrease|increase|no change] in oxidation number.
+Compounds with transition metals in high oxidation states tend to be [oxidising|reducing|inert|neutral] agents.
+Compounds with transition metals in low oxidation states tend to be [reducing|oxidising|inert|neutral] agents.`},
+
+{area:"Inorganic chemistry",title:"Complexes, Colour & Catalysis",pts:`
+A ligand is a species that donates an [electron pair|proton|neutron|electron to form an ion] to a metal ion, forming a dative covalent bond.
+A ligand that forms one bond to the metal is [monodentate|bidentate|tridentate|hexadentate]; one that forms two bonds is [bidentate|monodentate|tridentate|hexadentate].
+The coordination number of a complex is the total number of [ligand-to-metal bonds|ligands only|metal atoms|electrons].
+Examples of ligands include water, ammonia, halides, cyanide, hydroxide and [oxalate|sodium|nitrogen gas|argon].
+In IUPAC names of complexes, copper is named as [cuprate|coppate|cuprite|cuprous] and iron as [ferrate|ironate|ferrite|ferric] when the complex is an anion.
+In a complex, the d orbitals split into a higher and a lower energy set because of repulsion from the [ligands|nucleus|neutrons|inner electrons].
+Strong field ligands cause a [large|small|zero] splitting of the d orbitals, and weak field ligands cause a [small|large|zero] splitting.
+The spectrochemical series ranks ligands in order of their ability to [split the d orbitals|oxidise metals|dissolve in water|reduce ions].
+The colour of a transition metal complex arises from [d–d transitions|nuclear transitions|ionisation of the metal|bond breaking], in which electrons absorb light and move between d levels.
+The colour observed is the [complementary colour|same colour|opposite wavelength only|brightest colour] to the colour absorbed.
+A heterogeneous catalyst is in a [different phase|the same phase|liquid phase only|gaseous phase only] from the reactants.
+Heterogeneous catalysis involves adsorption of reactants onto [active sites|the nucleus|neutrons|free radicals], aided by unpaired d electrons or vacant d orbitals.
+A homogeneous catalyst is in the [same phase|different phase|solid phase only|gaseous phase only] as the reactants.
+Homogeneous catalysis by transition metals is explained by changes in [oxidation state|nuclear charge|mass number|atomic number] and the formation of intermediate complexes.`},
+
+/* ============================ PHYSICAL CHEMISTRY ============================ */
+{area:"Physical chemistry",title:"Equilibrium Constant",pts:`
+A system is at equilibrium when the [composition of reactants and products stays constant|reactants are used up|products are used up|temperature is zero].
+For aA + bB ⇌ cC + dD, the equilibrium constant is K = [[C]<sup>c</sup>[D]<sup>d</sup> / [A]<sup>a</sup>[B]<sup>b</sup>|[A]<sup>a</sup>[B]<sup>b</sup> / [C]<sup>c</sup>[D]<sup>d</sup>|[C][D] / [A][B] only|c[C] + d[D]].
+The equilibrium constant K has [no units|units of mol l<sup>−1</sup>|units of s<sup>−1</sup>|units of kJ mol<sup>−1</sup>] and describes the position of equilibrium.
+In the expression for K, pure solids and pure liquids are given a value of [1|0|10|100].
+The value of K depends only on [temperature|concentration|pressure|catalyst].
+For an endothermic reaction, a rise in temperature [increases|decreases|has no effect on] K and increases the yield of products.
+For an exothermic reaction, a rise in temperature [decreases|increases|has no effect on] K and decreases the yield of products.
+A catalyst [does not change|increases|decreases] the value of K.
+A large value of K means the position of equilibrium lies [towards the products|towards the reactants|exactly in the middle|nowhere].`},
+
+{area:"Physical chemistry",title:"Acids, Bases & pH",pts:`
+Water ionises according to H<sub>2</sub>O + H<sub>2</sub>O ⇌ [H<sub>3</sub>O<sup>+</sup> + OH<sup>−</sup>|2H<sub>2</sub> + O<sub>2</sub>|H<sub>2</sub>O<sub>2</sub> + H<sub>2</sub>|2OH<sup>−</sup> + 2H<sup>+</sup>].
+The ionic product of water is K<sub>w</sub> = [[H<sub>3</sub>O<sup>+</sup>][OH<sup>−</sup>]|[H<sub>3</sub>O<sup>+</sup>]/[OH<sup>−</sup>]|[H<sub>3</sub>O<sup>+</sup>] + [OH<sup>−</sup>]|[H<sub>2</sub>O]<sup>2</sup>].
+At 25 °C, the value of K<sub>w</sub> is approximately [1 × 10<sup>−14</sup>|1 × 10<sup>−7</sup>|1 × 10<sup>14</sup>|1 × 10<sup>7</sup>].
+The value of K<sub>w</sub> [varies|does not vary] with temperature.
+pH = [−log<sub>10</sub>[H<sub>3</sub>O<sup>+</sup>]|log<sub>10</sub>[H<sub>3</sub>O<sup>+</sup>]|−ln[OH<sup>−</sup>]|[H<sub>3</sub>O<sup>+</sup>]<sup>2</sup>].
+At pH 7 and 25 °C, the concentrations of H<sub>3</sub>O<sup>+</sup> and OH<sup>−</sup> are both [1 × 10<sup>−7</sup> mol l<sup>−1</sup>|1 × 10<sup>−14</sup> mol l<sup>−1</sup>|1 mol l<sup>−1</sup>|zero].
+At 25 °C, pH + pOH = [14|7|1|0].
+A Brønsted–Lowry acid is a [proton donor|proton acceptor|electron donor|electron acceptor] and a base is a [proton acceptor|proton donor|electron acceptor|electron donor].
+A conjugate acid–base pair differs by [one proton|one electron|one neutron|one water molecule].
+Strong acids and bases are [fully|partially|never] dissociated in water; weak acids and bases are [partially|fully|never] dissociated.
+Examples of strong acids are hydrochloric, sulfuric and [nitric|ethanoic|carbonic|sulfurous] acid.
+Examples of weak acids are ethanoic, carbonic and [sulfurous|nitric|hydrochloric|sulfuric] acid.
+Ammonia and amines are examples of [weak bases|strong bases|strong acids|weak acids].
+Equimolar solutions of strong and weak acids differ in pH, conductivity and rate of reaction, but have the [same|different] reaction stoichiometry.
+The acid dissociation constant is K<sub>a</sub> = [[H<sub>3</sub>O<sup>+</sup>][A<sup>−</sup>]/[HA]|[HA]/[H<sub>3</sub>O<sup>+</sup>][A<sup>−</sup>]|[A<sup>−</sup>]/[HA]|[H<sub>3</sub>O<sup>+</sup>] + [A<sup>−</sup>]], and pK<sub>a</sub> = −log<sub>10</sub>K<sub>a</sub>.
+The approximate pH of a weak acid is given by pH = ½pK<sub>a</sub> [− ½log<sub>10</sub>c|+ ½log<sub>10</sub>c|× c|÷ c].`},
+
+{area:"Physical chemistry",title:"Salts, Buffers & Indicators",pts:`
+A salt of a strong acid and a strong base forms a [neutral|acidic|alkaline|buffer] solution.
+A salt of a weak acid and a strong base forms an [alkaline|acidic|neutral|buffer] solution.
+A salt of a strong acid and a weak base forms an [acidic|alkaline|neutral|buffer] solution.
+The pH of salt solutions can be explained by [equilibria involving H<sub>3</sub>O<sup>+</sup> and OH<sup>−</sup>|nuclear reactions|ionisation energies|isotopes].
+A buffer solution resists changes in pH when small amounts of [acid, base or water|only acid|only base|only water] are added.
+An acid buffer consists of a [weak acid and its salt with a strong base|strong acid and its salt|strong base and its salt|weak base and its salt].
+In an acid buffer, added base is neutralised by the [weak acid|conjugate base|water|salt cation] and added acid is neutralised by the [conjugate base|weak acid|water|salt cation].
+A basic buffer consists of a [weak base and its salt with a strong acid|strong base and its salt|strong acid and its salt|weak acid and its salt].
+The pH of an acid buffer is given by pH = pK<sub>a</sub> − log<sub>10</sub>[[acid]/[salt]|[salt]/[acid]|[acid][salt]|[acid] + [salt]].
+An indicator is a [weak acid|strong acid|strong base|salt] in which the acid form HIn and its conjugate base In<sup>−</sup> have different colours.
+The colour of an indicator depends on the ratio [HIn]/[In<sup>−</sup>]; the midpoint is reached when pH = [pK<sub>In</sub>|pK<sub>w</sub>|7|14].
+A visible colour change occurs when the ratio of the two forms is about [10 : 1|1 : 1|2 : 1|100 : 1].
+The pH range of an indicator is pK<sub>In</sub> [± 1|± 0.1|± 5|± 10].
+A suitable indicator for a titration is chosen using pH data and [titration curves|colour of the solution|density|temperature].`},
 
 {area:"Physical chemistry",title:"Reaction Feasibility",pts:`
-The standard enthalpy of formation, ΔH°<sub>f</sub>, is the enthalpy change when [one mole|one gram|one litre|two moles] of a substance is formed from its [elements|ions|compounds|atoms in the gas phase] in their standard states.
-The standard state of a substance is its most stable state at a pressure of [1 atmosphere|0 atmospheres|10 atmospheres|1 pascal] and a specified temperature, usually [298 K|273 K|0 K|373 K].
-The enthalpy of formation of elements is [zero|one|always negative|always positive].
-ΔH° = [ΣΔH°<sub>f</sub>(products) − ΣΔH°<sub>f</sub>(reactants)|ΣΔH°<sub>f</sub>(reactants) − ΣΔH°<sub>f</sub>(products)|ΣΔH°<sub>f</sub>(products) + ΣΔH°<sub>f</sub>(reactants)|ΔG° − TΔS°].
-The entropy of a system is a measure of its degree of [disorder|heat|order|pressure].
-The greater the disorder, the greater the entropy. [Solids|Gases|Liquids|Solutions] have low disorder and [gases|solids|crystals|metals] have high disorder.
-There is a rapid increase in entropy at the melting point and an even larger change at the [boiling point|freezing point|absolute zero|standard state].
-At [0 K|273 K|298 K|100 K] a perfect crystal has an entropy of zero. This is the [third|first|second|zeroth] law of thermodynamics.
-ΔS° = [ΣS°(products) − ΣS°(reactants)|ΣS°(reactants) − ΣS°(products)|ΔH°/ΔG°|ΣS°(products) × ΣS°(reactants)].
-The [second|first|third|zeroth] law of thermodynamics states that the total entropy of a reaction system and its surroundings always [increases|decreases|stays constant|becomes zero] for a spontaneous process.
-ΔS°<sub>total</sub> = [ΔS°<sub>system</sub> + ΔS°<sub>surroundings</sub>|ΔS°<sub>system</sub> − ΔS°<sub>surroundings</sub>|ΔH° − TΔS°|ΔS°<sub>system</sub> × T].
-A change in entropy, ΔS, is accompanied by a change in [enthalpy, ΔH|mass|pressure|volume], which affects the entropy of the surroundings.
-Heat energy released by the system into the surroundings [increases|decreases|has no effect on|halves] the entropy of the surroundings.
-Heat energy absorbed by the system from the surroundings [decreases|increases|has no effect on|doubles] the entropy of the surroundings.
-ΔG° = [ΣΔG°<sub>f</sub>(products) − ΣΔG°<sub>f</sub>(reactants)|ΣΔG°<sub>f</sub>(reactants) − ΣΔG°<sub>f</sub>(products)|ΣΔG°<sub>f</sub>(products) + ΣΔG°<sub>f</sub>(reactants)|ΔH° + TΔS°].
-Free energy is related to enthalpy and entropy by ΔG° = [ΔH° − TΔS°|ΔH° + TΔS°|TΔH° − ΔS°|ΔS° − TΔH°].
-If ΔG° is [negative|positive|zero|large and positive], a reaction is said to be feasible.
-The temperature at which a reaction becomes feasible can be estimated by finding where ΔG° [&lt; 0|&gt; 0|= 1|= ΔH°].
-At equilibrium, ΔG° = [0|1|−1|ΔH°].
-In a reversible reaction, the reaction proceeds spontaneously until the composition is reached where ΔG = [0|ΔH|1|TΔS].`},
+The standard enthalpy of formation is the enthalpy change when one mole of a substance is formed from its [elements in their standard states|ions|atoms in the gas phase|compounds].
+The standard state of a substance is its most stable form at a pressure of [1 atmosphere|0 atmospheres|10 atmospheres|1 pascal] and a specified temperature, usually 298 K.
+ΔH°<sub>reaction</sub> = ΣΔH°<sub>f</sub>(products) [−|+|×|÷] ΣΔH°<sub>f</sub>(reactants).
+Entropy is a measure of the [disorder|energy|mass|volume] of a system.
+Solids have [low|high|zero|negative] entropy and gases have [high|low|zero|negative] entropy.
+Entropy [increases|decreases|stays the same] with temperature, with large increases at melting and boiling points.
+The second law of thermodynamics states that the total entropy of the system and surroundings [increases|decreases|stays constant|becomes zero] in a spontaneous process.
+Heat released by the system [increases|decreases|has no effect on] the entropy of the surroundings.
+The third law of thermodynamics states that the entropy of a perfect crystal at [0 K|273 K|298 K|1000 K] is zero.
+ΔS°<sub>reaction</sub> = ΣS°(products) [−|+|×|÷] ΣS°(reactants).
+Gibbs free energy change is given by ΔG = [ΔH − TΔS|ΔH + TΔS|TΔH − ΔS|ΔS − TΔH].
+A reaction is feasible if ΔG is [negative|positive|zero|infinite].
+Feasibility [does not|does] tell us anything about the rate of the reaction.
+The temperature at which a reaction becomes feasible can be found by setting ΔG = [0|1|−1|ΔH].
+At equilibrium, ΔG = [0|1|−1|ΔH].`},
 
 {area:"Physical chemistry",title:"Kinetics",pts:`
-The rate of a chemical reaction normally depends on the [concentrations of the reactants|mass of the products|colour of the solution|size of the container].
-[Orders of reaction|Equilibrium constants|Enthalpy changes|Oxidation states] are used to relate the rate of reaction to the reacting species.
-The overall order tells you the number of species reacting in the [rate determining step|fastest step|final step|equilibrium mixture].
-In the rate equation rate = k[A][B]<sup>2</sup>, k is the [rate constant|equilibrium constant|Boltzmann constant|Planck constant].
-The order with respect to a reactant is the [power|coefficient|square root|logarithm] to which its concentration is raised in the rate equation.
-The overall order is the [sum|product|difference|average] of the powers in the rate equation.
-The order of reaction can only be determined from [experimental data|the balanced equation|the stoichiometry|ΔH values].
-If changing [A] has no effect on rate, the reaction is [zero|first|second|third] order with respect to A.
+The rate of a reaction depends on the [concentrations of the reactants|colour of the reactants|mass of the products|volume of the flask only].
+The order of reaction with respect to a reactant is found [experimentally|theoretically from the equation|from the coefficients|from the colour].
+If changing the concentration of A has no effect on the rate, the reaction is [zero|first|second|third] order with respect to A.
 If doubling [A] doubles the rate, the reaction is [first|zero|second|third] order with respect to A.
-If doubling [A] increases the rate fourfold, the reaction is [second|first|fourth|zero] order with respect to A.
-The rate equation and k can be determined from [initial rate|equilibrium|enthalpy|spectroscopic] data. For rate = k[X][Y]<sup>2</sup>, k = [rate / [X][Y]<sup>2</sup>|[X][Y]<sup>2</sup> / rate|rate × [X][Y]<sup>2</sup>|rate / [X] + [Y]<sup>2</sup>].
-Units of k: first order = [s<sup>−1</sup>|l mol<sup>−1</sup> s<sup>−1</sup>|mol l<sup>−1</sup> s<sup>−1</sup>|no units]; second order = [l mol<sup>−1</sup> s<sup>−1</sup>|s<sup>−1</sup>|l<sup>2</sup> mol<sup>−2</sup> s<sup>−1</sup>|mol l<sup>−1</sup>]; third order = l<sup>2</sup> mol<sup>−2</sup> s<sup>−1</sup>.
-Reactions usually occur by a series of steps called a reaction [mechanism|equilibrium|cycle|titration].
-The rate of reaction depends on the [slowest|fastest|first|last] step, called the rate determining step.
-Experimentally determined rate equations can be used to determine possible [reaction mechanisms|equilibrium constants|enthalpy changes|yields].`},
+If doubling [A] increases the rate fourfold, the reaction is [second|first|zero|third] order with respect to A.
+The order with respect to a reactant is the [power|coefficient|inverse|logarithm] to which its concentration is raised in the rate equation.
+The overall order of a reaction is the [sum|product|average|difference] of the individual orders.
+The rate equation and the rate constant, k, with units, can be determined from [initial rate data|equilibrium data|enthalpy data|spectral data] by varying initial concentrations.
+Reaction mechanisms are series of [steps|equilibria|isotopes|catalysts].
+The rate-determining step is the [slowest|fastest|first|last] step in a mechanism.
+Experimental rate equations are used to [test possible mechanisms|calculate enthalpies|find isotopes|identify ligands].`},
 
-{area:"Organic chemistry & instrumental analysis",title:"Molecular Orbitals",pts:`
-[Skeletal|Molecular|Empirical|Orbital box] structural formulae are a shorthand way of drawing the structures of organic molecules.
-You must be able to convert between full, shortened and skeletal formulae and write the [molecular|empirical|IUPAC|isomeric] formula from any of them.
-Molecular orbitals form when [atomic orbitals|nuclei|ions|molecules] combine. The number of molecular orbitals formed is [equal to|double|half|unrelated to] the number of atomic orbitals that combine.
-Combining two atomic orbitals produces a lower energy [bonding|anti-bonding|hybrid|non-bonding] molecular orbital and a higher energy [anti-bonding|bonding|hybrid|core] molecular orbital.
-Both electrons are found in the lower energy bonding molecular orbital with [opposite|parallel|no|identical] spins.
-End-on overlap along the axis of the bond forms [sigma (σ)|pi (π)|delta (δ)|hybrid] bonds; side-on overlap of parallel orbitals forms [pi (π)|sigma (σ)|ionic|dative] bonds.
-Hybridisation is the mixing of atomic orbitals within an atom to generate new [hybrid|molecular|anti-bonding|ionic] orbitals, which are [degenerate|non-degenerate|empty|antibonding].
-Hybridisation can be used to explain the bonding and shape of molecules of [carbon|noble gases|transition metals|metal ions].
-In alkanes, carbon forms four degenerate [sp³|sp²|sp|dsp²] hybrid orbitals in a [tetrahedral|trigonal planar|linear|octahedral] arrangement.
-In alkenes, carbon forms three [sp²|sp³|sp|sp⁴] hybrid orbitals in a trigonal planar arrangement; the remaining 2p orbitals overlap [side-on to form a π bond|end-on to form a σ bond|to form an ionic bond|to form a hydrogen bond].
-In alkynes, carbon forms two [sp|sp²|sp³|s²p] hybrid orbitals in a [linear|bent|tetrahedral|trigonal planar] arrangement, and the two unhybridised p orbitals form two π bonds.
-Benzene, C<sub>6</sub>H<sub>6</sub>, is a [planar|tetrahedral|chair-shaped|linear] molecule. The stability of the ring means it will not undergo [addition|substitution|combustion|any] reactions.
-In benzene the carbons are [sp²|sp³|sp|unhybridised] hybridised; unhybridised p orbitals overlap side-on to form a π system across all six carbons, in which electrons are [delocalised|localised|ionised|paired on one carbon].
-Electrons fill [bonding|antibonding|hybrid|empty] molecular orbitals, leaving higher energy antibonding orbitals unfilled.
-The highest occupied bonding orbital is the [HOMO|LUMO|SOMO|NMR]; the lowest unoccupied antibonding orbital is the [LUMO|HOMO|TMS|GFM].
-Absorption of electromagnetic energy can promote electrons from the [HOMO to the LUMO|LUMO to the HOMO|nucleus to the HOMO|σ to the σ orbital].
-Most organic molecules appear colourless because the HOMO–LUMO gap is relatively [large|small|zero|negative], so they absorb in the [ultraviolet|visible|infrared|radio] region.
-A [chromophore|ligand|nucleophile|carbocation] is a group of atoms within a molecule responsible for absorption of light in the visible region.
-Chromophores exist in molecules containing a [conjugated system|single σ bond|chiral centre|hydroxyl group], where adjacent unhybridised p orbitals overlap side-on.
-Molecules with [alternating single and double bonds|only single bonds|only triple bonds|ionic bonds], and aromatic molecules, have conjugated systems.
-The more atoms in the conjugated system, the [smaller|larger|same|more variable] the HOMO–LUMO gap, so light of [longer|shorter|zero|higher energy] wavelength is absorbed.
-When the wavelength absorbed is in the visible region, the compound shows the [complementary|same|white|ultraviolet] colour.`},
+/* ================ ORGANIC CHEMISTRY AND INSTRUMENTAL ANALYSIS ================ */
+{area:"Organic chemistry & instrumental analysis",title:"Molecular Orbitals & Colour",pts:`
+VSEPR theory cannot explain the bonding in all compounds, but [molecular orbital theory|nuclear theory|collision theory|kinetic theory] can.
+The number of molecular orbitals formed is equal to the number of [atomic orbitals combined|electrons|nuclei|protons].
+Combining two atomic orbitals gives one [bonding and one antibonding|bonding and two antibonding|antibonding only|nuclear] molecular orbital.
+Electrons in a bonding molecular orbital are held [between the nuclei|outside the nuclei|inside the nucleus|far from the atoms], giving a bond.
+A non-polar bond has a [symmetrical|asymmetric|ionic|zero] bonding orbital.
+A polar bond has an [asymmetric|symmetrical|empty|ionic-only] bonding orbital, with a greater share of electrons on the more electronegative atom.
+A sigma bond is formed by [end-on overlap|side-on overlap|ionic attraction|metallic attraction] of orbitals along the bond axis.
+A pi bond is formed by [side-on overlap|end-on overlap|ionic attraction|metallic attraction] of perpendicular p orbitals.
+Carbon bonding is explained by [hybridisation|nuclear fission|isotopy|ionisation] of atomic orbitals.
+In alkanes, carbon is [sp<sup>3</sup> hybridised|sp<sup>2</sup> hybridised|sp hybridised|unhybridised], giving four tetrahedral orbitals.
+In alkenes, carbon is [sp<sup>2</sup> hybridised|sp<sup>3</sup> hybridised|sp hybridised|unhybridised], and the unhybridised p orbital forms a pi bond.
+In alkynes, carbon is [sp hybridised|sp<sup>2</sup> hybridised|sp<sup>3</sup> hybridised|unhybridised], giving two linear sigma orbitals and two pi bonds.
+In benzene, the unhybridised p orbitals overlap to form a [delocalised pi system|set of localised double bonds|single sigma bond|ionic lattice] over all six carbons.
+The HOMO is the highest occupied molecular orbital and the LUMO is the [lowest unoccupied molecular orbital|largest unbonded molecular orbital|lowest unhybridised molecular orbital|longest unpaired molecular orbital].
+Absorption of light promotes an electron from the [HOMO to the LUMO|LUMO to the HOMO|nucleus to the HOMO|HOMO to the nucleus].
+Most organic molecules are colourless because the HOMO–LUMO gap is [large|small|zero|negative], so they absorb in the UV region.
+A chromophore is a group of atoms that absorbs [visible light|X-rays only|radio waves only|gamma rays only].
+The more atoms in a conjugated system, the [smaller|larger|unchanged] the HOMO–LUMO gap and the longer the wavelength absorbed.`},
 
-{area:"Organic chemistry & instrumental analysis",title:"Organic Synthesis",pts:`
-You need to name, draw and describe alkanes, alkenes, alcohols, carboxylic acids, aldehydes, ketones, haloalkanes, ethers and [esters|metals|salts|transition metal complexes].
-Reaction types to identify include substitution, addition, elimination and [condensation|nuclear fission|combustion only|precipitation].
-In curly arrow notation, a [double-headed|single-headed|dashed|straight] arrow shows the movement of an electron pair; the [tail|head|middle|colour] shows the source of the electrons.
-Homolytic fission forms two neutral [radicals|ions|carbocations|nucleophiles]; each atom keeps one electron and it normally occurs when [non-polar|polar|ionic|dative] bonds break.
-Reactions involving homolytic fission tend to produce [very complex mixtures|single pure products|no products|only gases], making them unsuitable for synthesis.
-Heterolytic fission forms two [oppositely charged ions|neutral radicals|identical atoms|free electrons]; one atom keeps both electrons and it normally occurs when [polar|non-polar|metallic|hydrogen] bonds break.
-Heterolytic fission gives [far fewer|many more|exactly the same|no] products, so is better suited for organic synthesis.
-In heterolytic fission, attacking groups are classified as nucleophiles or [electrophiles|radicals|ligands|chromophores].
-A nucleophile is electron [rich|deficient|neutral|free] and donates a pair of electrons; an electrophile is electron [deficient|rich|saturated|paired] and accepts a pair.
-Nucleophiles are attracted to atoms with a full or partial [positive|negative|neutral|magnetic] charge.
-A [carbocation|carbanion|radical|alkoxide] is an ion in which a carbon atom carries a full positive charge.
-[Tertiary|Primary|Secondary|Methyl] carbocations are the most stable as they have the most alkyl groups to donate electrons.
-Haloalkanes are substituted alkanes where hydrogen atoms are replaced by [halogen|hydroxyl|alkoxy|amine] atoms.
-Monohaloalkanes undergo [elimination|addition|oxidation|condensation] to form alkenes using a strong base (KOH or NaOH) in [ethanol|water|acid|ether].
-Monohaloalkanes undergo nucleophilic substitution with aqueous alkalis to form [alcohols|ethers|nitriles|alkenes], alcoholic alkoxides to form [ethers|alcohols|esters|amines], and ethanolic cyanide to form [nitriles|amines|ketones|alkanes].
-S<sub>N</sub>1 has [one|two|three|zero] species in the rate determining step and goes via a [trigonal planar carbocation|trigonal bipyramidal transition state|cyclic ion|free radical]; S<sub>N</sub>2 has two species and goes via a single five-centred trigonal bipyramidal transition state.
-[Steric hindrance|Hydrogen bonding|Delocalisation|Chirality] and inductive stabilisation of the carbocation explain which mechanism a haloalkane prefers.
-Alkenes are [unsaturated|saturated|aromatic|ionic] hydrocarbons containing at least one C=C double bond.
-Alkenes can be prepared by [dehydration of alcohols|hydration of alkanes|oxidation of ketones|reduction of esters] and by base-induced elimination of hydrogen halides from monohaloalkanes.
-Alkenes undergo [electrophilic addition|nucleophilic substitution|electrophilic substitution|elimination] with hydrogen, halogens, hydrogen halides and water (acid catalyst).
-Markovnikov’s rule: when HX or water adds to an unsymmetrical alkene, the H atom attaches to the carbon with the [most|fewest|no|same number of] hydrogen atoms already.
-Markovnikov’s rule predicts the [major and minor|only|equilibrium|racemic] products formed.
-Addition of HX or acid-catalysed water involves an intermediate [carbocation|cyclic ion|radical|carbanion].
-The mechanism for addition of a halogen shows a [cyclic ion|carbocation only|free radical|trigonal bipyramidal] intermediate.
-Alcohols contain the [hydroxyl, −OH|carboxyl, −COOH|carbonyl, C=O|alkoxy, −OR] functional group.
-Alcohols can be prepared from aldehydes and ketones by [reduction|oxidation|hydration|elimination] using lithium aluminium hydride.
-Primary alcohols oxidise to aldehydes then [carboxylic acids|ketones|ethers|alkenes]; secondary alcohols oxidise to [ketones|aldehydes|carboxylic acids|esters].
-Alcohols react with reactive metals like sodium to form [alkoxides|esters|ethers directly|alkanes], which react with monohaloalkanes to form ethers.
-Esters form faster from alcohols with [acid chlorides|carboxylic acids|alkanes|ketones], and no catalyst is needed.
-Hydroxyl groups make alcohols polar, giving rise to [hydrogen bonding|ionic bonding|metallic bonding|only London forces], which explains their boiling points, viscosity and solubility.
-Ethers have the general structure [R′–O–R″|R–OH|R–COOH|R–CHO].
-In naming ethers, the alkoxy group is named by adding the ending [‘oxy’|‘ol’|‘al’|‘one’] to the alkyl substituent.
-Ethers are prepared by nucleophilic substitution of a monohaloalkane with an [alkoxide|alkene|amine|aldehyde].
-Ethers have [lower|higher|identical|unpredictable] boiling points than isomeric alcohols due to a lack of hydrogen bonding.
-Methoxymethane and methoxyethane are [soluble|insoluble|explosive|solid] in water; larger ethers are insoluble due to increased molecular size.
-Ethers are commonly used as [solvents|catalysts|indicators|reducing agents] since they are relatively inert.
-Carboxylic acids [partially|fully|never|always] dissociate in water, giving them a slightly acidic nature.
-The [longer|shorter|more branched|more polar] the carbon chain, the lower the solubility of a carboxylic acid.
-Carboxylic acids can be prepared by oxidising aldehydes using acidified dichromate, Fehling’s solution or [Tollens’ reagent|bromine water|sodium hydroxide|lithium aluminium hydride], or by hydrolysing nitriles, esters or amides.
-Carboxylic acids react with amines to form alkylammonium salts that form [amides|esters|ethers|nitriles] when heated, and are reduced to primary alcohols by [lithium aluminium hydride|acidified dichromate|Tollens’ reagent|sulfuric acid].
-Amines are organic derivatives of [ammonia|water|methane|benzene] where hydrogen atoms are replaced by alkyl groups.
-Amines can be classified as primary, secondary or [tertiary|quaternary only|aromatic only|chiral].
-Amines react with [acids|bases|alkanes|ethers] to form salts.
-[Primary and secondary|Only tertiary|All|No] amines display hydrogen bonding, so they have higher boiling points than isomeric tertiary amines.
-Amines are [weak bases|strong bases|strong acids|neutral]: the nitrogen lone pair accepts a proton from water, producing [hydroxide|hydronium|hydride|oxide] ions.
-A benzene ring with one hydrogen substituted is known as the [phenyl|benzyl|methyl|ethyl] group, formula –C<sub>6</sub>H<sub>5</sub>.
-Benzene undergoes [electrophilic substitution|electrophilic addition|nucleophilic substitution|elimination] reactions.
-Nitration of benzene uses concentrated sulfuric acid and concentrated [nitric acid|hydrochloric acid|phosphoric acid|ethanoic acid]; alkylation uses a haloalkane and [aluminium chloride|sodium hydroxide|water|copper(II) oxide].`},
+{area:"Organic chemistry & instrumental analysis",title:"Bond Fission, Mechanisms & Nomenclature",pts:`
+In homolytic fission, each atom keeps [one electron|both electrons|no electrons|two protons] and radicals are formed.
+In heterolytic fission, one atom keeps [both electrons|one electron|no electrons|half an electron] and ions are formed.
+Homolytic fission is typical of [non-polar|polar|ionic|metallic] bonds, and heterolytic fission of [polar|non-polar|ionic only|metallic] bonds.
+Heterolytic fission gives fewer products, so it is [better|worse] for synthesis than homolytic fission.
+A single-headed curly arrow represents the movement of [one electron|an electron pair|a proton|a nucleus].
+A double-headed curly arrow represents the movement of [an electron pair|one electron|a proton|a nucleus].
+The tail of a curly arrow starts at the electron [source|destination|nucleus|proton].
+A nucleophile is an [electron-rich|electron-deficient|neutral|nuclear] species that attacks a δ<sup>+</sup> or positive centre.
+Examples of nucleophiles include Cl<sup>−</sup>, OH<sup>−</sup>, CN<sup>−</sup>, NH<sub>3</sub> and [H<sub>2</sub>O|H<sup>+</sup>|NO<sub>2</sub><sup>+</sup>|SO<sub>3</sub>].
+An electrophile is an [electron-deficient|electron-rich|neutral|inert] species that attacks a δ<sup>−</sup> or negative centre.
+Examples of electrophiles include H<sup>+</sup>, NO<sub>2</sub><sup>+</sup> and [SO<sub>3</sub>|OH<sup>−</sup>|CN<sup>−</sup>|NH<sub>3</sub>].
+Reaction types that can be identified include substitution, addition, elimination, condensation, hydrolysis, oxidation, reduction and [neutralisation|fission|fusion|ionisation].
+Synthetic routes of up to [three|ten|five|seven] steps can be devised.
+Structural formulae may be shown as full, shortened or [skeletal|ionic|empirical only|electron-dot only].
+Systematic names can be given for compounds with up to eight carbons in the longest chain, including aldehydes, ketones, haloalkanes, [ethers|polymers|isotopes|ions] and esters.`},
+
+{area:"Organic chemistry & instrumental analysis",title:"Haloalkanes & Reaction Mechanisms",pts:`
+A haloalkane is an alkane in which one or more hydrogen atoms have been replaced by a [halogen|metal|carboxyl group|hydroxyl group].
+A haloalkane is classified as primary, secondary or tertiary by the number of [alkyl groups on the carbon bearing the halogen|halogens in the molecule|carbons in the molecule|double bonds].
+Elimination from a haloalkane using a strong base in ethanol forms an [alkene|alcohol|ether|nitrile].
+Substitution with aqueous alkali converts a haloalkane to an [alcohol|alkene|ether|nitrile].
+Substitution with an alkoxide converts a haloalkane to an [ether|alcohol|alkene|nitrile].
+Substitution with ethanolic cyanide forms a [nitrile|carboxylic acid|amine|amide], which adds one carbon to the chain.
+Nitriles can be hydrolysed to form [carboxylic acids|alcohols|alkenes|ethers].
+In an S<sub>N</sub>1 mechanism there is [one species|two species|three species|no species] in the rate-determining step.
+S<sub>N</sub>1 reactions occur in [two or more steps|one step|three steps exactly|no steps] and have a planar carbocation intermediate.
+In an S<sub>N</sub>2 mechanism there are [two species|one species|three species|no species] in the rate-determining step.
+S<sub>N</sub>2 reactions occur in [one step|two steps|three steps|many steps] via a five-centred trigonal bipyramidal transition state.
+Tertiary haloalkanes tend to react by [S<sub>N</sub>1|S<sub>N</sub>2] because of carbocation stabilisation by induction.
+Primary haloalkanes tend to react by [S<sub>N</sub>2|S<sub>N</sub>1] because there is less steric hindrance.`},
+
+{area:"Organic chemistry & instrumental analysis",title:"Alcohols & Ethers",pts:`
+Alcohols can be prepared by [substitution of haloalkanes|neutralising alkanes|combustion|polymerising ethers].
+Alcohols can also be prepared by the acid-catalysed [hydration|dehydration|oxidation|reduction] of alkenes.
+Aldehydes and ketones can be reduced to alcohols using [lithium aluminium hydride|acidified dichromate|bromine|ethanolic cyanide].
+Alcohols can be dehydrated to alkenes using [Al<sub>2</sub>O<sub>3</sub>, concentrated H<sub>2</sub>SO<sub>4</sub> or H<sub>3</sub>PO<sub>4</sub>|dilute HCl|aqueous NaOH|acidified permanganate].
+Primary alcohols are oxidised first to aldehydes and then to [carboxylic acids|ketones|esters|ethers].
+Secondary alcohols are oxidised to [ketones|aldehydes|carboxylic acids|ethers].
+Common oxidising agents for alcohols include acidified permanganate, acidified dichromate and hot [copper(II) oxide|sodium oxide|magnesium oxide|zinc oxide].
+Alcohols react with reactive metals such as sodium or potassium to form [alkoxides|alkanes|esters|acids].
+An alkoxide reacts with a haloalkane to form an [ether|alcohol|ester|alkene].
+Alcohols react with carboxylic acids, using a concentrated H<sub>2</sub>SO<sub>4</sub> or H<sub>3</sub>PO<sub>4</sub> catalyst, to form [esters|ethers|alkenes|aldehydes].
+Alcohols react with acid chlorides faster than with carboxylic acids and [no catalyst is needed|a strong catalyst is needed|a metal catalyst is needed|light is needed].
+Hydrogen bonding explains the boiling point, melting point, viscosity and [water solubility|colour|density only|isotopic mass] of alcohols.
+Ethers have the general structure R′–O–[R″|OH|H|COOH].
+Ethers have [lower|higher|the same] boiling points than isomeric alcohols because there is no hydrogen bonding between ether molecules.
+Ethers are used as solvents because they are chemically [inert|reactive|acidic|basic].`},
+
+{area:"Organic chemistry & instrumental analysis",title:"Alkenes & Benzene",pts:`
+Alkenes can be prepared by dehydration of alcohols or by base-induced [elimination|substitution|addition|condensation] from haloalkanes.
+Alkenes undergo [electrophilic addition|nucleophilic substitution|elimination|condensation] reactions.
+Addition of H<sub>2</sub> to an alkene, using a catalyst, forms an [alkane|alcohol|haloalkane|ether].
+Addition of a halogen to an alkene forms a [dihaloalkane|haloalkane|alcohol|alkane].
+Addition of a hydrogen halide to an alkene forms a [haloalkane|dihaloalkane|alcohol|alkane].
+Addition of water, using an acid catalyst, to an alkene forms an [alcohol|alkane|ether|haloalkane].
+Markovnikov's rule states that in the addition of HX to an alkene, the hydrogen adds to the carbon that already has [more hydrogens|fewer hydrogens|no hydrogens|a halogen].
+Addition of HX and acid-catalysed hydration go via a [carbocation|radical|carbanion|cyclic ion] intermediate.
+Carbocation stability is explained by [induction|resonance|nuclear charge|hybridisation].
+The addition of a halogen to an alkene goes via a [cyclic ion|carbocation|radical|carbanion] intermediate.
+Benzene has the molecular formula [C<sub>6</sub>H<sub>6</sub>|C<sub>6</sub>H<sub>12</sub>|C<sub>6</sub>H<sub>14</sub>|C<sub>5</sub>H<sub>6</sub>].
+Benzene is unusually stable because of [delocalisation|a high number of double bonds|its size|hydrogen bonding] and does not undergo addition reactions.
+The –C<sub>6</sub>H<sub>5</sub> group is called the [phenyl group|benzyl group|methyl group|alkyl group].
+Benzene reacts by [electrophilic substitution|nucleophilic addition|elimination|condensation].
+Halogenation of benzene uses a halogen with a catalyst such as [AlCl<sub>3</sub> or FeCl<sub>3</sub>|dilute HCl|NaOH|H<sub>2</sub>O].
+Nitration of benzene uses [concentrated HNO<sub>3</sub> and H<sub>2</sub>SO<sub>4</sub>|dilute HNO<sub>3</sub> only|NaOH and HNO<sub>3</sub>|HCl and H<sub>2</sub>SO<sub>4</sub>].
+Sulfonation of benzene uses [concentrated H<sub>2</sub>SO<sub>4</sub>|dilute HCl|NaOH|water].`},
+
+{area:"Organic chemistry & instrumental analysis",title:"Carboxylic Acids & Amines",pts:`
+Carboxylic acids can be prepared by oxidation of [primary alcohols|tertiary alcohols|alkanes|ethers].
+Carboxylic acids can be prepared by oxidation of aldehydes using acidified permanganate, acidified dichromate, Fehling's or [Tollens'|Benedict's only|Grignard|Lucas'] reagent.
+Carboxylic acids can also be prepared by hydrolysis of nitriles, esters or [amides|ethers|alkenes|alkanes].
+Carboxylic acids form salts with [metals or bases|only metals|only acids|only alkanes].
+Carboxylic acids react with alcohols, using a concentrated H<sub>2</sub>SO<sub>4</sub> or H<sub>3</sub>PO<sub>4</sub> catalyst, to form [esters|ethers|aldehydes|alkenes].
+Carboxylic acids react with amines to form alkylammonium salts, which form [amides|esters|ethers|nitriles] on heating.
+Carboxylic acids can be reduced to primary alcohols using [LiAlH<sub>4</sub>|acidified dichromate|bromine|ethanolic NaOH].
+Amines are derivatives of [ammonia|water|methane|hydrogen peroxide] in which hydrogens are replaced by alkyl groups.
+Amines are classified as [primary, secondary or tertiary|alpha, beta or gamma|strong, weak or neutral|saturated or unsaturated] depending on the number of alkyl groups on nitrogen.
+Amines form salts when they react with [acids|bases|alkanes|alkenes].
+Primary and secondary amines can form hydrogen bonds, so they have [higher|lower|the same] boiling points than tertiary isomers.
+Short-chain amines are [water-soluble|insoluble in water|non-polar|unreactive] because they form hydrogen bonds with water.
+Amines are [weak bases|strong bases|strong acids|neutral] because the lone pair on nitrogen accepts a proton from water, forming OH<sup>−</sup>.`},
 
 {area:"Organic chemistry & instrumental analysis",title:"Stereochemistry",pts:`
-Molecules with the same molecular formula but different structural formulae are called [isomers|isotopes|homologues|allotropes].
-[Structural|Geometric|Optical|Stereo] isomers have atoms bonded together in a different order.
-Stereoisomers have the same order of bonding but a different [spatial arrangement|molecular formula|mass|number of atoms]. The two types are geometric and [optical|structural|chain|positional].
-Geometric isomers occur when there is [restricted rotation|free rotation|a chiral centre|delocalisation] around a C=C double bond or a C–C bond in a cyclic compound.
-Each carbon of the restricted bond must have [two different groups|two identical groups|a hydrogen atom|a halogen] attached.
-Geometric isomers are labelled [cis|trans|R|S] when the substituents are on the same side and [trans|cis|meso|racemic] when on opposite sides.
-Geometric isomers have differences in [physical properties|molecular formula|mass|number of bonds], such as melting and boiling points, and can differ chemically.
-Optical isomers occur when [four|three|two|six] different groups are arranged tetrahedrally around a [chiral|planar|trigonal|sp²] carbon.
-Optical isomers are [non-superimposable mirror images|superimposable mirror images|structural isomers|identical molecules] and can be described as [enantiomers|diastereomers|geometric isomers|conformers].
-Optical isomers have identical physical properties except for their effect on [plane-polarised light|boiling point|density|solubility].
-They have identical chemical properties except in a [chiral environment|aqueous solution|acid|vacuum], such as in biological systems.
-Optical isomers rotate plane-polarised light by the same amount but in [opposite directions|the same direction|different amounts|no direction].
-An equal mixture of two enantiomers is optically [inactive|active|unstable|coloured]; this is called a [racemic mixture|buffer|eutectic mixture|azeotrope].`},
+Isomers have the same [molecular formula|structural formula|name|melting point] but a different arrangement of atoms.
+Structural isomers differ in the [order in which atoms are bonded|spatial arrangement only|number of atoms|colour].
+Stereoisomers have the same bonding order but differ in their [spatial arrangement|molecular formula|number of atoms|atomic number].
+There are two types of stereoisomerism: geometric and [optical|structural|nuclear|ionic].
+Geometric isomerism arises because of [restricted rotation|free rotation|ionic bonds|hydrogen bonding] around a C=C bond or in a ring.
+For geometric isomerism, each carbon in the restricted bond must have [two different groups|two identical groups|no groups|only hydrogens].
+Isomers with groups on the same side are labelled [cis|trans|meso|chiral] and those on opposite sides are labelled [trans|cis|meso|chiral].
+Geometric isomers have different [physical properties|molecular formulae|atomic numbers|number of atoms].
+Optical isomerism arises when a carbon atom is bonded to [four different groups|two identical groups|a double bond|three hydrogens].
+A carbon atom bonded to four different groups is called a [chiral carbon|carbocation|carbanion|free radical].
+Optical isomers (enantiomers) are non-superimposable [mirror images|identical molecules|geometric isomers|structural isomers].
+Enantiomers have identical physical and chemical properties except for their effect on [plane-polarised light|boiling point|density|molar mass] and their behaviour in chiral environments.
+Enantiomers rotate plane-polarised light by [equal amounts in opposite directions|different amounts in the same direction|the same amount in the same direction|zero in both cases].
+A racemic mixture contains [equal amounts of both enantiomers|only one enantiomer|no enantiomers|only structural isomers] and is optically inactive.`},
 
-{area:"Organic chemistry & instrumental analysis",title:"Experimental Determination of Structure",pts:`
-A number of experimental techniques are used to verify the [chemical structure|melting point only|colour|price] of a substance.
-[Elemental microanalysis|Mass spectrometry|IR spectroscopy|NMR] determines the masses of C, H, O, S and N in a sample in order to find its [empirical formula|molecular formula|structural formula|GFM].
-An empirical formula shows the [simplest ratio|actual number|arrangement|bonding] of the elements in a molecule.
-Elemental microanalysis data can come from combustion product masses or [percentage by mass|melting points|R<sub>f</sub> values|wavenumbers].
-[Mass spectrometry|Infrared spectroscopy|Colorimetry|TLC] determines the accurate GFM and structural features of a compound.
-In mass spectrometry the sample is bombarded by high-energy [electrons|protons|neutrons|photons], forming positively charged [parent (molecular) ions|negative ions|radicals|nuclei] which break into smaller positive fragments.
+{area:"Organic chemistry & instrumental analysis",title:"Microanalysis & Mass Spectrometry",pts:`
+Elemental microanalysis determines the masses of C, H, O, S and N in a sample in order to find its [empirical formula|molecular formula|structure|boiling point].
+The empirical formula is the [simplest ratio|exact number|largest ratio|total mass] of atoms of each element in a compound.
+Empirical formulae can be found from the masses of combustion products or from [percentage composition|boiling point|colour|density].
+In mass spectrometry, the sample is bombarded with high-energy [electrons|protons|neutrons|photons], forming molecular (parent) ions that fragment.
 A mass spectrum plots relative abundance against [mass-to-charge (m/z) ratio|wavenumber|chemical shift|wavelength].
-The m/z of the parent ion gives the [GFM|empirical formula|number of H environments|functional group], so the molecular formula can be found from the empirical formula.
-[Fragmentation|Integration|Splitting|Absorbance] data can be interpreted to gain structural information.
-[Infrared|Ultraviolet|¹H NMR|Mass] spectroscopy is used to identify certain functional groups.
-When IR radiation is absorbed, bonds [vibrate (stretch and bend)|break|ionise|flip spin]. The wavelengths absorbed depend on the type of atoms and the [strength of the bond|colour|mass of the sample|temperature].
-In IR, absorbance is measured in [wavenumbers, cm<sup>−1</sup>|nm|ppm|m/z], the reciprocal of wavelength.
-Characteristic IR absorptions are given in the [data booklet|periodic table|spectrochemical series|electrochemical series].
-¹H NMR gives information about the different chemical [environments|masses|charges|colours] of hydrogen atoms and how many there are in each.
-In a strong magnetic field ¹H nuclei align with or against the field. Absorption of [radio frequency|infrared|ultraviolet|X-ray] radiation causes nuclei to ‘flip’ to the higher energy alignment.
-The chemical shift, δ, relates to the environment of the ¹H atom and is measured in [ppm|cm<sup>−1</sup>|nm|Hz only].
-Chemical shift values for different environments are given in the [data booklet|mass spectrum|empirical formula|course notes only].
-The area under a peak (integration curve height) is proportional to the [number of ¹H atoms in that environment|number of carbons|GFM|bond strength].
-The standard reference in ¹H NMR is [tetramethylsilane (TMS)|water|benzene|ethanol], assigned a chemical shift of [0|1|7|100].
-¹H NMR spectra can be obtained using low-resolution or [high-resolution|ultra-low|infrared|mass] NMR.
-High-resolution ¹H NMR uses [higher|lower|the same|no] radio frequencies than low-resolution and gives more detailed spectra.
-In high-resolution ¹H NMR, peaks split into multiplets following the [n+1 rule|Aufbau principle|Markovnikov rule|octet rule], where n is the number of ¹H atoms on the [neighbouring carbon|same carbon|oxygen atom|whole molecule].
-Low-resolution ¹H NMR spectra can be [sketched|ignored|only measured|never predicted] for any given compound.`},
+The m/z of the parent ion gives the accurate [gram formula mass|empirical formula|structure|boiling point] of the compound.
+The gram formula mass combined with the empirical formula gives the [molecular formula|structure|boiling point|enthalpy].
+The pattern of fragments in a mass spectrum gives [structural information|only the empirical formula|only the colour|nothing useful].`},
+
+{area:"Organic chemistry & instrumental analysis",title:"IR & NMR Spectroscopy",pts:`
+In infrared spectroscopy, bonds absorb IR radiation and [vibrate (stretch and bend)|ionise|break|rotate freely] depending on bond type and strength.
+Infrared absorbance is measured in [wavenumbers (cm<sup>−1</sup>)|nanometres|ppm|m/z].
+Characteristic infrared absorptions for functional groups are given in the [data booklet|periodic table|electrochemical series|course notes only].
+In proton NMR, nuclei align with or against a [magnetic field|electric field|gravitational field|solvent], and absorb radio-frequency radiation to flip.
+In proton NMR, the chemical shift, measured in [ppm|cm<sup>−1</sup>|nm|m/z], relates to the hydrogen environment.
+Chemical shift values are given in the [data booklet|periodic table|electrochemical series|mass spectrum].
+The area under a peak in a proton NMR spectrum is proportional to the [number of hydrogens in that environment|mass of the compound|chemical shift|temperature].
+The reference compound in proton NMR is [TMS|water|benzene|ethanol], with a chemical shift of 0 ppm.
+High-resolution NMR uses [higher|lower|the same] radio frequencies than low-resolution NMR and shows more detail.
+In high-resolution proton NMR, neighbouring hydrogens split a peak into a [multiplet|single line only|broader singlet|nothing].
+The n + 1 rule states that a peak is split into [n + 1|n − 1|2n|n²] lines, where n is the number of neighbouring hydrogens.
+Low-resolution proton NMR spectra can be [sketched|ignored|never predicted|only measured] for any given compound.`},
 
 {area:"Organic chemistry & instrumental analysis",title:"Pharmaceutical Chemistry",pts:`
-Drugs are substances that alter the [biochemical processes|DNA sequence|mass|temperature] in the body.
-Drugs that have [beneficial|harmful|no|random] effects are used in medicines.
-A medicine usually contains the drug plus other ingredients such as [fillers|catalysts|indicators|ligands] to add bulk or sweeteners to improve taste.
-Drugs generally work by binding to specific [protein|fat|carbohydrate|DNA] molecules, found on cell surfaces ([receptors|ligands|chromophores|buffers]) or as enzymes within a cell.
-The shape and size of a drug lets it interact with a receptor binding site or an enzyme’s [active site|nucleus|cell wall|chiral centre]. Interactions include van der Waals forces and/or [ionic bonds|metallic bonds|nuclear forces|covalent network bonds].
-The structural fragment of a drug that allows binding normally consists of different [functional groups|metal ions|isotopes|chromophores] correctly orientated with respect to each other.
-By comparing the structures of drugs with [similar effects|different colours|similar masses|the same price], the structural fragment involved in drug action can be identified.
-Drugs acting on receptors can be classified as [agonists or antagonists|acids or bases|cis or trans|oxidising or reducing].
-An [agonist|antagonist|inhibitor|filler] mimics the natural compound and produces a similar response.
-An [antagonist|agonist|enzyme|substrate] prevents the natural compound from binding, blocking the natural response.
-Many drugs that act on enzymes are [enzyme inhibitors|enzyme activators|receptors|agonists], binding to the active site and blocking the reaction normally catalysed there.`},
+Drugs alter [biochemical processes|nuclear processes|physical states|atomic masses] in the body.
+A medicine contains a drug along with other ingredients such as fillers and [sweeteners|polymers only|isotopes|metals only].
+Drugs normally work by binding to specific [protein molecules|fat molecules|carbohydrate molecules|water molecules].
+The protein molecules a drug binds to are found on cell surfaces as [receptors|ligands|chromophores|buffers] or as enzymes.
+Receptor drugs can be [agonists or antagonists|oxidants or reductants|acids or bases|ligands or isotopes].
+An agonist [mimics|blocks|destroys|ignores] the natural compound at the receptor.
+An antagonist [blocks|mimics|creates|ignores] the natural compound at the receptor.
+Enzyme inhibitors bind to the [active site|nucleus|cell wall|solvent] and block the normal reaction.
+The shape and size of a drug must fit the [binding site or active site|solvent molecules|metal ions|container].
+Drugs bind through interactions such as [van der Waals forces and/or ionic bonds|only covalent bonds|only metallic bonds|nuclear forces].
+The pharmacophore is the part of the structure responsible for [the drug's activity|the colour|the melting point|the solubility only].
+The pharmacophore consists of different [functional groups|metals|isotopes|solvents] correctly orientated relative to each other.
+Comparing drugs with similar effects helps to identify the [structural fragment responsible for activity|boiling points|colours|densities].`},
 
-{area:"Researching chemistry",title:"Researching Chemistry",note:"No summary sheet — built from the course specification.",pts:`
-A [pipette with safety filler|measuring cylinder|beaker|conical flask] is used to transfer an accurate volume of solution.
-A [volumetric (standard) flask|conical flask|round-bottomed flask|beaker] is used to make up a solution to an accurately known volume.
-A [Büchner, Hirsch or sintered glass funnel|separating funnel|thistle funnel|filter paper cone only] is used for vacuum filtration.
-A [separating funnel|burette|condenser|colorimeter] is used in solvent extraction to separate two immiscible layers.
-When drawing a graph of results, data should be represented as a [scatter graph|pie chart|bar chart|histogram] with a line of best fit, which can be straight or [curved|zig-zagged|dotted|stepped].
-[Rogue points|Average values|Concordant results|Controls] should be identified and eliminated before calculating mean values.
-A [positive control|blank|rogue result|negative ion] (e.g. a known substance) can be used to validate a technique or procedure.
-Stoichiometry is the study of [mole relationships|reaction rates|energy changes|electron arrangements] involved in chemical reactions.
-The mass of one mole of a substance in grams is equal to its [gram formula mass (GFM)|atomic number|molar volume|concentration].
-Percentage by mass is the mass of solute made up to [100 cm<sup>3</sup>|1 litre|1 cm<sup>3</sup>|10 cm<sup>3</sup>] of solution.
-The unit ppm stands for parts per million and refers to 1 mg per [kg or 1 mg per litre|g or 1 mg per cm<sup>3</sup>|tonne|mole].
-Percentage yield is reduced by mechanical losses, purification of product, [side reactions|catalysts|accurate weighing|using excess reactant] and equilibrium position.
-In gravimetric analysis, the [tare|zero-error|hold|calibrate] function of an electronic balance is used, and a weighing boat may be weighed before and after transfer — this is weighing [by difference|by estimate|by volume|by titration].
-‘Weighing accurately approximately’ means weighing a mass close to the stated value but recording it [precisely|to the nearest gram|roughly|only once].
-Heating to constant mass involves heating, cooling in a [desiccator|freezer|fume cupboard|water bath] to prevent absorption of water, weighing, and repeating until the mass [no longer changes|is zero|doubles|halves].
-Gravimetric analysis converts the substance into another substance of [known chemical composition|unknown composition|higher energy|lower purity] which can be readily isolated and purified.
-The conversion in gravimetric analysis can occur through precipitation or [volatilisation|titration|chromatography|distillation].
-In precipitation, the filtrate is tested to ensure the reaction has [gone to completion|started|reversed|reached equilibrium]; the precipitate is washed, dried to constant mass and weighed.
-A solution of accurately known concentration is known as a [standard solution|saturated solution|buffer solution|dilute solution].
-To prepare a standard solution: weigh a [primary standard|indicator|catalyst|buffer] accurately, dissolve in a small volume of solvent, transfer the solution and [rinsings|precipitate|filtrate|vapour] to a volumetric flask, make up to the graduation mark, then stopper and invert.
-A primary standard must be available in a [high state of purity|coloured form|liquid state|gaseous state], be stable, be soluble and have a reasonably [high|low|zero|variable] GFM.
-Examples of primary standards include sodium carbonate, potassium hydrogen phthalate and [potassium iodate|sodium hydroxide|hydrochloric acid|ethanol].
-Sodium hydroxide is not a primary standard because it has a relatively low GFM and [absorbs moisture as a solid|is coloured|is insoluble|is a weak base], so its solution must be [standardised|distilled|recrystallised|evaporated] before use.
-Titrations are repeated until results are [concordant|identical to the theory|rogue|averaged with the rough].
-[Complexometric|Redox|Acid–base|Back] titrations involve the formation of complexes; [EDTA|phenolphthalein|potassium permanganate|silver nitrate] is an important reagent for finding metal ion concentrations.
-A [back titration|redox titration|direct titration|complexometric titration] reacts a substance with an excess of reagent and then titrates the excess; it is useful for a solid with [low solubility|high solubility|a bright colour|a low melting point].
-Colorimetry uses the relationship between the [colour intensity|mass|temperature|volume] of a solution and the concentration of the coloured species.
-In colorimetry, a filter is chosen with a colour [complementary to|the same as|lighter than|unrelated to] the colour of the solution, and a [blank|positive control|primary standard|rogue sample] is used to zero the instrument.
-A calibration graph is plotted from the absorbance of a series of [standard solutions|unknown samples|blanks|indicators]; the test concentration must lie in the [straight line section|curved section|origin only|any section] of the graph.
-[Distillation|Reflux|Recrystallisation|Vacuum filtration] is used for identification and purification of organic compounds; the [boiling point|melting point|R<sub>f</sub> value|colour] found can confirm identity.
-Distillation can purify a compound by separating it from [less volatile|more volatile|identical|gaseous] substances in the mixture.
-Heating under [reflux|vacuum|pressure|distillation] allows heat to be applied over an extended period without volatile substances escaping. The mixture is placed in a round-bottomed flask with [anti-bumping granules|a catalyst only|ice|a desiccant] and fitted with a condenser.
-Vacuum filtration involves filtration under [reduced pressure|increased pressure|high temperature|reflux], giving a faster separation of a precipitate from a filtrate.
-Recrystallisation: dissolve the impure solid in a [minimum volume of hot solvent|large volume of cold solvent|minimum volume of cold solvent|boiling acid], hot filter to remove [insoluble|soluble|all|coloured] impurities, cool slowly, then filter, wash and dry the crystals.
-The recrystallisation solvent should dissolve the compound completely at [high|low|room|all] temperatures and only sparingly at lower temperatures.
-Solvent extraction isolates a solute using a solvent that is [immiscible|miscible|identical|reactive] with the original solution. The ratio of solute in each layer is set by the [equilibrium constant, K|rate constant, k|GFM|R<sub>f</sub> value].
-More solute is extracted using [several extractions with smaller volumes|one extraction with a large volume|no solvent|hot solvent only] of solvent.
-The extraction solvent should be [volatile|non-volatile|reactive with the solute|miscible with water] so the solute can be obtained by evaporation, and unreactive with the solute.
-Impurities [lower and broaden|raise and narrow|raise and broaden|do not change] the melting point of a compound, due to disruption of intermolecular bonding in the crystal lattice.
-A [mixed melting point|boiling point|R<sub>f</sub>|titration] involves mixing a small quantity of product with the pure compound to see whether they are the same substance.
-Chromatography separates substances using differences in their [polarity or molecular size|colour only|density|temperature].
-TLC uses a fine film of [silica or aluminium oxide|filter paper|activated charcoal|glass beads] on a plate. The sample is spotted on a [pencil|pen|crayon|ink] base line, and spots are often visualised with a developing agent or [ultraviolet light|infrared light|a magnet|heat only].
-R<sub>f</sub> = [distance travelled by sample ÷ distance travelled by solvent|distance travelled by solvent ÷ distance travelled by sample|sample distance × solvent distance|solvent distance − sample distance].
-Under the same conditions a compound always has the [same|a different|a random|zero] R<sub>f</sub> value; a [co-spot|blank|rogue spot|calibration] can be used to compare directly with the pure substance.
-A pure substance should appear as a [single spot|two spots|a smear|no spot] on a TLC plate; more than one spot shows [impurities are present|the substance is pure|the solvent is wrong|the plate is dry].`}
+/* ============================ RESEARCHING CHEMISTRY ============================ */
+{area:"Researching chemistry",title:"Apparatus & Experimental Skills",pts:`
+A [pipette with a safety filler|beaker|measuring cylinder|funnel] is used to measure a fixed volume of solution accurately.
+A [volumetric (standard) flask|conical flask|beaker|measuring cylinder] is used to prepare a solution of accurately known concentration.
+A [burette|beaker|boiling tube|test tube] is used to deliver variable volumes accurately in a titration.
+A [condenser|balance|funnel|thermometer] is used to cool vapour back to liquid in distillation or reflux.
+A Büchner, Hirsch or sintered glass funnel is used for [vacuum filtration|simple filtration|distillation|titration].
+A [separating funnel|burette|condenser|balance] is used to separate two immiscible liquids.
+A [colorimeter|polarimeter|mass spectrometer|balance] measures the absorbance of a coloured solution.
+Melting point apparatus is used to find the [melting point range|boiling point|density|pH] of a solid.
+Data should be tabulated with suitable headings and [units|colours|decoration|names only].
+Scatter graphs need suitable [scales and labels|colours|three dimensions|shading].
+A line of best fit may be [straight or curved|only straight|only curved|never used].
+Rogue points are [identified and removed|always kept|averaged in|plotted differently].
+The accuracy of volume-measuring apparatus can be [compared qualitatively|ignored|ranked by colour|ranked by mass].
+Where measurements are repeated, you can comment on their [reproducibility|colour|density|solubility].
+A positive control is a [known substance|blank solvent|random sample|catalyst] used to validate a technique.`},
+
+{area:"Researching chemistry",title:"Stoichiometric Calculations",pts:`
+Stoichiometry is the study of the [mole relationships|colours|physical states only|isotopes] in reactions.
+Equations should be balanced with formulae and [state symbols|colours|energy values only|isotopes], including multi-step reactions.
+The mass of one mole of a substance, its gram formula mass, is calculated from [relative atomic masses|atomic numbers|numbers of neutrons|electronegativities].
+Moles = mass ÷ [gram formula mass|volume|concentration|temperature].
+Concentration (mol l<sup>−1</sup>) = moles ÷ [volume in litres|mass|temperature|time].
+Percentage by mass for a solution is the grams of solute per [100 cm<sup>3</sup> of solution|1 litre of solution|10 cm<sup>3</sup> of solution|100 g of solvent].
+Percentage by volume is the cm<sup>3</sup> of solute per [100 cm<sup>3</sup> of solution|1 litre of solution|10 cm<sup>3</sup> of solution|100 g of solvent].
+A concentration of 1 ppm is [1 mg per kg or 1 mg per litre|1 g per kg|1 g per litre|1 mg per gram].
+In a reaction, the [limiting reactant|excess reactant|catalyst|solvent] determines how much product can form.
+Percentage yield = (actual yield ÷ [theoretical yield|mass of reactants|molar mass|volume]) × 100.
+Percentage yield is reduced by mass transfer losses, purification losses, [side reactions|catalysts|excess reactants|high concentration] and the position of equilibrium.
+Empirical formulae can be calculated from the [masses or percentages of the elements|boiling point|colour|solubility].
+Stoichiometric calculations must be applied to [all relevant skills and techniques|only titrations|only gravimetric analysis|only organic synthesis] in the course.`},
+
+{area:"Researching chemistry",title:"Gravimetric Analysis",pts:`
+Gravimetric analysis finds the [mass|volume|colour|temperature] of an element or compound by converting it to a known, isolable substance.
+The conversion can be done by [precipitation or volatilisation|neutralisation or combustion|distillation or reflux|chromatography or titration].
+Weighing by difference involves weighing a container with the sample, then [reweighing after transferring the sample|using a different balance|heating the container|adding water].
+The tare function of a balance sets the display to [zero|the mass of the sample|one|the mass of the container plus sample] with the container in place.
+Heating to constant mass involves heating, cooling in a [desiccator|water bath|fridge|beaker], weighing, and repeating until the mass is constant.
+In precipitation, the precipitate is separated from the [filtrate|solvent vapour|solid|catalyst], and the filtrate is tested to check that precipitation is [complete|incomplete|not needed|reversed].
+The precipitate is then washed, dried to constant mass and [weighed|dissolved|titrated|distilled].
+In volatilisation, the sample is heated to drive off a [volatile product, often water|solid residue|catalyst|solvent only], and then weighed to constant mass.`},
+
+{area:"Researching chemistry",title:"Volumetric Analysis",pts:`
+In volumetric analysis, the volume of a solution of known concentration needed to react with a sample is [measured accurately|ignored|estimated|predicted by colour].
+To prepare a standard solution, first weigh a [primary standard accurately|sample roughly|catalyst|sample of any purity].
+The solid is dissolved in a small volume of solvent and transferred, with rinsings, to a [volumetric flask|burette|beaker|conical flask].
+The flask is then made up to the [mark|brim|half way|first line only] with solvent, then stoppered and inverted.
+An accurate dilution is carried out by pipetting a known volume of a standard solution into a volumetric flask and making up to the [mark|brim|halfway|pipette volume].
+A primary standard must be of high purity, stable as a solid and in solution, soluble, and have a [high|low|variable|negligible] gram formula mass.
+Examples of primary standards include sodium carbonate, potassium iodate and potassium [hydrogen phthalate|hydroxide|permanganate|chloride].
+Sodium hydroxide is not a primary standard because it absorbs [moisture|nitrogen|noble gases|heat] and is unstable in solution, so it must be standardised.
+An acid–base titration is an example of a [neutralisation|redox|complexometric|back] titration.
+EDTA is used in [complexometric|acid-base|redox|back] titrations to find the concentration of metal ions.
+In a back titration, an [excess of reagent|exact amount of reagent|catalyst|indicator] is added to the sample and the remaining excess is then titrated.
+Back titrations are useful for solids of [low solubility|high solubility|high purity|high density].
+Titrations should be repeated until concordant results are obtained, using a burette, pipette and [volumetric flask|measuring cylinder|beaker|funnel].
+An appropriate [indicator|catalyst|solvent|pH meter only] must be chosen for each titration.`},
+
+{area:"Researching chemistry",title:"Colorimetry, Distillation & Reflux",pts:`
+Colorimetry uses the relationship between the [absorbance of light|mass|boiling point|melting point] by a solution and the concentration of the coloured species.
+In colorimetry, a [complementary|same-colour|black|red] filter or wavelength is chosen for the solution being measured.
+A [blank|catalyst|buffer|positive control] containing only the solvent is used to set the zero of the colorimeter.
+A [calibration graph|periodic table|data booklet|bar chart] of absorbance against concentration is plotted from standard solutions.
+The concentration of the unknown is found from the [calibration graph|periodic table|data booklet|density], provided its absorbance is within the linear section.
+Distillation is used to identify and [purify|oxidise|reduce|polymerise] organic compounds.
+In distillation, the boiling point is used to [confirm identity|find the mass|find the colour|find the density].
+Distillation separates a compound from [less volatile|more volatile|identical|solid-only] substances.
+Heating under reflux heats a reaction mixture for a long time without [losing volatile substances|forming products|cooling|using a heat source].
+A reflux apparatus uses a round-bottomed flask, a condenser, anti-bumping granules and an [appropriate heat source|ice bath only|balance|funnel].`},
+
+{area:"Researching chemistry",title:"Purification, Extraction & TLC",pts:`
+Vacuum filtration uses [reduced pressure|increased pressure|a hot plate|a catalyst] to separate a precipitate from a filtrate faster.
+In recrystallisation, the impure solid is dissolved in a [minimum volume of hot solvent|large volume of cold solvent|large volume of hot solvent|mixture of solids].
+Hot filtration removes [insoluble impurities|soluble impurities|the solvent|the product].
+The solution is then cooled [slowly|rapidly|never|with stirring only] to form pure crystals, leaving soluble impurities in solution.
+A good recrystallisation solvent dissolves the compound well when [hot|cold|neither|both] and poorly when [cold|hot|neither|both].
+Solvent extraction isolates a solute using a solvent that is [immiscible|miscible|reactive|identical] with the original solvent and in which the solute is more soluble.
+In a separating funnel, the solute distributes between two layers according to the [partition coefficient|rate constant|enthalpy of formation|entropy].
+Repeated extractions with small volumes of solvent are [more|less|equally] efficient than one extraction with a large volume.
+Impurities [lower and broaden|raise and narrow|have no effect on|double] the melting point range of a solid.
+In a mixed melting point test, the sample is mixed with a [pure known compound|solvent|catalyst|different compound] to see whether the two are the same substance.
+Thin-layer chromatography (TLC) separates components by their [polarity or molecular size|colour only|mass only|temperature].
+In TLC, the stationary phase is usually [silica or alumina|water only|paper only|a gas], and the solvent carries components up the plate.
+R<sub>f</sub> = [distance moved by the sample ÷ distance moved by the solvent|distance moved by the solvent ÷ distance moved by the sample|distance × time|sample mass ÷ solvent mass].
+A pure compound shows a [single spot|multiple spots|no spot|smear] on a TLC plate.
+Identity can be confirmed by comparing R<sub>f</sub> values or by [co-spotting|distilling|titrating|weighing].`}
 ];
 
 let order=[];let current=0;
